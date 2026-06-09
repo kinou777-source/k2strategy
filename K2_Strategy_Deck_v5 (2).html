@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K2 Strategy — Kevin Hughes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080808;--surface:#101010;--surface2:#171717;--border:rgba(255,255,255,0.07);--gold:#C8973A;--gold2:#E8B86D;--gdim:rgba(200,151,58,0.11);--white:#F4EFE8;--muted:rgba(244,239,232,0.55);--muted2:rgba(244,239,232,0.25);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:var(--bg);color:var(--white);font-family:'Barlow',sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased}
+.deck{width:100vw;height:100vh;display:flex;flex-direction:column}
+.topbar{height:46px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid var(--border);background:rgba(8,8,8,0.98);z-index:50}
+.tb-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;letter-spacing:.18em;color:var(--white)}.tb-logo span{color:var(--gold)}
+.tb-tagline{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:.16em;color:var(--gold);border:1px solid rgba(200,151,58,0.35);padding:4px 14px}
+.tb-counter{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted)}
+.slidenav{height:34px;flex-shrink:0;display:flex;align-items:stretch;overflow-x:auto;border-bottom:1px solid var(--border);background:rgba(10,10,10,0.95);z-index:50;scrollbar-width:none}
+.slidenav::-webkit-scrollbar{display:none}
+.sn-btn{flex-shrink:0;padding:0 12px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.1em;color:var(--muted2);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
+.sn-btn:hover{color:var(--white)}.sn-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
+.slides-wrap{flex:1;position:relative;overflow:hidden}
+.slide{position:absolute;inset:0;overflow-y:auto;opacity:0;transform:translateX(16px);transition:opacity .28s ease,transform .28s ease;pointer-events:none;scrollbar-width:thin;scrollbar-color:rgba(200,151,58,0.25) transparent}
+.slide::-webkit-scrollbar{width:3px}.slide::-webkit-scrollbar-thumb{background:rgba(200,151,58,0.3)}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:all}
+.slide-inner{padding:20px 36px 14px;position:relative;z-index:2}
+.slide-bg{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.botnav{height:44px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-top:1px solid var(--border);background:rgba(8,8,8,0.98);z-index:50}
+.bn-btn{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.12em;padding:7px 16px;background:none;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .2s}
+.bn-btn:hover:not(:disabled){border-color:var(--gold);color:var(--gold)}.bn-btn:disabled{opacity:.2;cursor:not-allowed}
+.dots{display:flex;gap:4px;align-items:center}
+.dot{width:4px;height:4px;background:var(--border);cursor:pointer;transition:all .25s;flex-shrink:0;border-radius:50%}
+.dot.active{background:var(--gold);width:16px;border-radius:2px}
+.eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.22em;color:var(--gold);font-weight:700;text-transform:uppercase;margin-bottom:4px;display:block}
+.eyebrow-sub{font-family:'Space Mono',monospace;font-size:7.5px;letter-spacing:.13em;color:var(--muted2);display:block;margin-bottom:10px}
+.h1{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,3vw,38px);font-weight:500;line-height:1.05;color:var(--white);margin-bottom:8px}
+.h2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(13px,1.7vw,18px);font-weight:600;color:var(--white);margin-bottom:3px}
+.h3{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.15em;color:var(--gold);margin-bottom:5px;text-transform:uppercase}
+.body{font-size:13px;line-height:1.75;color:var(--muted)}
+.body-sm{font-size:12px;line-height:1.7;color:var(--muted)}
+.fr{font-size:11.5px;line-height:1.6;color:var(--muted2);font-style:italic}
+.o{color:var(--gold)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.fc{display:flex;flex-direction:column;gap:8px}
+.divider{border:none;border-top:1px solid var(--border);margin:8px 0}
+.card{background:var(--surface);border:1px solid var(--border);padding:12px 14px}
+.card-o{border:1px solid rgba(200,151,58,0.4);background:var(--gdim);padding:12px 14px}
+.tag{display:inline-block;font-family:'Space Mono',monospace;font-size:7.5px;letter-spacing:.08em;padding:3px 7px;font-weight:700;text-transform:uppercase;margin:2px}
+.to{color:var(--gold);border:1px solid rgba(200,151,58,0.4)}
+.tw{color:var(--muted);border:1px solid var(--border)}
+.tg{color:#4ade80;border:1px solid rgba(74,222,128,0.35)}
+.tb{color:#60a5fa;border:1px solid rgba(96,165,250,0.35)}
+.kpi{text-align:center;padding:12px 8px;background:var(--surface2);border:1px solid var(--border)}
+.kpi-val{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3.5vw,42px);color:var(--gold);line-height:1;display:block;font-weight:500}
+.kpi-lbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.1em;color:var(--muted);display:block;margin-top:3px;text-transform:uppercase}
+.bar-row{margin-bottom:7px}
+.bar-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:3px}
+.bar-val{color:var(--gold);font-family:'Space Mono',monospace;font-size:9.5px}
+.bar-track{height:2px;background:var(--border)}.bar-fill{height:2px;background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.tl-item{display:grid;grid-template-columns:100px 1px 1fr;gap:0 12px;min-height:58px}
+.tl-year{padding-top:8px;text-align:right;font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:500;color:var(--gold)}
+.tl-line{background:var(--border);position:relative}
+.tl-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);position:absolute;top:10px;left:-3.5px}
+.tl-dot-w{width:7px;height:7px;border-radius:50%;background:var(--muted2);border:1px solid var(--muted2);position:absolute;top:10px;left:-3.5px}
+.tl-content{padding:6px 0 12px}
+.tl-co{font-family:'Barlow Condensed',sans-serif;font-size:14.5px;font-weight:700;color:var(--white);margin-bottom:1px}
+.tl-role{font-size:11px;color:var(--gold);margin-bottom:3px;font-weight:600}
+.tl-desc{font-size:11px;color:var(--muted);line-height:1.55}
+.lang-pill{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--border);padding:4px 9px;margin:2px;background:var(--surface2)}
+.lang-flag{font-size:12px}.lang-name{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.08em;color:var(--white)}.lang-lvl{font-size:8px;color:var(--muted)}
+.mc-kpi{display:flex;gap:2px;margin-top:7px}
+.mc-k{flex:1;background:rgba(200,151,58,0.08);border:1px solid rgba(200,151,58,0.2);padding:6px 5px;text-align:center}
+.mc-kv{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);line-height:1;display:block;font-weight:500}
+.mc-kl{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.08em;color:var(--muted);display:block;margin-top:2px}
+/* Via badge */
+.via{display:inline-block;font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.1em;padding:2px 8px;margin-bottom:6px;font-weight:700;text-transform:uppercase}
+.via-k2{color:var(--gold);border:1px solid rgba(200,151,58,0.5);background:rgba(200,151,58,0.08)}
+.via-ft{color:var(--muted);border:1px solid var(--border);background:rgba(255,255,255,0.03)}
+/* Sector header */
+.sector-hdr{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.25em;color:var(--gold);text-transform:uppercase;border-bottom:1px solid rgba(200,151,58,0.3);padding-bottom:6px;margin-bottom:10px}
+/* Mini exp card for double slides */
+.exp-card{border:1px solid var(--border);background:var(--surface);padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.exp-card-o{border:1px solid rgba(200,151,58,0.3);background:var(--gdim);padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.exp-title{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--white)}
+.exp-role{font-size:11px;color:var(--gold);font-weight:600}
+.exp-date{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted2);letter-spacing:.06em}
+.bullet{display:flex;gap:8px;font-size:12px;color:var(--muted);line-height:1.6}
+.bullet span:first-child{color:var(--gold);flex-shrink:0}
+@media(max-width:640px){.slide-inner{padding:10px}.g2,.g3{grid-template-columns:1fr}.topbar,.botnav{padding:0 10px}}
+</style>
+</head>
+<body>
+<div class="deck">
+<div class="topbar">
+  <div class="tb-logo">K2 <span>STRATEGY</span></div>
+  <div class="tb-tagline">VISION · REVENUE · IMPACT</div>
+  <div class="tb-counter" id="counter">1 / 13</div>
+</div>
+<div class="slidenav" id="slidenav"></div>
+<div class="slides-wrap">
+
+<!-- ═══ 01 COVER ═══ -->
+<div class="slide" data-label="K2 STRATEGY">
+  <div class="slide-bg">
+    <svg width="100%" height="100%" viewBox="0 0 1200 680" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="bg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#080808"/><stop offset="100%" stop-color="#120804"/></linearGradient>
+        <linearGradient id="mtn1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#B0A898" stop-opacity=".7"/><stop offset="40%" stop-color="#504840" stop-opacity=".6"/><stop offset="100%" stop-color="#080808" stop-opacity="1"/></linearGradient>
+        <linearGradient id="sn1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#F0EDE8"/><stop offset="100%" stop-color="#B8B0A8" stop-opacity=".4"/></linearGradient>
+      </defs>
+      <rect width="1200" height="680" fill="url(#bg1)"/>
+      <ellipse cx="900" cy="680" rx="600" ry="180" fill="#C8973A" opacity=".1"/>
+      <circle cx="150" cy="50" r="1" fill="#F4EFE8" opacity=".6"/><circle cx="320" cy="30" r="1.2" fill="#F4EFE8" opacity=".5"/><circle cx="500" cy="60" r=".8" fill="#F4EFE8" opacity=".6"/><circle cx="750" cy="25" r="1" fill="#F4EFE8" opacity=".5"/><circle cx="950" cy="45" r=".9" fill="#F4EFE8" opacity=".6"/>
+      <!-- K2 silhouette right panel -->
+      <polygon points="900,40 875,80 852,116 828,154 802,194 773,238 740,286 703,338 661,396 613,460 558,530 495,606 424,680 1200,680 1175,648 1132,588 1090,528 1050,470 1014,414 982,360 954,308 930,258 910,210 894,164 882,118 874,72 900,40" fill="url(#mtn1)"/>
+      <polygon points="900,40 912,72 920,100 910,92 900,72 888,94 878,68 900,40" fill="url(#sn1)" opacity=".85"/>
+      <polygon points="900,40 872,80 848,118 840,112 856,86 878,52 900,40" fill="url(#sn1)" opacity=".8"/>
+      <polygon points="900,40 875,80 848,118 820,158 900,40" fill="#C8973A" opacity=".06"/>
+      <ellipse cx="900" cy="680" rx="450" ry="100" fill="#C8973A" opacity=".08"/>
+      <!-- Left dark panel -->
+      <rect width="660" height="680" fill="#080808" opacity=".78"/>
+      <rect x="60" y="0" width="1.5" height="680" fill="#C8973A" opacity=".4"/>
+    </svg>
+  </div>
+  <div style="position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;height:calc(100vh - 124px);align-items:center;padding:0 44px;gap:36px">
+    <div>
+      <div style="background:var(--gold);color:#080808;font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.18em;padding:5px 14px;display:inline-block;margin-bottom:16px;font-weight:700">CONSULTANT DECK — 2026</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(56px,8.5vw,106px);line-height:.88;letter-spacing:.02em;margin-bottom:14px">
+        <span style="color:var(--white);font-weight:300">K2</span><br>
+        <span style="color:var(--gold);font-weight:500">STRATEGY</span>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:300;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">Strategic Advisory & Interim Management</div>
+      <p class="fr" style="margin-bottom:22px">Conseil Stratégique · Fractional CSO/VP Sales · EMEA — EN FR ES</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)">
+        <div style="background:rgba(8,8,8,.9);padding:11px 8px;text-align:center"><div style="font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--gold);line-height:1">12+</div><div style="font-family:'Space Mono',monospace;font-size:7.5px;letter-spacing:.1em;color:var(--muted2);margin-top:3px">YRS SENIOR XP</div></div>
+        <div style="background:rgba(8,8,8,.9);padding:11px 8px;text-align:center"><div style="font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--gold);line-height:1">20+</div><div style="font-family:'Space Mono',monospace;font-size:7.5px;letter-spacing:.07em;color:var(--muted2);margin-top:3px">COUNTRIES</div></div>
+        <div style="background:rgba(8,8,8,.9);padding:11px 8px;text-align:center"><div style="font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--gold);line-height:1">3</div><div style="font-family:'Space Mono',monospace;font-size:7.5px;letter-spacing:.07em;color:var(--muted2);margin-top:3px">FUNDRAISING/M&A</div></div>
+      </div>
+    </div>
+    <div class="fc">
+      <div class="card" style="background:rgba(8,8,8,.9);border-color:rgba(200,151,58,.35)">
+        <div class="h3" style="margin-bottom:8px">Kevin André Hughes</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:var(--white);margin-bottom:2px">Fractional CSO · VP Sales</div>
+        <div style="font-size:12px;color:var(--gold);margin-bottom:10px;font-weight:600">Strategic Revenue Architect · EPR Method</div>
+        <div class="body-sm">I fix sales systems and transform revenue into a predictable engine. Corporate rigor (HSBC) with scale-up agility (Vulog, Wunder) — no inertia, no $180k+ hire.</div>
+        <hr class="divider">
+        <div style="font-family:'Space Mono',monospace;font-size:9.5px;color:var(--muted);line-height:2.2;border-left:2px solid var(--gold);padding-left:10px">
+          kevin@k2strategy.io<br>
+          +33 7 45 11 59 54<br>
+          k2strategy.io · Hamburg / Villefranche-sur-Mer
+        </div>
+      </div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap">
+        <span class="tag to">Fractional CSO</span><span class="tag to">VP Sales</span><span class="tag to">GTM</span><span class="tag to">Sales Ops</span><span class="tag tw">EMEA</span><span class="tag tw">APAC</span><span class="tag tw">DOM-TOM</span><span class="tag tg">Available</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 02 PROFILE ═══ -->
+<div class="slide" data-label="PROFILE">
+  <div class="slide-bg">
+    <svg width="100%" height="100%" viewBox="0 0 1200 680" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <polygon points="1000,80 972,128 946,172 918,218 888,268 854,322 816,382 773,448 724,520 668,598 604,680 1200,680 1178,650 1144,594 1110,538 1078,482 1050,426 1026,370 1006,314 990,258 978,202 970,146 1000,80" fill="#C8973A" opacity=".022"/>
+      <ellipse cx="160" cy="400" rx="140" ry="70" fill="none" stroke="#C8973A" stroke-width=".5" opacity=".05"/>
+      <ellipse cx="160" cy="400" rx="90" ry="44" fill="none" stroke="#C8973A" stroke-width=".5" opacity=".04"/>
+    </svg>
+  </div>
+  <div class="slide-inner">
+    <span class="eyebrow">02 — Who I Am · Profile</span>
+    <span class="eyebrow-sub">Qui suis-je — Formation — Certifications</span>
+    <div class="g2" style="gap:14px">
+      <div class="fc">
+        <div class="h1">Revenue architect.<br><span class="o">Execution-first.</span></div>
+        <p class="body">12+ years · 20+ countries · Native EN/FR · Fluent ES. From Hamburg to Monaco, Sydney to the Middle East — I adapt fast and deliver from day one. I intervene as Fractional CSO / VP Sales, injecting corporate rigor with scale-up agility.</p>
+        <div class="card-o">
+          <div class="h3" style="margin-bottom:8px">EPR Method — How I work</div>
+          <div class="bullet"><span>→</span><span><strong style="color:var(--white)">Energy</strong> — Full focus, zero inertia. I embed in your team from week one.</span></div>
+          <div class="bullet"><span>→</span><span><strong style="color:var(--white)">Product</strong> — GTM design, ICP sharpening, pricing, channel strategy, key accounts.</span></div>
+          <div class="bullet"><span>→</span><span><strong style="color:var(--white)">Rigor</strong> — CRM, OKRs, forecasting, process documentation. Revenue becomes predictable.</span></div>
+        </div>
+        <div>
+          <div class="h3" style="margin-bottom:6px">Languages</div>
+          <div style="display:flex;flex-wrap:wrap;gap:3px">
+            <div class="lang-pill"><span class="lang-flag">🇬🇧</span><span class="lang-name">ENGLISH</span><span class="lang-lvl">Native</span></div>
+            <div class="lang-pill"><span class="lang-flag">🇫🇷</span><span class="lang-name">FRANÇAIS</span><span class="lang-lvl">Natif</span></div>
+            <div class="lang-pill"><span class="lang-flag">🇪🇸</span><span class="lang-name">ESPAÑOL</span><span class="lang-lvl">Fluent</span></div>
+            <div class="lang-pill"><span class="lang-flag">🇩🇪</span><span class="lang-name">DEUTSCH</span><span class="lang-lvl">B1→B2</span></div>
+            <div class="lang-pill"><span class="lang-flag">🇮🇹</span><span class="lang-name">ITALIANO</span><span class="lang-lvl">B1</span></div>
+            <div class="lang-pill"><span class="lang-flag">🇨🇳</span><span class="lang-name">中文</span><span class="lang-lvl">A2</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="fc">
+        <div class="card">
+          <div class="h3" style="margin-bottom:8px">Education</div>
+          <div style="border-left:2px solid var(--gold);padding-left:10px;margin-bottom:10px">
+            <div class="h2" style="font-size:13px">Montpellier Business School</div>
+            <div style="font-size:9.5px;color:var(--gold);margin-bottom:1px">Master — Finance & Strategy · AASCB · EPAS · AMBA</div>
+            <div style="font-size:8.5px;color:var(--muted)">2009 – 2013 · France</div>
+          </div>
+          <div style="border-left:2px solid var(--border);padding-left:10px">
+            <div class="h2" style="font-size:13px">XISU University, Xi'An</div>
+            <div style="font-size:9.5px;color:var(--muted);margin-bottom:1px">Bachelor — Economics & Mandarin</div>
+            <div style="font-size:8.5px;color:var(--muted2)">2010 – 2011 · China</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="h3" style="margin-bottom:8px">Certifications & Tools</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border:1px solid rgba(200,151,58,.25);background:rgba(200,151,58,.05)">
+              <span style="font-size:16px">🤖</span>
+              <div><div style="font-size:12px;color:var(--white);font-weight:600">COURSIV AI Certification</div><div style="font-size:10px;color:var(--gold)">Claude · Gemini · ChatGPT · Prompt Engineering</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border:1px solid var(--border);background:var(--surface2)">
+              <span style="font-size:16px">📱</span>
+              <div><div style="font-size:12px;color:var(--white);font-weight:600">Meta Ads · Social Network</div><div style="font-size:10px;color:var(--muted)">Digital Marketing · MyMusicAds 2025</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border:1px solid var(--border);background:var(--surface2)">
+              <span style="font-size:16px">⚙️</span>
+              <div><div style="font-size:12px;color:var(--white);font-weight:600">CRM Stack</div><div style="font-size:10px;color:var(--muted)">Hubspot · Salesforce · Pipedrive · Tableau BI</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap">
+          <span class="tag to">EMEA</span><span class="tag to">APAC</span><span class="tag to">DOM-TOM</span><span class="tag tw">Remote</span><span class="tag tw">On-site</span><span class="tag tg">750€/day</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 03 VISION·REVENUE·IMPACT ═══ -->
+<div class="slide" data-label="VISION · REVENUE · IMPACT">
+  <div class="slide-bg">
+    <svg width="100%" height="100%" viewBox="0 0 1200 680" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <ellipse cx="600" cy="340" rx="420" ry="210" fill="none" stroke="#C8973A" stroke-width=".6" opacity=".06"/>
+      <ellipse cx="600" cy="340" rx="310" ry="155" fill="none" stroke="#C8973A" stroke-width=".6" opacity=".05"/>
+      <ellipse cx="600" cy="340" rx="200" ry="100" fill="none" stroke="#C8973A" stroke-width=".7" opacity=".05"/>
+      <ellipse cx="600" cy="340" rx="100" ry="50" fill="#C8973A" opacity=".04"/>
+    </svg>
+  </div>
+  <div class="slide-inner">
+    <span class="eyebrow">03 — Philosophy · Philosophie</span>
+    <span class="eyebrow-sub">Ce que je crois · Ce que j'apporte · Ce que je livre</span>
+    <div class="g3" style="gap:14px;margin-bottom:14px">
+      <div class="fc">
+        <div style="border-top:3px solid var(--gold);padding-top:12px">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--gold);letter-spacing:.08em;margin-bottom:8px">VISION</div>
+          <p class="body" style="margin-bottom:10px">Market reading, competitive positioning, GTM design. I see before others what the market is becoming — and I translate that into an executable plan.</p>
+          <p class="fr" style="margin-bottom:12px">Lecture marché, positionnement, conception GTM. Voir avant les autres ce que le marché devient.</p>
+          <hr class="divider">
+          <div class="h3" style="margin-bottom:6px">Implies</div>
+          <div class="bullet"><span>→</span><span>ICP & segment clarity</span></div>
+          <div class="bullet"><span>→</span><span>Competitive benchmarking</span></div>
+          <div class="bullet"><span>→</span><span>Channel strategy design</span></div>
+          <div class="bullet"><span>→</span><span>Market entry & expansion</span></div>
+        </div>
+      </div>
+      <div class="fc">
+        <div style="border-top:3px solid var(--gold);padding-top:12px">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--gold);letter-spacing:.08em;margin-bottom:8px">REVENUE</div>
+          <p class="body" style="margin-bottom:10px">Sales org design, CRM deployment, pipeline structuring, key account activation. Revenue is the proof — not the promise. I build the machine that makes it repeatable.</p>
+          <p class="fr" style="margin-bottom:12px">Organisation commerciale, CRM, pipeline, grands comptes. Le revenu est la preuve, pas la promesse.</p>
+          <hr class="divider">
+          <div class="h3" style="margin-bottom:6px">Implies</div>
+          <div class="bullet"><span>→</span><span>Go-to-Market execution</span></div>
+          <div class="bullet"><span>→</span><span>Revenue growth & scaling</span></div>
+          <div class="bullet"><span>→</span><span>Sales Operations & CRM</span></div>
+          <div class="bullet"><span>→</span><span>Fractional CSO / VP Sales</span></div>
+        </div>
+      </div>
+      <div class="fc">
+        <div style="border-top:3px solid var(--gold);padding-top:12px">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--gold);letter-spacing:.08em;margin-bottom:8px">IMPACT</div>
+          <p class="body" style="margin-bottom:10px">Measurable results, operational transformation, lasting structures. Not consulting — delivery. I leave behind a system, not a report.</p>
+          <p class="fr" style="margin-bottom:12px">Résultats mesurables, transformation opérationnelle, structures durables. De l'exécution, pas du conseil.</p>
+          <hr class="divider">
+          <div class="h3" style="margin-bottom:6px">Implies</div>
+          <div class="bullet"><span>→</span><span>Team building & recruitment</span></div>
+          <div class="bullet"><span>→</span><span>B2G & institutional lobbying</span></div>
+          <div class="bullet"><span>→</span><span>Process & playbook design</span></div>
+          <div class="bullet"><span>→</span><span>Fundraising support (Series A/B)</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-o" style="text-align:center;padding:10px">
+      <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;color:var(--muted2);margin-bottom:4px">PROJECT MANAGEMENT IN</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;letter-spacing:.08em;color:var(--white)">AUTOMOTIVE & MOBILITY · LOGISTICS · AEROSPACE · SaaS · HOSPITALITY · FINTECH · CONSUMER GOODS</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 04 EXPERTISE & SECTORS ═══ -->
+<div class="slide" data-label="EXPERTISE">
+  <div class="slide-bg">
+    <svg width="100%" height="100%" viewBox="0 0 1200 680" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <polygon points="1100,60 1075,106 1052,148 1027,192 1000,240 970,292 936,350 898,414 854,484 804,560 746,642 680,680 1200,680 1200,60 1100,60" fill="#C8973A" opacity=".02"/>
+    </svg>
+  </div>
+  <div class="slide-inner">
+    <span class="eyebrow">04 — Sectors & Expertise</span>
+    <span class="eyebrow-sub">Domaines d'intervention · Expertise sectorielle</span>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px">
+      <div style="border:1px solid rgba(200,151,58,.3);background:var(--gdim);padding:14px 12px">
+        <div style="font-size:22px;margin-bottom:6px">🛵</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--white);margin-bottom:4px">Automotive & Mobility</div>
+        <div style="font-size:10px;color:var(--muted);line-height:1.7">MaaS · IoT · Fleet · Smart City · Scooters · PPP · Shared Mobility · B2G</div>
+      </div>
+      <div style="border:1px solid var(--border);background:var(--surface2);padding:14px 12px">
+        <div style="font-size:22px;margin-bottom:6px">📦</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--white);margin-bottom:4px">Logistics</div>
+        <div style="font-size:10px;color:var(--muted);line-height:1.7">SaaS · Road Transport · Supply Chain · Country Launch · Cold Chain</div>
+      </div>
+      <div style="border:1px solid var(--border);background:var(--surface2);padding:14px 12px">
+        <div style="font-size:22px;margin-bottom:6px">✈️</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--white);margin-bottom:4px">Aerospace</div>
+        <div style="font-size:10px;color:var(--muted);line-height:1.7">MRO · EMEA GTM · KAM Dassault · Revenue Generation</div>
+      </div>
+      <div style="border:1px solid var(--border);background:var(--surface2);padding:14px 12px">
+        <div style="font-size:22px;margin-bottom:6px">💻</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--white);margin-bottom:4px">SaaS / Tech</div>
+        <div style="font-size:10px;color:var(--muted);line-height:1.7">Sustainability · BASF Group · Sales Ops · OKRs · ICP · Revenue Modeling</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px">
+      <div style="border:1px solid var(--border);background:var(--surface2);padding:14px 12px">
+        <div style="font-size:22px;margin-bottom:6px">🛍️</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--white);margin-bottom:4px">Consumer Goods</div>
+        <div style="font-size:10px;color:var(--muted);line-height:1.7">EMEA · APAC · Inside Sales · CS Ops · CRM · BI</div>
+      </div>
+      <div style="border:1px solid var(--border);background:var(--surface2);padding:14px 12px">
+        <div style="font-size:22px;margin-bottom:6px">🍺</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--white);margin-bottom:4px">Hospitality</div>
+        <div style="font-size:10px;color:var(--muted);line-height:1.7">Fractional COO · Restaurant Chain · Digital Offer · Cold Chain Logistics · Hamburg</div>
+      </div>
+      <div style="border:1px solid var(--border);background:var(--surface2);padding:14px 12px">
+        <div style="font-size:22px;margin-bottom:6px">🏦</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--white);margin-bottom:4px">Finance / Fintech</div>
+        <div style="font-size:10px;color:var(--muted);line-height:1.7">Corporate Banking · M&A · Trade Finance · Blockchain · KYC · Compliance</div>
+      </div>
+    </div>
+    <div class="g3" style="gap:10px">
+      <div class="kpi"><span class="kpi-val">21M€</span><span class="kpi-lbl">Revenue Delivered</span></div>
+      <div class="kpi"><span class="kpi-val">20+</span><span class="kpi-lbl">Countries</span></div>
+      <div class="kpi"><span class="kpi-val">750€</span><span class="kpi-lbl">Day Rate</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 05 TIMELINE ═══ -->
+<div class="slide" data-label="TIMELINE">
+  <div class="slide-bg">
+    <svg width="100%" height="100%" viewBox="0 0 1200 680" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <text x="1180" y="680" font-family="serif" font-size="300" fill="#C8973A" opacity=".018" text-anchor="end">K2</text>
+    </svg>
+  </div>
+  <div class="slide-inner">
+    <span class="eyebrow">05 — Career Timeline</span>
+    <span class="eyebrow-sub">Parcours complet · <span style="color:var(--gold)">●</span> via K2 Strategy &nbsp;·&nbsp; <span style="color:var(--muted2)">●</span> Full-time</span>
+    <div class="g2" style="gap:16px">
+      <div>
+        <div class="tl-item"><div class="tl-year">2026</div><div class="tl-line"><div class="tl-dot"></div></div><div class="tl-content"><div class="tl-co">Ergobaby Europe · Inside Sales Lead</div><div class="tl-role">via K2 Strategy · fév–mai 2026 · 3 mois</div><div class="tl-desc">CS team EMEA/APAC · Hubspot CRM · Cycle 7→3 days</div></div></div>
+        <div class="tl-item"><div class="tl-year">2026</div><div class="tl-line"><div class="tl-dot"></div></div><div class="tl-content"><div class="tl-co">Poppy Mobility · GTM & Procurement</div><div class="tl-role">via K2 Strategy · jan 2026 · 2 semaines</div><div class="tl-desc">GTM strategy + procurement framework — Antwerp</div></div></div>
+        <div class="tl-item"><div class="tl-year">2025</div><div class="tl-line"><div class="tl-dot"></div></div><div class="tl-content"><div class="tl-co">Microfleet · VP Sales EMEA</div><div class="tl-role">via K2 Strategy · juil 2025–jan 2026</div><div class="tl-desc">EMEA GTM from scratch · 100 SQL · M&A Lyon</div></div></div>
+        <div class="tl-item"><div class="tl-year">2025</div><div class="tl-line"><div class="tl-dot"></div></div><div class="tl-content"><div class="tl-co">The Baby Goat · Fractional COO</div><div class="tl-role">via K2 Strategy · mars–juil 2025 · 4 mois</div><div class="tl-desc">Launch 3rd venue · Ops playbook · Hamburg</div></div></div>
+        <div class="tl-item"><div class="tl-year">2025</div><div class="tl-line"><div class="tl-dot"></div></div><div class="tl-content"><div class="tl-co">Opteinics / BASF · Sales Ops Architect</div><div class="tl-role">via K2 Strategy · jan 2025 · 7 jours</div><div class="tl-desc">ICP · OKRs · MRR/ARR models · Recruitment framework</div></div></div>
+        <div class="tl-item"><div class="tl-year">2024</div><div class="tl-line"><div class="tl-dot"></div></div><div class="tl-content"><div class="tl-co">VSE Aviation · Commercial Director EMEA</div><div class="tl-role">via K2 Strategy · jan–sept 2024 · 8 mois</div><div class="tl-desc">21M€ · 105% target · KAM Dassault · from scratch</div></div></div>
+        <div class="tl-item"><div class="tl-year">2024</div><div class="tl-line"><div class="tl-dot"></div></div><div class="tl-content"><div class="tl-co">Monaco / Pole Position · Project Director</div><div class="tl-role">via K2 Strategy · jan 2024–mai 2026</div><div class="tl-desc">PPP shared mobility · Commission d'État · ATOM/NIU</div></div></div>
+      </div>
+      <div>
+        <div class="tl-item"><div class="tl-year">2023</div><div class="tl-line"><div class="tl-dot"></div></div><div class="tl-content"><div class="tl-co">HelloScoot · Strategic Advisor</div><div class="tl-role">via K2 Strategy · juil 2023–juin 2025</div><div class="tl-desc">3 missions · Tahiti · 20K€ savings · SaaS contract</div></div></div>
+        <div class="tl-item"><div class="tl-year">2021</div><div class="tl-line"><div class="tl-dot-w"></div></div><div class="tl-content"><div class="tl-co">Wunder Mobility / goUrban</div><div class="tl-role">Full-time · oct 2021–déc 2023 · 2 ans</div><div class="tl-desc">Head of Sales & Partnerships · 8 closings · Series A · Serbia</div></div></div>
+        <div class="tl-item"><div class="tl-year">2020</div><div class="tl-line"><div class="tl-dot-w"></div></div><div class="tl-content"><div class="tl-co">Vulog · Regional Director</div><div class="tl-role">Full-time · mars 2020–oct 2021 · 17 pays</div><div class="tl-desc">DACH · Nordics · CEE · Middle East · +107% pipeline</div></div></div>
+        <div class="tl-item"><div class="tl-year">2019</div><div class="tl-line"><div class="tl-dot-w"></div></div><div class="tl-content"><div class="tl-co">Wunder Mobility · Senior BDM</div><div class="tl-role">Full-time · oct 2019–mars 2020 · Hamburg</div><div class="tl-desc">120% Q1 · 110K€ avg deal · M&A tech acquisition</div></div></div>
+        <div class="tl-item"><div class="tl-year">2018</div><div class="tl-line"><div class="tl-dot-w"></div></div><div class="tl-content"><div class="tl-co">Ontruck · Country Launcher France</div><div class="tl-role">Full-time · jan 2018–oct 2019</div><div class="tl-desc">210% peak · 4/4 qtrs above · Series B contribution</div></div></div>
+        <div class="tl-item"><div class="tl-year">2017</div><div class="tl-line"><div class="tl-dot-w"></div></div><div class="tl-content"><div class="tl-co">Fintech Co-founder</div><div class="tl-role">sept 2017–sept 2018 · Crypto/FIAT · KYC</div><div class="tl-desc">Blockchain · Lightning network · Compliance</div></div></div>
+        <div class="tl-item"><div class="tl-year">2013</div><div class="tl-line"><div class="tl-dot-w"></div></div><div class="tl-content"><div class="tl-co">HSBC CMB · Relationship Manager</div><div class="tl-role">Full-time · mai 2013–sept 2017 · 4 ans</div><div class="tl-desc">60 corporate accounts · M&A · Trade Finance · Marseille/Lyon</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 06 MOBILITY Part 1 — Full-time ═══ -->
+<div class="slide" data-label="MOBILITY · FT">
+  <div class="slide-bg">
+    <svg width="100%" height="100%" viewBox="0 0 1200 680" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <text x="1180" y="680" font-family="serif" font-size="220" fill="#C8973A" opacity=".02" text-anchor="end">MOB</text>
+    </svg>
+  </div>
+  <div class="slide-inner">
+    <span class="eyebrow">🛵 Automotive & Mobility — 1/3</span>
+    <span class="eyebrow-sub">Full-time positions · Postes salariés</span>
+    <div class="g2" style="gap:12px">
+      <!-- Wunder/goUrban -->
+      <div class="exp-card">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap">
+          <div>
+            <span class="via via-ft">FULL-TIME</span>
+            <div class="exp-title">Wunder Mobility (ex goUrban)</div>
+            <div class="exp-role">Head of Sales & Partnerships</div>
+            <div class="exp-date">Oct 2021 – Dec 2023 · 2 ans · Vienna / Serbia</div>
+          </div>
+        </div>
+        <div class="mc-kpi">
+          <div class="mc-k"><span class="mc-kv">8</span><span class="mc-kl">Closings &lt;1yr</span></div>
+          <div class="mc-k"><span class="mc-kv">1M€</span><span class="mc-kl">Anchor Deal</span></div>
+          <div class="mc-k"><span class="mc-kv">3</span><span class="mc-kl">Teams Built</span></div>
+          <div class="mc-k"><span class="mc-kv">Series A</span><span class="mc-kl">Support</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px">
+          <div class="bullet"><span>→</span><span>Built Sales, Partnerships & Revenue orgs from scratch — 3 divisions, 8 team members across Sales, Ops, Pre-sales</span></div>
+          <div class="bullet"><span>→</span><span>8 strategic closings in under 1 year including a 1M€ anchor deal</span></div>
+          <div class="bullet"><span>→</span><span>Series A fundraising — direct involvement with institutional investors</span></div>
+          <div class="bullet"><span>→</span><span>Partner onboarding framework for OEMs and tech integrations — EMEA ecosystem</span></div>
+          <div class="bullet"><span>→</span><span>Full CRM infrastructure migration and commercial process design</span></div>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px"><span class="tag to">Shared Mobility SaaS</span><span class="tag to">Series A</span><span class="tag tw">Vienna · Serbia</span></div>
+      </div>
+      <!-- Vulog -->
+      <div class="exp-card">
+        <div>
+          <span class="via via-ft">FULL-TIME</span>
+          <div class="exp-title">Vulog</div>
+          <div class="exp-role">Senior Growth & KAM — CEE & Middle East</div>
+          <div class="exp-date">Mar 2020 – Oct 2021 · 1 an 7 mois · Nice, France</div>
+        </div>
+        <div class="mc-kpi">
+          <div class="mc-k"><span class="mc-kv">17</span><span class="mc-kl">Countries</span></div>
+          <div class="mc-k"><span class="mc-kv">+107%</span><span class="mc-kl">Portfolio Growth</span></div>
+          <div class="mc-k"><span class="mc-kv">8</span><span class="mc-kl">Key Accounts</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px">
+          <div class="bullet"><span>→</span><span>17-country EMEA partner ecosystem — DACH, Nordics, CEE, Middle East</span></div>
+          <div class="bullet"><span>→</span><span>P&L management across 17 countries · 8 strategic accounts</span></div>
+          <div class="bullet"><span>→</span><span>+107% portfolio growth (focus Norway, Sweden, Austria)</span></div>
+          <div class="bullet"><span>→</span><span>B2G expertise — ISO 14001, LOM sustainable mobility legislation</span></div>
+          <div class="bullet"><span>→</span><span>International speaker — conferences in Nice and Berlin</span></div>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px"><span class="tag to">Shared Mobility SaaS</span><span class="tag to">B2G</span><span class="tag tw">17 Countries EMEA</span></div>
+      </div>
+    </div>
+    <div style="margin-top:10px" class="card">
+      <div class="h3" style="margin-bottom:6px">Also — Wunder Mobility Senior BDM <span style="font-weight:400;color:var(--muted2)">Oct 2019 – Mar 2020 · 5 mois · Hamburg</span></div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div class="bullet"><span>→</span><span>120% Q1 target · 2 major closings · €110K avg deal</span></div>
+        <div class="bullet"><span>→</span><span>Full sales cycle: IoT/OEM, Cloud, Open API</span></div>
+        <div class="bullet"><span>→</span><span>M&A — acquisition of a tech company</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 07 MOBILITY Part 2 — K2 (Monaco + Microfleet) ═══ -->
+<div class="slide" data-label="MOBILITY · K2 (1)">
+  <div class="slide-bg">
+    <svg width="100%" height="100%" viewBox="0 0 1200 680" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <ellipse cx="1000" cy="200" rx="200" ry="100" fill="none" stroke="#C8973A" stroke-width=".5" opacity=".05"/>
+      <ellipse cx="1000" cy="200" rx="130" ry="65" fill="none" stroke="#C8973A" stroke-width=".5" opacity=".04"/>
+      <ellipse cx="1000" cy="200" rx="60" ry="30" fill="#C8973A" opacity=".03"/>
+    </svg>
+  </div>
+  <div class="slide-inner">
+    <span class="eyebrow">🛵 Automotive & Mobility — 2/3</span>
+    <span class="eyebrow-sub">via K2 Strategy · Missions conseil</span>
+    <div class="g2" style="gap:12px">
+      <!-- Monaco -->
+      <div class="exp-card-o">
+        <div>
+          <span class="via via-k2">VIA K2 STRATEGY</span>
+          <div class="exp-title">Pole Position Monaco Moto</div>
+          <div class="exp-role">Project Director — Shared Mobility Launch · B2G</div>
+          <div class="exp-date">Jan 2024 – Mai 2026 · 2 ans 4 mois · Principauté de Monaco</div>
+        </div>
+        <div class="mc-kpi">
+          <div class="mc-k"><span class="mc-kv" style="font-size:16px">PPP</span><span class="mc-kl">State Validated</span></div>
+          <div class="mc-k"><span class="mc-kv" style="font-size:16px">B2G</span><span class="mc-kl">Commission État</span></div>
+          <div class="mc-k"><span class="mc-kv" style="font-size:16px">EXCL</span><span class="mc-kl">Concession</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px">
+          <div class="bullet"><span>→</span><span>Full project lifecycle: supplier selection → contract negotiation → institutional approval → service launch</span></div>
+          <div class="bullet"><span>→</span><span>Negotiated ATOM Mobility (software) and NIU Vehicles (hardware) contracts under optimal conditions</span></div>
+          <div class="bullet"><span>→</span><span>B2G navigation: Commission d'État validation — zero-tolerance institutional environment</span></div>
+          <div class="bullet"><span>→</span><span>Multi-stakeholder coordination: public authorities + private operators · IoT partner: TrackAP</span></div>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px"><span class="tag to">Smart City</span><span class="tag to">PPP</span><span class="tag to">B2G</span><span class="tag tg">Active 2026</span></div>
+      </div>
+      <!-- Microfleet -->
+      <div class="exp-card-o">
+        <div>
+          <span class="via via-k2">VIA K2 STRATEGY</span>
+          <div class="exp-title">Microfleet · Australia → Europe</div>
+          <div class="exp-role">VP Sales EMEA — SaaS Mobility Scale-up</div>
+          <div class="exp-date">Juil 2025 – Jan 2026 · 6 mois · Paris</div>
+        </div>
+        <div class="mc-kpi">
+          <div class="mc-k"><span class="mc-kv">100</span><span class="mc-kl">SQL Generated</span></div>
+          <div class="mc-k"><span class="mc-kv">12</span><span class="mc-kl">Active Deals</span></div>
+          <div class="mc-k"><span class="mc-kv">3</span><span class="mc-kl">Partnerships</span></div>
+          <div class="mc-k"><span class="mc-kv">M&A</span><span class="mc-kl">Lyon MaaS</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px">
+          <div class="bullet"><span>→</span><span>EMEA GTM from scratch: ICP, segmentation, pricing architecture, partner ecosystem</span></div>
+          <div class="bullet"><span>→</span><span>100 SQL from 500 MQL generated via AI tools · 12 active implementation discussions</span></div>
+          <div class="bullet"><span>→</span><span>3 reselling partnerships signed · Strategic representation during acquisition transition</span></div>
+          <div class="bullet"><span>→</span><span>Landmark outcome: M&A acquisition of Lyon-based MaaS company — validating full GTM strategy</span></div>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px"><span class="tag to">SaaS MaaS</span><span class="tag to">EMEA GTM</span><span class="tag to">M&A</span><span class="tag tw">Australia</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 08 MOBILITY Part 3 — K2 (HelloScoot + Poppy) ═══ -->
+<div class="slide" data-label="MOBILITY · K2 (2)">
+  <div class="slide-bg">
+    <svg width="100%" height="100%" viewBox="0 0 1200 680" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <polygon points="1200,680 1200,420 1120,460 1060,410 1000,460 940,410 880,468 820,420 760,680" fill="#C8973A" opacity=".018"/>
+    </svg>
+  </div>
+  <div class="slide-inner">
+    <span class="eyebrow">🛵 Automotive & Mobility — 3/3</span>
+    <span class="eyebrow-sub">via K2 Strategy · DOM-TOM & Belgium</span>
+    <div class="g2" style="gap:12px">
+      <!-- HelloScoot -->
+      <div class="exp-card-o">
+        <div>
+          <span class="via via-k2">VIA K2 STRATEGY · 3 MISSIONS</span>
+          <div class="exp-title">HelloScoot · Tahiti / Polynésie</div>
+          <div class="exp-role">Strategic Legal Advisor & Commercial Lead</div>
+          <div class="exp-date">Juil 2023 – Juin 2025 · 1 an 11 mois · Papeete, DOM-TOM</div>
+        </div>
+        <div class="mc-kpi">
+          <div class="mc-k"><span class="mc-kv">20K€</span><span class="mc-kl">Annual Savings</span></div>
+          <div class="mc-k"><span class="mc-kv">3</span><span class="mc-kl">Missions</span></div>
+          <div class="mc-k"><span class="mc-kv">SaaS</span><span class="mc-kl">New Contract</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px">
+          <div class="bullet"><span>→</span><span>Mission 1 — Local supply chain negotiation · market entry conditions Tahiti island markets</span></div>
+          <div class="bullet"><span>→</span><span>Mission 2 — Legal & commercial advisory · operator contracts · local regulatory frameworks</span></div>
+          <div class="bullet"><span>→</span><span>Mission 3 — Identified & secured new SaaS provider (app + back office) · superior unit economics</span></div>
+          <div class="bullet"><span>→</span><span>€20,000 annual savings secured · 3 clean deliveries · trusted repeat mandate</span></div>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px"><span class="tag to">DOM-TOM</span><span class="tag to">Island Markets</span><span class="tag to">Supply Chain</span><span class="tag tw">100% Remote</span></div>
+        <div class="card" style="margin-top:4px;padding:8px 10px">
+          <p style="font-size:11px;color:var(--muted);font-style:italic">"You don't bring someone back twice if the first delivery wasn't exceptional." — Arthur Ceccaldi, CEO HelloScoot</p>
+        </div>
+      </div>
+      <!-- Poppy -->
+      <div class="exp-card-o">
+        <div>
+          <span class="via via-k2">VIA K2 STRATEGY · INTENSIVE</span>
+          <div class="exp-title">Poppy Mobility · Belgium</div>
+          <div class="exp-role">Strategic Advisor — GTM & Procurement</div>
+          <div class="exp-date">Jan 2026 · 2 semaines · Antwerp</div>
+        </div>
+        <div class="mc-kpi">
+          <div class="mc-k"><span class="mc-kv">2 wk</span><span class="mc-kl">Duration</span></div>
+          <div class="mc-k"><span class="mc-kv">GTM</span><span class="mc-kl">Full Delivery</span></div>
+          <div class="mc-k"><span class="mc-kv">Proc.</span><span class="mc-kl">Optimized</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px">
+          <div class="bullet"><span>→</span><span>Complete GTM strategy: target segments, positioning, key messaging, channel & acquisition framework</span></div>
+          <div class="bullet"><span>→</span><span>Procurement audit: supplier rationalization, vehicle sourcing, software stack, operational partners</span></div>
+          <div class="bullet"><span>→</span><span>Full strategic deliverable — pricing, positioning, supplier framework — ready for immediate execution</span></div>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px"><span class="tag to">Shared Mobility</span><span class="tag to">GTM</span><span class="tag to">Procurement</span><span class="tag tw">Belgium</span></div>
+        <div class="card-o" style="margin-top:8px">
+          <div class="h3" style="margin-bottom:6px">Mobility Expertise Summary</div>
+          <p class="body-sm">10+ years at the heart of shared mobility — SaaS/MaaS software, IoT/OEM hardware, B2B enterprise to B2G institutional. Deep operator economics, regulatory frameworks (LOM, ISO 14001), ATOM/NIU/TrackAP tech stacks.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 09 LOGISTICS ═══ -->
+<div class="slide" data-label="LOGISTICS">
+  <div class="slide-bg">
+    <svg width="100%" height="100%" viewBox="0 0 1200 680" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <text x="1180" y="680" font-family="serif" font-size="240" fill="#C8973A" opacity=".02" text-anchor="end">LOG</text>
+    </svg>
+  </div>
+  <div class="slide-inner">
+    <span class="eyebrow">📦 Logistics — Country Launch · Series B</span>
+    <span class="eyebrow-sub">Full-time · Postes salariés</span>
+    <div class="g2" style="gap:14px">
+      <div class="fc">
+        <div>
+          <span class="via via-ft">FULL-TIME</span>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:500;color:var(--white);margin-bottom:2px">Ontruck</div>
+          <div style="font-size:13px;color:var(--gold);font-weight:600;margin-bottom:2px">Country Launcher — France</div>
+          <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--muted2);margin-bottom:10px">Jan 2018 – Oct 2019 · 1 an 9 mois · Paris</div>
+        </div>
+        <div class="g3" style="gap:8px">
+          <div class="kpi"><span class="kpi-val">210%</span><span class="kpi-lbl">Peak Quarter</span></div>
+          <div class="kpi"><span class="kpi-val">4/4</span><span class="kpi-lbl">Qtrs Above</span></div>
+          <div class="kpi"><span class="kpi-val">Series B</span><span class="kpi-lbl">Contribution</span></div>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap"><span class="tag to">Logistics SaaS</span><span class="tag to">Country Launch</span><span class="tag to">Series B</span><span class="tag tw">France</span></div>
+        <div class="card-o">
+          <div class="h3" style="margin-bottom:6px">Guillaume Corp — Recommendation</div>
+          <p style="font-size:11px;color:var(--white);font-style:italic;line-height:1.65">"Kevin is a rare talent who combines a 360 Sales approach with a highly analytical mindset. His ability to transition our sales model from high-volume transactional to complex Enterprise closing was a game-changer. This shift was instrumental in supporting Ontruck's successful Series B funding round."</p>
+          <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--gold);margin-top:6px">Guillaume Corp · Chief of Staff · Ontruck</div>
+        </div>
+      </div>
+      <div class="fc">
+        <div class="card">
+          <div class="h3" style="margin-bottom:8px">Mission Scope</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div class="bullet"><span>→</span><span>France market launch from scratch — road transport SaaS digitalization platform</span></div>
+            <div class="bullet"><span>→</span><span>4 consecutive quarters above target — peak performance at 210% of BP</span></div>
+            <div class="bullet"><span>→</span><span>€1M+ ARR generated · 5% gross margin improvement on French operations</span></div>
+            <div class="bullet"><span>→</span><span>Series B fundraising — direct contribution via French growth KPI validation</span></div>
+            <div class="bullet"><span>→</span><span>Management and coaching of 4-person SDR team from scratch</span></div>
+            <div class="bullet"><span>→</span><span>Structured supplier audit processes with performance KPIs (quality, reliability, responsiveness)</span></div>
+            <div class="bullet"><span>→</span><span>Cross-functional collaboration Ops/Product for pricing adjustment and model scaling</span></div>
+          </div>
+        </div>
+        <div class="bar-row"><div class="bar-label"><span>Best Quarter Performance</span><span class="bar-val">210%</span></div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div></div>
+        <div class="bar-row"><div class="bar-label"><span>Quarters Above Target</span><span class="bar-val">4/4</span></div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div></div>
+        <div class="bar-row"><div class="bar-label"><span>ARR Generated</span><span class="bar-val">1M€+</span></div><div class="bar-track"><div class="bar-fill" style="width:85%"></div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 10 AEROSPACE ═══ -->
+<div class="slide" data-label="AEROSPACE">
+  <div class="slide-bg">
+    <svg width="100%" height="100%" viewBox="0 0 1200 680" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <polygon points="1050,50 1026,94 1004,134 980,176 954,222 925,272 892,328 854,390 811,458 761,532 704,612 638,680 1200,680 1180,650 1146,592 1112,534 1080,478 1052,422 1028,366 1008,310 992,254 980,198 972,142 1050,50" fill="#C8973A" opacity=".022"/>
+    </svg>
+  </div>
+  <div class="slide-inner">
+    <span class="eyebrow">✈️ Aerospace — EMEA · 21M€ · 105%</span>
+    <span class="eyebrow-sub">via K2 Strategy · Mission conseil · Fractional Commercial Director</span>
+    <div class="g2" style="gap:14px">
+      <div class="fc">
+        <div>
+          <span class="via via-k2">VIA K2 STRATEGY</span>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:500;color:var(--white);margin-bottom:2px">VSE Aviation</div>
+          <div style="font-size:13px;color:var(--gold);font-weight:600;margin-bottom:2px">Sales Supervisor & GTM Lead — EMEA</div>
+          <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--muted2);margin-bottom:10px">Jan 2024 – Sept 2024 · 8 mois · Hamburg</div>
+        </div>
+        <div class="g3" style="gap:8px">
+          <div class="kpi"><span class="kpi-val">21M€</span><span class="kpi-lbl">CA Generated</span></div>
+          <div class="kpi"><span class="kpi-val">105%</span><span class="kpi-lbl">of Target</span></div>
+          <div class="kpi"><span class="kpi-val">8 mo</span><span class="kpi-lbl">Duration</span></div>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap"><span class="tag to">Aerospace MRO</span><span class="tag to">EMEA GTM</span><span class="tag to">KAM Dassault</span><span class="tag tw">Fractional CSO</span></div>
+        <div class="card-o">
+          <div class="h3" style="margin-bottom:6px">Context</div>
+          <p class="body-sm">VSE Aviation required a fractional Commercial Director to drive EMEA expansion from zero — no existing sales framework, no inherited pipeline. Aggressive revenue target, 8-month mandate. One of the strongest individual commercial performances across the K2 portfolio.</p>
+          <p class="fr" style="margin-top:5px">Direction commerciale fractionnelle EMEA from scratch. 21M€ en 8 mois — 105% objectif sans pipeline hérité.</p>
+        </div>
+      </div>
+      <div class="fc">
+        <div class="card">
+          <div class="h3" style="margin-bottom:8px">Mission Scope</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div class="bullet"><span>→</span><span>Sales organization design for full EMEA perimeter from scratch</span></div>
+            <div class="bullet"><span>→</span><span>ICP definition, sales process architecture, CRM structuring and pipeline design</span></div>
+            <div class="bullet"><span>→</span><span>Full commercial offer structuring and market positioning for MRO services</span></div>
+            <div class="bullet"><span>→</span><span>KAM — Groupe Dassault: flagship strategic account management across EMEA</span></div>
+            <div class="bullet"><span>→</span><span>Strategic partnerships activation and EMEA ecosystem development</span></div>
+            <div class="bullet"><span>→</span><span>Revenue forecasting and full P&L accountability</span></div>
+          </div>
+        </div>
+        <div class="bar-row"><div class="bar-label"><span>Revenue Achievement</span><span class="bar-val">105%</span></div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div></div>
+        <div class="bar-row"><div class="bar-label"><span>CA Generated</span><span class="bar-val">21M€</span></div><div class="bar-track"><div class="bar-fill" style="width:95%"></div></div></div>
+        <div class="bar-row"><div class="bar-label"><span>Time to Revenue</span><span class="bar-val">From 0 · 8 months</span></div><div class="bar-track"><div class="bar-fill" style="width:80%"></div></div></div>
+        <div class="card" style="margin-top:4px">
+          <div class="h3" style="margin-bottom:5px">Why K2 Strategy</div>
+          <p class="body-sm">No inertia of a full-time hire. No onboarding period. Immediate senior commercial leadership deployed — ICP to pipeline to closing in under 90 days.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 11 SaaS/TECH + FINANCE ═══ -->
+<div class="slide" data-label="SaaS · FINANCE">
+  <div class="slide-bg">
+    <svg width="100%" height="100%" viewBox="0 0 1200 680" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <ellipse cx="200" cy="340" rx="160" ry="80" fill="none" stroke="#C8973A" stroke-width=".5" opacity=".05"/>
+      <ellipse cx="200" cy="340" rx="100" ry="50" fill="none" stroke="#C8973A" stroke-width=".5" opacity=".04"/>
+    </svg>
+  </div>
+  <div class="slide-inner">
+    <span class="eyebrow">💻 SaaS / Tech &nbsp;&nbsp;·&nbsp;&nbsp; 🏦 Finance</span>
+    <span class="eyebrow-sub">Opteinics/BASF via K2 Strategy · HSBC Full-time</span>
+    <div class="g2" style="gap:12px">
+      <!-- Opteinics -->
+      <div class="exp-card-o">
+        <div>
+          <span class="via via-k2">VIA K2 STRATEGY · 7-DAY INTENSIVE</span>
+          <div class="exp-title">Opteinics · BASF Group</div>
+          <div class="exp-role">Sales Ops & GTM Architect — Sustainability SaaS</div>
+          <div class="exp-date">Jan 2025 · 7 jours · Frankfurt</div>
+        </div>
+        <div class="mc-kpi">
+          <div class="mc-k"><span class="mc-kv">7d</span><span class="mc-kl">Duration</span></div>
+          <div class="mc-k"><span class="mc-kv">ICP</span><span class="mc-kl">Full Build</span></div>
+          <div class="mc-k"><span class="mc-kv">OKRs</span><span class="mc-kl">Deployed</span></div>
+          <div class="mc-k"><span class="mc-kv">MRR</span><span class="mc-kl">Models Built</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px">
+          <div class="bullet"><span>→</span><span>Built full ICP and persona framework from scratch in 7 days</span></div>
+          <div class="bullet"><span>→</span><span>Designed MRR, ARR, cohort analysis and pipeline velocity revenue models</span></div>
+          <div class="bullet"><span>→</span><span>Structured OKRs aligned to growth stage and investor expectations</span></div>
+          <div class="bullet"><span>→</span><span>Built recruitment framework: profiles, assessment criteria, onboarding playbook, ramp-up timeline</span></div>
+          <div class="bullet"><span>→</span><span>Complete commercial infrastructure delivered — ready for immediate deployment</span></div>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px"><span class="tag to">Sustainability SaaS</span><span class="tag to">Sales Ops</span><span class="tag tw">BASF Group</span></div>
+      </div>
+      <!-- HSBC -->
+      <div class="exp-card">
+        <div>
+          <span class="via via-ft">FULL-TIME · 4 ANS</span>
+          <div class="exp-title">HSBC CMB</div>
+          <div class="exp-role">Junior → Senior Relationship Manager (Exec. Graduate Program)</div>
+          <div class="exp-date">Mai 2013 – Sept 2017 · Marseille / Lyon</div>
+        </div>
+        <div class="mc-kpi">
+          <div class="mc-k"><span class="mc-kv">60</span><span class="mc-kl">Major Accounts</span></div>
+          <div class="mc-k"><span class="mc-kv">1M€</span><span class="mc-kl">Portfolio Rev.</span></div>
+          <div class="mc-k"><span class="mc-kv">M&A</span><span class="mc-kl">Advisory</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px">
+          <div class="bullet"><span>→</span><span>Portfolio: €1M revenue · 60 major accounts (€1M–€80M turnover)</span></div>
+          <div class="bullet"><span>→</span><span>Business development: prospecting, short/long-term credit, LBO structuring</span></div>
+          <div class="bullet"><span>→</span><span>Commercial outperformance: leasing, insurance, prospecting, factoring</span></div>
+          <div class="bullet"><span>→</span><span>M&A advisory, trade finance structuring, financial analysis, compliance</span></div>
+          <div class="bullet"><span>→</span><span>The foundation: C-level relationship management + deal structuring that underpins every K2 engagement today</span></div>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px"><span class="tag to">Corporate Banking</span><span class="tag to">M&A</span><span class="tag to">Trade Finance</span><span class="tag tw">Marseille · Lyon</span></div>
+        <div class="card" style="margin-top:4px;padding:8px 10px">
+          <p class="body-sm">Understanding P&L, valuation, deal flow and institutional decision-making gives K2 Strategy a rare edge — speaking the language of both operators and investors in every engagement.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 12 CONSUMER GOODS + HOSPITALITY ═══ -->
+<div class="slide" data-label="CONSUMER · HOSPITALITY">
+  <div class="slide-bg">
+    <svg width="100%" height="100%" viewBox="0 0 1200 680" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <polygon points="0,680 0,450 60,390 120,440 180,380 240,430 300,370 360,420 420,360 480,680" fill="#C8973A" opacity=".018"/>
+    </svg>
+  </div>
+  <div class="slide-inner">
+    <span class="eyebrow">🛍️ Consumer Goods &nbsp;·&nbsp; 🍺 Hospitality</span>
+    <span class="eyebrow-sub">via K2 Strategy · Ergobaby · The Baby Goat · Délices de France</span>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+      <!-- Ergobaby -->
+      <div class="exp-card-o">
+        <div>
+          <span class="via via-k2">VIA K2 STRATEGY</span>
+          <div class="exp-title" style="font-size:14px">Ergobaby Europe</div>
+          <div class="exp-role">Inside Sales Lead · CS Team</div>
+          <div class="exp-date">Fév–Mai 2026 · 3 mois · Hamburg</div>
+        </div>
+        <div class="mc-kpi">
+          <div class="mc-k"><span class="mc-kv">5</span><span class="mc-kl">Team Mgd</span></div>
+          <div class="mc-k"><span class="mc-kv">7→3</span><span class="mc-kl">Cycle Days</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px">
+          <div class="bullet"><span>→</span><span>CS team management EMEA + APAC (5 people)</span></div>
+          <div class="bullet"><span>→</span><span>Hubspot CRM full implementation + Data BI</span></div>
+          <div class="bullet"><span>→</span><span>Sales cycle 7 → 3 days</span></div>
+          <div class="bullet"><span>→</span><span>SMB + KAM + distributor support (Zendesk, Claimlane)</span></div>
+        </div>
+        <div style="display:flex;gap:3px;flex-wrap:wrap;margin-top:4px"><span class="tag to">Consumer Goods</span><span class="tag tw">$100M US Group</span></div>
+      </div>
+      <!-- Baby Goat -->
+      <div class="exp-card-o">
+        <div>
+          <span class="via via-k2">VIA K2 STRATEGY</span>
+          <div class="exp-title" style="font-size:14px">The Baby Goat</div>
+          <div class="exp-role">Fractional COO — Hospitality Chain</div>
+          <div class="exp-date">Mars–Juil 2025 · 4 mois · Hamburg</div>
+        </div>
+        <div class="mc-kpi">
+          <div class="mc-k"><span class="mc-kv">3</span><span class="mc-kl">Venues</span></div>
+          <div class="mc-k"><span class="mc-kv">✓</span><span class="mc-kl">Launch</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px">
+          <div class="bullet"><span>→</span><span>Full operational audit across 2 existing venues</span></div>
+          <div class="bullet"><span>→</span><span>Standardized processes: supply chain, stock, staff workflows, QC</div></div>
+          <div class="bullet"><span>→</span><span>Scalable ops playbook for all 3 sites</span></div>
+          <div class="bullet"><span>→</span><span>Successful launch of 3rd venue (shopping centre)</span></div>
+        </div>
+        <div style="display:flex;gap:3px;flex-wrap:wrap;margin-top:4px"><span class="tag to">Hospitality</span><span class="tag tw">Craft Beer Bar</span></div>
+      </div>
+      <!-- Délices de France -->
+      <div class="exp-card-o">
+        <div>
+          <span class="via via-k2">VIA K2 STRATEGY</span>
+          <div class="exp-title" style="font-size:14px">Délices de France</div>
+          <div class="exp-role">Digital Offer & Logistics Optimization</div>
+          <div class="exp-date">2024–2025 · 6 mois · Hamburg / France</div>
+        </div>
+        <div class="mc-kpi">
+          <div class="mc-k"><span class="mc-kv">6 mo</span><span class="mc-kl">Duration</span></div>
+          <div class="mc-k"><span class="mc-kv">B2C</span><span class="mc-kl">+ B2B</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px">
+          <div class="bullet"><span>→</span><span>Creation of digital offer & private sales (French products — Hamburg market)</span></div>
+          <div class="bullet"><span>→</span><span>Cold chain logistics optimization: France → Germany supply chain</span></div>
+          <div class="bullet"><span>→</span><span>Sales strategy and distribution channels for cross-border operations</span></div>
+          <div class="bullet"><span>→</span><span>Process optimization for perishable goods import compliance</span></div>
+        </div>
+        <div style="display:flex;gap:3px;flex-wrap:wrap;margin-top:4px"><span class="tag to">Hospitality</span><span class="tag to">Cold Chain</span><span class="tag tw">France → Germany</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 13 CONTACT ═══ -->
+<div class="slide" data-label="CONTACT" style="padding:0">
+  <div class="slide-bg" style="position:absolute;inset:0">
+    <svg width="100%" height="100%" viewBox="0 0 1200 680" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="cbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#040404"/><stop offset="100%" stop-color="#1C0C04"/></linearGradient>
+        <linearGradient id="cmtn" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#C8C0B0" stop-opacity=".8"/><stop offset="30%" stop-color="#686058" stop-opacity=".75"/><stop offset="65%" stop-color="#201808" stop-opacity=".9"/><stop offset="100%" stop-color="#080808" stop-opacity="1"/></linearGradient>
+        <linearGradient id="csn" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#F0EDE8"/><stop offset="100%" stop-color="#B8B0A8" stop-opacity=".5"/></linearGradient>
+        <filter id="cglow"><feGaussianBlur stdDeviation="6"/></filter>
+      </defs>
+      <rect width="1200" height="680" fill="url(#cbg)"/>
+      <circle cx="80" cy="30" r="1.5" fill="#F4EFE8" opacity=".7"/><circle cx="200" cy="50" r="1" fill="#F4EFE8" opacity=".6"/><circle cx="350" cy="25" r="1.3" fill="#F4EFE8" opacity=".65"/><circle cx="680" cy="30" r="1.4" fill="#F4EFE8" opacity=".6"/><circle cx="1000" cy="28" r="1" fill="#F4EFE8" opacity=".65"/>
+      <polygon points="0,500 80,420 160,465 240,385 320,440 400,370 480,425 560,360 640,415 720,345 800,400 880,335 960,390 1040,325 1120,380 1200,320 1200,680 0,680" fill="#0C0804" opacity=".7"/>
+      <polygon points="600,30 572,68 546,102 519,136 490,172 459,212 424,256 386,304 343,358 294,416 240,480 178,550 112,620 44,680 0,680 1200,680 1156,680 1088,620 1022,550 960,480 906,416 857,358 814,304 778,256 743,212 712,172 683,136 656,102 630,68 600,30" fill="url(#cmtn)"/>
+      <polygon points="600,30 630,68 650,56 640,38 620,24 600,30" fill="url(#csn)" opacity=".9"/>
+      <polygon points="600,30 570,68 548,56 560,38 580,24 600,30" fill="url(#csn)" opacity=".85"/>
+      <polygon points="600,30 568,72 516,140 462,220 405,310 344,410 280,510 210,610 600,30" fill="#C8973A" opacity=".07"/>
+      <ellipse cx="600" cy="680" rx="700" ry="130" fill="#C8973A" opacity=".15" filter="url(#cglow)"/>
+      <rect x="200" y="0" width="800" height="680" fill="#080808" opacity=".78"/>
+    </svg>
+  </div>
+  <div style="position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:0 40px">
+    <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--gold);margin-bottom:12px">LET'S WORK TOGETHER · TRAVAILLONS ENSEMBLE</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(44px,8.5vw,100px);line-height:.88;margin-bottom:16px;font-weight:300">
+      <span style="color:var(--white)">REACH</span><br>
+      <span style="color:var(--gold);font-weight:500">THE SUMMIT</span>
+    </div>
+    <p style="font-size:14px;color:rgba(244,239,232,.62);max-width:480px;margin-bottom:7px;line-height:1.75">Ready to accelerate your commercial strategy, structure your sales operations or launch in new markets?</p>
+    <p class="fr" style="margin-bottom:22px;max-width:440px">Prêt à accélérer votre stratégie commerciale, structurer vos Sales Ops ou vous lancer sur de nouveaux marchés ?</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:540px;width:100%;margin-bottom:16px">
+      <div class="card" style="text-align:left;background:rgba(8,8,8,.9)">
+        <div class="h3" style="margin-bottom:7px">Contact Direct</div>
+        <div style="font-size:13px;color:var(--muted);line-height:2.2">
+          📧 kevin@k2strategy.io<br>
+          📱 +33 7 45 11 59 54<br>
+          🌐 k2strategy.io
+        </div>
+      </div>
+      <div class="card" style="text-align:left;background:rgba(8,8,8,.9)">
+        <div class="h3" style="margin-bottom:7px">Locations & Network</div>
+        <div style="font-size:13px;color:var(--muted);line-height:2.2">
+          📍 Hamburg, Germany<br>
+          📍 Villefranche-sur-Mer, France<br>
+          🔗 linkedin.com/in/kevin-hughes-b2bsalesexpert
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--gold);padding:11px 42px">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:500;color:#080808;letter-spacing:.08em">VISION · REVENUE · IMPACT</div>
+    </div>
+  </div>
+</div>
+
+</div>
+<div class="botnav">
+  <button class="bn-btn" id="btn-prev" onclick="navigate(-1)">← PREV</button>
+  <div class="dots" id="dots"></div>
+  <button class="bn-btn" id="btn-next" onclick="navigate(1)">NEXT →</button>
+</div>
+</div>
+<script>
+const slides=document.querySelectorAll('.slide');
+const labels=Array.from(slides).map(s=>s.dataset.label);
+let current=0;
+const nav=document.getElementById('slidenav');
+const dotsEl=document.getElementById('dots');
+labels.forEach((label,i)=>{
+  const btn=document.createElement('button');btn.className='sn-btn';
+  btn.textContent=String(i+1).padStart(2,'0')+' '+label;btn.onclick=()=>goTo(i);nav.appendChild(btn);
+  const dot=document.createElement('div');dot.className='dot';dot.onclick=()=>goTo(i);dotsEl.appendChild(dot);
+});
+function goTo(i){if(i<0||i>=slides.length)return;slides[current].classList.remove('active');current=i;slides[current].classList.add('active');slides[current].scrollTop=0;update();}
+function navigate(dir){goTo(current+dir);}
+function update(){
+  nav.querySelectorAll('.sn-btn').forEach((b,i)=>b.classList.toggle('active',i===current));
+  dotsEl.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===current));
+  document.getElementById('counter').textContent=(current+1)+' / '+slides.length;
+  document.getElementById('btn-prev').disabled=current===0;
+  document.getElementById('btn-next').disabled=current===slides.length-1;
+  nav.querySelectorAll('.sn-btn')[current]?.scrollIntoView({inline:'nearest',block:'nearest'});
+}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();navigate(1);}if(e.key==='ArrowLeft'){e.preventDefault();navigate(-1);}});
+goTo(0);
+</script>
+</body>
+</html>

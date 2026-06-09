@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J'ai tout vendu — K2 Strategy</title>
+<meta name="description" content="J'ai tout vendu — La méthode EPR. Un livre sur la vente, la résilience et la méthode qui a tout changé. Par Kevin André Hughes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Barlow+Condensed:wght@300;400;500&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --gold: #C8973A;
+  --dark-bg: #080808;
+  --text-light: #F4EFE8;
+  --muted-dark: rgba(244,239,232,0.55);
+  --border: rgba(200,151,58,0.20);
+}
+html, body {
+  min-height: 100vh; background: var(--dark-bg); color: var(--text-light);
+  font-family: 'Barlow Condensed', sans-serif; overflow-x: hidden;
+}
+body {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; min-height: 100vh; padding: 80px 24px;
+  position: relative;
+}
+.bg-mountain {
+  position: fixed; inset: 0; z-index: 0;
+  background-image: url("K2 montagne image.png");
+  background-size: cover; background-position: center 30%;
+  opacity: 0.18; pointer-events: none;
+}
+.bg-overlay {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(180deg, rgba(8,8,8,0.7) 0%, rgba(8,8,8,0.5) 50%, rgba(8,8,8,0.8) 100%);
+}
+.content {
+  position: relative; z-index: 2; text-align: center;
+  max-width: 600px; width: 100%;
+}
+.logo {
+  font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400;
+  color: var(--text-light); letter-spacing: 0.15em; text-decoration: none;
+  display: inline-block; margin-bottom: 64px;
+}
+.logo sub { font-size: 11px; vertical-align: sub; }
+.gold-rule { width: 48px; height: 1px; background: var(--gold); margin: 0 auto 40px; border: none; }
+.book-title {
+  font-family: 'Cormorant Garamond', serif; font-size: 72px; font-weight: 300;
+  font-style: italic; color: var(--text-light); line-height: 1.0;
+  letter-spacing: -0.01em; margin-bottom: 20px;
+}
+.book-subtitle {
+  font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 300;
+  color: var(--gold); letter-spacing: 0.2em; margin-bottom: 40px;
+  text-transform: uppercase;
+}
+.status-badge {
+  display: inline-block; border: 1px solid var(--gold); color: var(--gold);
+  font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.3em;
+  padding: 8px 20px; margin-bottom: 48px; text-transform: uppercase;
+}
+.book-desc {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 17px;
+  color: var(--muted-dark); line-height: 1.8; margin-bottom: 56px;
+  max-width: 440px; margin-left: auto; margin-right: auto;
+}
+.notify-btn {
+  display: inline-block; background: var(--gold); color: #080808;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700;
+  letter-spacing: 0.2em; padding: 16px 40px; text-decoration: none;
+  transition: filter 0.2s; margin-bottom: 24px;
+}
+.notify-btn:hover { filter: brightness(1.1); }
+.notify-note {
+  font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted-dark);
+  letter-spacing: 0.1em; margin-bottom: 64px;
+}
+.back-link {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 0.15em;
+  color: var(--muted-dark); text-decoration: none; transition: color 0.2s;
+}
+.back-link:hover { color: var(--gold); }
+
+@media (max-width: 768px) {
+  .book-title { font-size: 52px; }
+}
+</style>
+</head>
+<body>
+<div class="bg-mountain"></div>
+<div class="bg-overlay"></div>
+<div class="content">
+  <a href="/" class="logo">K<sub>2</sub> STRATEGY</a>
+  <hr class="gold-rule">
+  <h1 class="book-title">J'ai tout vendu</h1>
+  <div class="book-subtitle">La méthode EPR — Énergie · Produit · Rigueur</div>
+  <div class="status-badge">EN COURS D'ÉCRITURE · COMING SOON</div>
+  <p class="book-desc">Un livre sur la vente, la résilience et la méthode qui a tout changé.</p>
+  <a href="mailto:kevin@k2strategy.io?subject=J'ai tout vendu — notification" class="notify-btn">ÊTRE NOTIFIÉ À LA SORTIE</a>
+  <div class="notify-note">kevin@k2strategy.io</div>
+  <a href="/" class="back-link">← k2strategy.io</a>
+</div>
+</body>
+</html>

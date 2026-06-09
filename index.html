@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K2 Strategy — Fractional CSO · VP Sales · EMEA</title>
+<meta name="description" content="Kevin André Hughes — Fractional CSO and VP Sales. Senior commercial leadership deployed in under 90 days. GTM, Sales Ops, CRM, EMEA/APAC.">
+<meta property="og:title" content="K2 Strategy — Fractional CSO · VP Sales · EMEA">
+<meta property="og:description" content="Senior commercial leadership deployed in under 90 days. From ICP to revenue.">
+<meta property="og:image" content="K2 montagne image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Barlow+Condensed:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold: #C8973A;
+  --dark-bg: #080808;
+  --light-bg: #F5F0E8;
+  --text-light: #F4EFE8;
+  --text-dark: #0D0D0D;
+  --border: rgba(200,151,58,0.20);
+  --muted-dark: rgba(244,239,232,0.55);
+  --muted-light: rgba(13,13,13,0.50);
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: 'Barlow Condensed', sans-serif; overflow-x: hidden; background: var(--dark-bg); color: var(--text-light); }
+
+/* ─── NAVBAR ─── */
+#navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 20px 48px; display: flex; align-items: center; justify-content: space-between;
+  transition: background 0.3s ease, border-bottom 0.3s ease;
+}
+#navbar.scrolled { background: #080808; border-bottom: 1px solid var(--gold); }
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400;
+  color: var(--text-light); letter-spacing: 0.1em; text-decoration: none;
+}
+.nav-logo sub { font-size: 13px; vertical-align: sub; }
+.nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+.nav-links a {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 400;
+  letter-spacing: 0.15em; color: var(--text-light); text-decoration: none;
+  position: relative; transition: color 0.2s;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px;
+  background: var(--gold); transition: width 0.25s ease;
+}
+.nav-links a:hover::after { width: 100%; }
+.lang-switcher { display: flex; gap: 10px; align-items: center; }
+.lang-btn {
+  font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.2em;
+  color: var(--muted-dark); background: none; border: none; cursor: pointer;
+  transition: color 0.2s; padding: 2px 0;
+}
+.lang-btn.active { color: var(--gold); text-decoration: underline; }
+.lang-btn:hover { color: var(--gold); }
+.nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+.nav-hamburger span { width: 24px; height: 1.5px; background: var(--gold); display: block; transition: all 0.3s; }
+#mobile-menu {
+  display: none; position: fixed; inset: 0; background: rgba(8,8,8,0.97); z-index: 999;
+  flex-direction: column; align-items: center; justify-content: center; gap: 40px;
+}
+#mobile-menu.open { display: flex; }
+#mobile-menu a {
+  font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300;
+  color: var(--text-light); text-decoration: none; letter-spacing: 0.05em;
+  transition: color 0.2s;
+}
+#mobile-menu a:hover { color: var(--gold); }
+#mobile-menu .mobile-lang { display: flex; gap: 16px; margin-top: 20px; }
+#mobile-close {
+  position: absolute; top: 24px; right: 32px; font-size: 32px; color: var(--gold);
+  background: none; border: none; cursor: pointer;
+}
+
+/* ─── SECTION BASE ─── */
+section { position: relative; overflow: hidden; }
+.section-inner { position: relative; z-index: 2; }
+
+/* ─── MOUNTAIN WATERMARK ─── */
+.mountain-watermark {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 70%; max-width: 700px; opacity: 0.07; pointer-events: none;
+  z-index: 1; user-select: none;
+}
+.mountain-watermark-dark {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+  opacity: 0.45; pointer-events: none; z-index: 1;
+}
+
+/* ─── KATAKANA TEXTURE ─── */
+.katakana-field {
+  position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  overflow: hidden;
+}
+.katakana-field span {
+  position: absolute; font-family: 'Space Mono', monospace;
+  font-size: 11px; color: rgba(200,151,58,0.08); user-select: none;
+}
+
+/* ─── REVEAL ANIMATION ─── */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+/* Hero above-the-fold: show immediately, still animate in */
+#hero .reveal { opacity: 1; transform: translateY(0); animation: heroFadeIn 0.8s ease both; }
+#hero .reveal:nth-child(1) { animation-delay: 0.1s; }
+#hero .reveal:nth-child(2) { animation-delay: 0.25s; }
+#hero .reveal:nth-child(3) { animation-delay: 0.4s; }
+#hero .reveal:nth-child(4) { animation-delay: 0.55s; }
+@keyframes heroFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+/* Noscript fallback */
+noscript ~ * .reveal, .no-js .reveal { opacity: 1 !important; transform: none !important; }
+
+/* ─── HERO ─── */
+#hero {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(180deg, #080808 0%, #111111 100%);
+  text-align: center; position: relative;
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: 1;
+  background-image: url("K2 montagne image.png");
+  background-size: cover; background-position: center 30%;
+  opacity: 0.45; pointer-events: none;
+}
+.hero-glow {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: radial-gradient(ellipse 60% 20% at 50% 100%, rgba(200,151,58,0.12), transparent);
+}
+.hero-content { position: relative; z-index: 3; max-width: 700px; padding: 0 24px; }
+.eyebrow {
+  font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.4em;
+  color: var(--gold); text-transform: uppercase; display: block;
+}
+.gold-rule { width: 60px; height: 1px; background: var(--gold); margin: 16px auto; border: none; }
+.hero-h1 {
+  font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 96px;
+  line-height: 0.9; color: var(--text-light); letter-spacing: -0.01em;
+}
+.hero-h1 .gold-line { color: var(--gold); font-weight: 500; display: block; }
+.hero-subline {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 17px; color: var(--muted-dark);
+  margin-top: 20px; max-width: 480px; line-height: 1.7; margin-left: auto; margin-right: auto;
+}
+.hero-divider { width: 80px; height: 1px; background: var(--gold); margin: 24px auto; border: none; }
+.cta-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--gold); color: #080808; font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; font-weight: 700; letter-spacing: 0.2em; padding: 14px 32px;
+  border: none; cursor: pointer; text-decoration: none; display: inline-block;
+  transition: filter 0.2s;
+}
+.btn-primary:hover { filter: brightness(1.1); }
+.btn-secondary {
+  background: transparent; color: var(--gold); border: 1px solid var(--gold);
+  font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 600;
+  letter-spacing: 0.2em; padding: 14px 32px; cursor: pointer; text-decoration: none;
+  display: inline-block; transition: filter 0.2s;
+}
+.btn-secondary:hover { filter: brightness(1.15); }
+.scroll-indicator {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  z-index: 3; color: var(--gold); font-size: 20px;
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+@keyframes scrollBounce {
+  0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
+  50% { opacity: 1; transform: translateX(-50%) translateY(6px); }
+}
+
+/* ─── ABOUT ─── */
+#about {
+  background: var(--light-bg); color: var(--text-dark);
+  padding: 120px 48px;
+}
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; max-width: 1200px; margin: 0 auto; align-items: start; }
+.about-eyebrow { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; }
+.section-h2 { font-family: 'Cormorant Garamond', serif; font-weight: 300; line-height: 1.1; }
+.h2-dark { font-size: 48px; color: var(--text-dark); }
+.section-body { font-size: 16px; color: var(--muted-light); line-height: 1.75; margin-top: 20px; font-family: 'Barlow Condensed', sans-serif; }
+.gold-rule-left { width: 48px; height: 1px; background: var(--gold); margin: 24px 0; border: none; }
+.credential-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.badge {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 0.2em;
+  padding: 6px 14px; border: 1px solid var(--gold); color: var(--gold);
+  background: transparent; text-transform: uppercase;
+}
+.kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.kpi-card {
+  background: #0D0D0D; border: 1px solid rgba(200,151,58,0.15);
+  padding: 28px 24px; text-align: center;
+}
+.kpi-number { font-family: 'Cormorant Garamond', serif; font-size: 52px; color: var(--gold); font-weight: 400; line-height: 1; }
+.kpi-label { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted-dark); margin-top: 8px; letter-spacing: 0.1em; }
+
+/* ─── SERVICES ─── */
+#services {
+  background: var(--dark-bg); padding: 120px 48px;
+}
+.section-center { text-align: center; max-width: 1200px; margin: 0 auto; }
+.h2-light { font-size: 52px; color: var(--text-light); }
+.section-subline { font-size: 16px; color: var(--muted-dark); margin-top: 16px; font-family: 'Barlow Condensed', sans-serif; line-height: 1.6; }
+.services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
+.service-card {
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  padding: 36px 28px; position: relative; transition: border-color 0.3s;
+}
+.service-card:hover { border-color: rgba(200,151,58,0.5); }
+.service-card.featured { border-top: 2px solid var(--gold); background: rgba(200,151,58,0.04); }
+.card-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; margin-bottom: 14px; }
+.card-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: var(--text-light); margin-bottom: 16px; line-height: 1.2; }
+.card-desc { font-size: 14px; color: var(--muted-dark); line-height: 1.7; margin-bottom: 20px; font-family: 'Barlow Condensed', sans-serif; }
+.card-deliverables { list-style: none; margin-bottom: 24px; }
+.card-deliverables li { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; color: var(--muted-dark); padding: 4px 0; }
+.card-deliverables li::before { content: '→ '; color: var(--gold); }
+.card-badge { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: var(--gold); border: 1px solid var(--border); padding: 6px 12px; display: inline-block; }
+
+/* ─── MISSIONS ─── */
+#missions { background: var(--light-bg); padding: 120px 48px; color: var(--text-dark); }
+.missions-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 60px; max-width: 1200px; margin-left: auto; margin-right: auto; }
+.mission-card {
+  background: #fff; border-left: 3px solid var(--gold);
+  padding: 28px 24px; box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+  transition: border-color 0.3s, background 0.3s; position: relative;
+}
+.mission-card:hover { border-left-color: #e0aa44; background: #fdfaf4; }
+.mission-badge {
+  font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.2em;
+  color: var(--gold); background: rgba(200,151,58,0.08); padding: 4px 10px;
+  display: inline-block; margin-bottom: 12px; text-transform: uppercase;
+}
+.mission-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: var(--text-dark); margin-bottom: 6px; }
+.mission-sector { font-family: 'Space Mono', monospace; font-size: 8px; color: var(--muted-light); letter-spacing: 0.15em; margin-bottom: 12px; }
+.mission-kpis { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.kpi-tag { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--gold); border: 1px solid rgba(200,151,58,0.3); padding: 3px 8px; }
+.mission-note { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; color: var(--muted-light); line-height: 1.5; font-style: italic; }
+.missions-cta { text-align: center; margin-top: 48px; }
+.btn-outline-dark {
+  border: 1px solid var(--gold); color: var(--gold); background: transparent;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 600;
+  letter-spacing: 0.2em; padding: 14px 36px; text-decoration: none; display: inline-block;
+  transition: background 0.2s, color 0.2s;
+}
+.btn-outline-dark:hover { background: var(--gold); color: #080808; }
+
+/* ─── SECTORS ─── */
+#sectors { background: var(--dark-bg); padding: 100px 48px; }
+.sectors-inner { max-width: 1200px; margin: 0 auto; }
+.sector-tags { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; justify-content: center; }
+.sector-tag {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 500;
+  letter-spacing: 0.08em; padding: 12px 24px; border: 1px solid var(--border);
+  color: var(--text-light); cursor: default; position: relative; overflow: hidden;
+  transition: color 0.3s;
+}
+.sector-tag::before {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 0;
+  background: var(--gold); transition: height 0.3s ease; z-index: -1;
+}
+.sector-tag:hover::before { height: 100%; }
+.sector-tag:hover { color: #080808; border-color: var(--gold); }
+.geo-badges { display: flex; gap: 12px; justify-content: center; margin-top: 28px; flex-wrap: wrap; }
+.geo-badge {
+  font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.3em;
+  padding: 8px 20px; border: 1px solid var(--gold); color: var(--gold);
+}
+.map-container { margin-top: 60px; max-height: 300px; width: 100%; }
+.map-container svg { width: 100%; height: auto; display: block; }
+
+/* Map pulse animation */
+@keyframes pulse-ring {
+  0% { r: 5; opacity: 0.6; }
+  100% { r: 14; opacity: 0; }
+}
+.pulse-ring { animation: pulse-ring 2s ease-out infinite; }
+
+/* ─── PRICING ─── */
+#pricing { background: var(--light-bg); padding: 120px 48px; color: var(--text-dark); }
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; max-width: 1200px; margin-left: auto; margin-right: auto; }
+.pricing-card {
+  background: #fff; border: 1px solid rgba(200,151,58,0.2);
+  padding: 40px 28px; text-align: center; position: relative;
+  transition: border-color 0.3s;
+}
+.pricing-card.featured { border: 2px solid var(--gold); }
+.pricing-card:hover { border-color: var(--gold); }
+.featured-badge {
+  position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+  background: var(--gold); color: #080808; font-family: 'Space Mono', monospace;
+  font-size: 8px; letter-spacing: 0.15em; padding: 4px 14px; white-space: nowrap;
+}
+.price-amount { font-family: 'Cormorant Garamond', serif; font-size: 64px; color: var(--gold); line-height: 1; font-weight: 400; }
+.price-unit { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; color: var(--muted-light); }
+.price-sublabel { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; color: var(--muted-light); margin-top: 8px; margin-bottom: 16px; }
+.pricing-includes { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; color: var(--muted-light); line-height: 1.7; margin-bottom: 24px; }
+.pricing-note { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; color: var(--muted-light); line-height: 1.6; font-style: italic; margin-bottom: 20px; }
+.pricing-cta {
+  display: inline-block; background: var(--gold); color: #080808;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700;
+  letter-spacing: 0.2em; padding: 12px 24px; text-decoration: none; border: none; cursor: pointer; width: 100%;
+  transition: filter 0.2s;
+}
+.pricing-cta:hover { filter: brightness(1.1); }
+.pricing-disclaimer { text-align: center; margin-top: 40px; font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted-light); letter-spacing: 0.05em; line-height: 1.8; }
+
+/* ─── CONTACT ─── */
+#contact {
+  padding: 120px 48px; position: relative; min-height: 90vh;
+  display: flex; align-items: center; justify-content: center;
+}
+.contact-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background-image: url("K2 montagne Couleurs.png");
+  background-size: cover; background-position: center top;
+}
+.contact-overlay {
+  position: absolute; inset: 0; z-index: 1;
+  background: rgba(4, 4, 8, 0.62);
+}
+.contact-glow {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: radial-gradient(ellipse 80% 30% at 50% 0%, rgba(200,151,58,0.18), transparent);
+}
+.contact-inner { position: relative; z-index: 3; max-width: 800px; width: 100%; margin: 0 auto; }
+.contact-h2 {
+  font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 80px;
+  line-height: 0.9; color: var(--text-light); text-align: center; margin: 16px 0 20px;
+}
+.contact-h2 .gold-line { color: var(--gold); font-weight: 500; display: block; }
+.contact-subline { font-size: 16px; color: var(--muted-dark); text-align: center; line-height: 1.7; margin-bottom: 40px; }
+.cta-full {
+  display: block; width: 100%; background: var(--gold); color: #080808;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700;
+  letter-spacing: 0.25em; padding: 18px 32px; text-align: center; text-decoration: none;
+  margin-bottom: 48px; transition: filter 0.2s;
+}
+.cta-full:hover { filter: brightness(1.1); }
+.contact-form { display: flex; flex-direction: column; gap: 16px; }
+.contact-form input,
+.contact-form textarea {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(200,151,58,0.3);
+  color: var(--text-light); font-family: 'Barlow Condensed', sans-serif; font-size: 15px;
+  padding: 14px 18px; outline: none; width: 100%;
+  transition: border-color 0.2s;
+}
+.contact-form input::placeholder,
+.contact-form textarea::placeholder { color: var(--muted-dark); }
+.contact-form input:focus,
+.contact-form textarea:focus { border-color: var(--gold); }
+.contact-form textarea { resize: vertical; min-height: 120px; }
+.form-submit {
+  background: var(--gold); color: #080808; font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px; font-weight: 700; letter-spacing: 0.2em; padding: 16px 32px;
+  border: none; cursor: pointer; width: 100%; transition: filter 0.2s;
+}
+.form-submit:hover { filter: brightness(1.1); }
+#form-success {
+  display: none; text-align: center; padding: 40px 32px;
+  border: 1px solid rgba(200,151,58,0.4); color: var(--text-light);
+}
+#form-success .success-check { font-size: 32px; color: var(--gold); display: block; margin-bottom: 16px; }
+#form-success .success-msg { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; line-height: 1.6; }
+#form-success .success-sig { font-family: 'Cormorant Garamond', serif; font-size: 16px; color: var(--muted-dark); margin-top: 16px; font-style: italic; }
+.contact-links { display: flex; gap: 24px; justify-content: center; margin-top: 40px; flex-wrap: wrap; }
+.contact-link {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 14px; color: var(--muted-dark);
+  text-decoration: none; letter-spacing: 0.1em; transition: color 0.2s;
+}
+.contact-link:hover { color: var(--gold); }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--dark-bg); border-top: 1px solid var(--gold);
+  padding: 32px 48px;
+}
+.footer-main {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+}
+.footer-copy { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; color: var(--muted-dark); }
+.footer-tagline { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--gold); letter-spacing: 0.15em; }
+.footer-tech { font-family: 'Space Mono', monospace; font-size: 8px; color: var(--muted-dark); letter-spacing: 0.05em; text-align: center; margin-top: 20px; line-height: 1.8; }
+.footer-bottom { text-align: center; margin-top: 16px; font-family: 'Space Mono', monospace; font-size: 8px; color: rgba(244,239,232,0.4); letter-spacing: 0.1em; }
+.footer-bottom a { color: inherit; text-decoration: none; }
+.footer-bottom a:hover { color: var(--gold); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .hero-h1 { font-size: 72px; }
+  .about-grid { gap: 48px; }
+  .services-grid { grid-template-columns: 1fr; max-width: 560px; margin-left: auto; margin-right: auto; }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; }
+}
+
+@media (max-width: 768px) {
+  #navbar { padding: 16px 24px; }
+  .nav-links, .lang-switcher { display: none; }
+  .nav-hamburger { display: flex; }
+  .hero-h1 { font-size: 56px; }
+  .h2-dark, .h2-light { font-size: 36px; }
+  .contact-h2 { font-size: 48px; }
+  #about, #services, #missions, #sectors, #pricing, #contact { padding: 80px 24px; }
+  .about-grid { grid-template-columns: 1fr; gap: 48px; }
+  .missions-grid { grid-template-columns: 1fr; }
+  footer { padding: 24px; }
+  .footer-main { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">K<sub>2</sub> STRATEGY</a>
+  <ul class="nav-links">
+    <li><a href="#about" data-key="nav_about">About</a></li>
+    <li><a href="#services" data-key="nav_services">Services</a></li>
+    <li><a href="#missions" data-key="nav_missions">Missions</a></li>
+    <li><a href="#contact" data-key="nav_contact">Contact</a></li>
+  </ul>
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLanguage('en')">EN</button>
+    <span style="color:var(--muted-dark);font-size:10px;">|</span>
+    <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+    <span style="color:var(--muted-dark);font-size:10px;">|</span>
+    <button class="lang-btn" onclick="setLanguage('es')">ES</button>
+  </div>
+  <button class="nav-hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div id="mobile-menu">
+  <button id="mobile-close" onclick="toggleMenu()">×</button>
+  <a href="#about" onclick="toggleMenu()" data-key="nav_about">About</a>
+  <a href="#services" onclick="toggleMenu()" data-key="nav_services">Services</a>
+  <a href="#missions" onclick="toggleMenu()" data-key="nav_missions">Missions</a>
+  <a href="#contact" onclick="toggleMenu()" data-key="nav_contact">Contact</a>
+  <div class="mobile-lang">
+    <button class="lang-btn" onclick="setLanguage('en');toggleMenu()">EN</button>
+    <button class="lang-btn" onclick="setLanguage('fr');toggleMenu()">FR</button>
+    <button class="lang-btn" onclick="setLanguage('es');toggleMenu()">ES</button>
+  </div>
+</div>
+
+<!-- ─── SECTION 1: HERO ─── -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <span class="eyebrow reveal" data-key="hero_eyebrow">FRACTIONAL CSO · VP SALES</span>
+    <hr class="gold-rule">
+    <h1 class="hero-h1 reveal">
+      <span data-key="hero_h1_line1">REACH</span>
+      <span class="gold-line" data-key="hero_h1_line2">THE SUMMIT</span>
+    </h1>
+    <p class="hero-subline reveal" data-key="hero_subline">Senior commercial leadership deployed in under 90 days. From ICP to revenue.</p>
+    <hr class="hero-divider">
+    <div class="cta-group reveal">
+      <a href="https://calendly.com/kevin-k2strategy/30min" target="_blank" rel="noopener" class="btn-primary" data-key="hero_cta_primary">BOOK A CALL</a>
+      <a href="K2_Strategy_Deck_v5 (2).html" target="_blank" rel="noopener" class="btn-secondary" data-key="hero_cta_secondary">VIEW DECK</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">∨</div>
+</section>
+
+<!-- ─── SECTION 2: ABOUT ─── -->
+<section id="about">
+  <div class="katakana-field" id="katakana-about"></div>
+  <img src="K2emblemesommettransparent.png" class="mountain-watermark" alt="" aria-hidden="true" onerror="this.style.display='none'">
+  <div class="section-inner about-grid">
+    <div>
+      <span class="about-eyebrow eyebrow reveal" data-key="about_eyebrow">THE STRATEGIST</span>
+      <h2 class="section-h2 h2-dark reveal" data-key="about_h2">12+ years building revenue engines in demanding environments.</h2>
+      <p class="section-body reveal" data-key="about_body">Kevin André Hughes is a Fractional CSO and VP Sales operating across EMEA, APAC, and DOM-TOM. Expert in GTM strategy, Sales Operations transformation, and commercial team building from zero. Native French and English, fluent in Spanish.</p>
+      <hr class="gold-rule-left reveal">
+      <div class="credential-badges reveal">
+        <span class="badge">MULTILINGUAL</span>
+        <span class="badge">HPI</span>
+        <span class="badge">AI-CERTIFIED</span>
+        <span class="badge">EMEA / APAC</span>
+      </div>
+    </div>
+    <div class="kpi-grid reveal">
+      <div class="kpi-card">
+        <div class="kpi-number" data-counter="12" data-suffix="+">12+</div>
+        <div class="kpi-label" data-key="kpi1_label">Years B2B Experience</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-number" data-counter="21" data-suffix="M€">21M€</div>
+        <div class="kpi-label" data-key="kpi2_label">Revenue Generated</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-number" data-counter="100" data-suffix="+">100+</div>
+        <div class="kpi-label" data-key="kpi3_label">SQL Generated</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-number" data-counter="7" data-suffix="">7</div>
+        <div class="kpi-label" data-key="kpi4_label">Sectors Covered</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SECTION 3: SERVICES ─── -->
+<section id="services">
+  <img src="K2emblemesommettransparent.png" class="mountain-watermark" alt="" aria-hidden="true" style="opacity:0.05;" onerror="this.style.display='none'">
+  <div class="section-inner section-center">
+    <span class="eyebrow reveal" data-key="services_eyebrow">WHAT I DO</span>
+    <h2 class="section-h2 h2-light reveal" data-key="services_h2">Three ways to work together.</h2>
+    <p class="section-subline reveal" data-key="services_subline">No retainer. No overhead. Senior leadership activated on your terms.</p>
+    <div class="services-grid">
+      <!-- Card 1: Featured -->
+      <div class="service-card featured reveal">
+        <div class="card-label" data-key="s1_label">ON-DEMAND SPRINT</div>
+        <div class="card-title" data-key="s1_title">GTM · Sales Ops · CRM</div>
+        <div class="card-desc" data-key="s1_desc">Intensive mission from 7 to 90 days. ICP definition, pipeline architecture, CRM deployment, revenue modelling. Full commercial infrastructure delivered — ready to activate.</div>
+        <ul class="card-deliverables">
+          <li data-key="s1_d1">ICP &amp; Persona Framework</li>
+          <li data-key="s1_d2">Pipeline &amp; Revenue Architecture</li>
+          <li data-key="s1_d3">CRM Setup (HubSpot / Salesforce)</li>
+          <li data-key="s1_d4">Playbook &amp; Onboarding Kit</li>
+        </ul>
+        <span class="card-badge" data-key="s1_badge">FROM 750€ / DAY</span>
+      </div>
+      <!-- Card 2 -->
+      <div class="service-card reveal">
+        <div class="card-label" data-key="s2_label">FRACTIONAL CSO</div>
+        <div class="card-title" data-key="s2_title">Strategic Leadership 3–12 months</div>
+        <div class="card-desc" data-key="s2_desc">Part-time Chief Sales Officer embedded in your organization. Revenue strategy, team building, investor-ready commercial ops. No full-time cost.</div>
+        <ul class="card-deliverables">
+          <li data-key="s2_d1">Revenue Strategy</li>
+          <li data-key="s2_d2">Team Building</li>
+          <li data-key="s2_d3">Board-Level Reporting</li>
+          <li data-key="s2_d4">Sales Culture</li>
+        </ul>
+      </div>
+      <!-- Card 3 -->
+      <div class="service-card reveal">
+        <div class="card-label" data-key="s3_label">SENIOR PLACEMENT</div>
+        <div class="card-title" data-key="s3_title">VP Sales / CSO Full-Time</div>
+        <div class="card-desc" data-key="s3_desc">Open to the right senior role. EMEA scope, SaaS or high-growth environment, minimum VP Sales level. Hamburg-based with full mobility.</div>
+        <ul class="card-deliverables">
+          <li data-key="s3_d1">EMEA Scope</li>
+          <li data-key="s3_d2">SaaS / High-Growth</li>
+          <li data-key="s3_d3">Full Mobility</li>
+        </ul>
+        <span class="card-badge" data-key="s3_badge">OPEN TO OFFERS</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SECTION 4: MISSIONS ─── -->
+<section id="missions">
+  <div class="katakana-field" id="katakana-missions"></div>
+  <img src="K2emblemesommettransparent.png" class="mountain-watermark" alt="" aria-hidden="true" onerror="this.style.display='none'">
+  <div class="section-inner" style="max-width:1200px;margin:0 auto;">
+    <div class="section-center">
+      <span class="eyebrow reveal" style="color:var(--gold);" data-key="missions_eyebrow">TRACK RECORD</span>
+      <h2 class="section-h2 h2-dark reveal" data-key="missions_h2">Real missions. Verified results.</h2>
+      <p class="section-body reveal" style="max-width:600px;margin:0 auto 0;" data-key="missions_subline">No stock photography. No made-up metrics. Every KPI below is from a real engagement.</p>
+    </div>
+    <div class="missions-grid" style="margin-top:48px;">
+      <div class="mission-card reveal">
+        <span class="mission-badge">VIA K2 STRATEGY · ACTIVE</span>
+        <div class="mission-title">Fractional CSO — Smart City Mobility</div>
+        <div class="mission-sector">SMART CITY · PPP · B2G · MONACO</div>
+        <div class="mission-kpis">
+          <span class="kpi-tag">Commission d'État ✓</span>
+          <span class="kpi-tag">ATOM Mobility ✓</span>
+          <span class="kpi-tag">NIU Hardware ✓</span>
+        </div>
+        <div class="mission-note">B2G navigation in zero-tolerance institutional environment.</div>
+      </div>
+      <div class="mission-card reveal">
+        <span class="mission-badge">VIA K2 STRATEGY · 6 MONTHS</span>
+        <div class="mission-title">VP Sales EMEA — SaaS Mobility Scale-up</div>
+        <div class="mission-sector">MOBILITY · SAAS · JUL 2025 – JAN 2026 · PARIS</div>
+        <div class="mission-kpis">
+          <span class="kpi-tag">100 SQL</span>
+          <span class="kpi-tag">12 Active Deals</span>
+          <span class="kpi-tag">3 Partnerships</span>
+          <span class="kpi-tag">M&amp;A Outcome</span>
+        </div>
+        <div class="mission-note">Landmark: M&A acquisition of Lyon-based MaaS company — validating full GTM.</div>
+      </div>
+      <div class="mission-card reveal">
+        <span class="mission-badge">FULL-TIME · 9 MONTHS</span>
+        <div class="mission-title">Sales Director EMEA — Aerospace MRO</div>
+        <div class="mission-sector">AEROSPACE · MRO · VSE AVIATION · EMEA</div>
+        <div class="mission-kpis">
+          <span class="kpi-tag">21M€ Revenue</span>
+          <span class="kpi-tag">105% Target</span>
+          <span class="kpi-tag">9 Months</span>
+        </div>
+        <div class="mission-note">Key Account Management for Groupe Dassault. Sales org design EMEA from scratch.</div>
+      </div>
+      <div class="mission-card reveal">
+        <span class="mission-badge">FULL-TIME · VP SALES</span>
+        <div class="mission-title">VP Sales — SaaS Shared Mobility (Series A)</div>
+        <div class="mission-sector">MOBILITY · SAAS · GOURBAN · VIENNA</div>
+        <div class="mission-kpis">
+          <span class="kpi-tag">8 Closings</span>
+          <span class="kpi-tag">1M€ Anchor Deal</span>
+          <span class="kpi-tag">8 Team Members</span>
+          <span class="kpi-tag">&lt;12 Months</span>
+        </div>
+        <div class="mission-note">Commercial infrastructure + Series A pipeline built from zero.</div>
+      </div>
+      <div class="mission-card reveal">
+        <span class="mission-badge">FULL-TIME · FRANCE LAUNCH</span>
+        <div class="mission-title">Country Sales Manager — Logistics SaaS</div>
+        <div class="mission-sector">LOGISTICS · SAAS · ONTRUCK · FRANCE</div>
+        <div class="mission-kpis">
+          <span class="kpi-tag">#1 Revenue FR</span>
+          <span class="kpi-tag">3→1 Sales Cycle</span>
+          <span class="kpi-tag">CRM + BI Deployed</span>
+        </div>
+        <div class="mission-note">Restructured Inside Sales and CS EMEA/APAC. Revenue cycle halved in under 6 months.</div>
+      </div>
+      <div class="mission-card reveal">
+        <span class="mission-badge">VIA K2 STRATEGY · 7-DAY INTENSIVE</span>
+        <div class="mission-title">Sales Ops &amp; GTM Architect — Sustainability SaaS</div>
+        <div class="mission-sector">SUSTAINABILITY · SAAS · BASF GROUP · FRANKFURT · JAN 2025</div>
+        <div class="mission-kpis">
+          <span class="kpi-tag">ICP Full Build</span>
+          <span class="kpi-tag">OKRs Deployed</span>
+          <span class="kpi-tag">MRR Models</span>
+          <span class="kpi-tag">Recruitment Framework</span>
+        </div>
+        <div class="mission-note">Complete commercial infrastructure delivered in 7 days.</div>
+      </div>
+    </div>
+    <div class="missions-cta reveal">
+      <a href="K2_Strategy_Deck_v5 (2).html" target="_blank" rel="noopener" class="btn-outline-dark" data-key="missions_cta">VIEW FULL DECK →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SECTION 5: SECTORS + MAP ─── -->
+<section id="sectors">
+  <img src="K2emblemesommettransparent.png" class="mountain-watermark" alt="" aria-hidden="true" style="opacity:0.04;" onerror="this.style.display='none'">
+  <div class="section-inner sectors-inner section-center">
+    <span class="eyebrow reveal" data-key="sectors_eyebrow">SECTORS &amp; MARKETS</span>
+    <h2 class="section-h2 h2-light reveal" data-key="sectors_h2">One toolkit. Seven industries.</h2>
+    <div class="sector-tags reveal">
+      <div class="sector-tag">🚗 Mobility &amp; Automotive</div>
+      <div class="sector-tag">💻 SaaS &amp; Tech</div>
+      <div class="sector-tag">✈️ Aerospace &amp; MRO</div>
+      <div class="sector-tag">🚚 Logistics</div>
+      <div class="sector-tag">🏦 Finance &amp; Fintech</div>
+      <div class="sector-tag">🛍️ Consumer Goods</div>
+      <div class="sector-tag">🍽️ Hospitality</div>
+    </div>
+    <div class="geo-badges reveal">
+      <span class="geo-badge">EMEA</span>
+      <span class="geo-badge">APAC</span>
+      <span class="geo-badge">DOM-TOM</span>
+    </div>
+    <!-- SVG Map -->
+    <div class="map-container reveal">
+      <svg viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg" aria-label="Geographic market map">
+        <defs>
+          <style>
+            .continent { fill: rgba(200,151,58,0.10); stroke: rgba(200,151,58,0.25); stroke-width: 0.5; }
+            .city-dot { fill: #C8973A; }
+            .city-label { font-family: 'Space Mono', monospace; font-size: 8px; fill: rgba(200,151,58,0.75); }
+          </style>
+        </defs>
+        <!-- Europe simplified -->
+        <path class="continent" d="M 260,40 L 300,35 L 340,38 L 380,42 L 410,50 L 430,48 L 460,55 L 470,70 L 480,85 L 490,100 L 500,115 L 495,130 L 480,140 L 470,155 L 455,165 L 440,170 L 430,180 L 420,190 L 400,195 L 385,185 L 370,180 L 355,185 L 345,195 L 335,200 L 320,195 L 310,185 L 300,175 L 285,170 L 270,160 L 255,150 L 245,140 L 240,125 L 238,110 L 240,95 L 248,80 L 255,65 L 260,50 Z" />
+        <!-- UK -->
+        <path class="continent" d="M 250,65 L 265,60 L 275,70 L 270,85 L 255,90 L 245,80 Z" />
+        <!-- Iberian Peninsula -->
+        <path class="continent" d="M 238,170 L 255,165 L 270,168 L 278,185 L 272,200 L 258,210 L 240,205 L 228,192 L 228,178 Z" />
+        <!-- North Africa / MENA -->
+        <path class="continent" d="M 220,225 L 320,215 L 420,210 L 520,215 L 600,225 L 640,240 L 660,255 L 650,270 L 620,275 L 580,270 L 540,265 L 500,260 L 460,255 L 420,250 L 380,248 L 340,248 L 300,250 L 260,248 L 230,245 L 215,235 Z" />
+        <!-- Middle East -->
+        <path class="continent" d="M 580,220 L 620,215 L 650,220 L 680,230 L 700,245 L 710,260 L 700,275 L 680,280 L 655,275 L 635,265 L 615,255 L 595,245 L 582,235 Z" />
+        <!-- Asia Pacific (simplified) -->
+        <path class="continent" d="M 720,60 L 780,50 L 840,55 L 880,70 L 890,90 L 880,110 L 860,125 L 830,130 L 800,125 L 770,115 L 745,100 L 725,85 L 718,70 Z" />
+        <!-- Australia dot region -->
+        <path class="continent" d="M 800,285 L 850,278 L 880,288 L 885,308 L 870,320 L 840,322 L 815,315 L 800,302 Z" />
+
+        <!-- City dots with pulse -->
+        <!-- Hamburg 53.5N 10E → ~340,75 -->
+        <circle class="city-dot" cx="340" cy="75" r="5"/>
+        <circle class="pulse-ring" cx="340" cy="75" r="5" fill="none" stroke="#C8973A" stroke-width="1.5" style="animation-delay:0s"/>
+        <text class="city-label" x="348" y="72">Hamburg</text>
+
+        <!-- Paris 48.9N 2.3E → ~308,95 -->
+        <circle class="city-dot" cx="308" cy="95" r="5"/>
+        <circle class="pulse-ring" cx="308" cy="95" r="5" fill="none" stroke="#C8973A" stroke-width="1.5" style="animation-delay:0.3s"/>
+        <text class="city-label" x="316" y="92">Paris</text>
+
+        <!-- Lyon 45.7N 4.8E → ~320,108 -->
+        <circle class="city-dot" cx="320" cy="108" r="4"/>
+        <circle class="pulse-ring" cx="320" cy="108" r="4" fill="none" stroke="#C8973A" stroke-width="1.5" style="animation-delay:0.5s"/>
+        <text class="city-label" x="327" y="105">Lyon</text>
+
+        <!-- Nice/Monaco 43.7N 7.3E → ~330,118 -->
+        <circle class="city-dot" cx="330" cy="120" r="5"/>
+        <circle class="pulse-ring" cx="330" cy="120" r="5" fill="none" stroke="#C8973A" stroke-width="1.5" style="animation-delay:0.6s"/>
+        <text class="city-label" x="338" y="117">Monaco</text>
+
+        <!-- Vienna 48.2N 16.4E → ~366,97 -->
+        <circle class="city-dot" cx="366" cy="97" r="5"/>
+        <circle class="pulse-ring" cx="366" cy="97" r="5" fill="none" stroke="#C8973A" stroke-width="1.5" style="animation-delay:0.9s"/>
+        <text class="city-label" x="374" y="94">Vienna</text>
+
+        <!-- Frankfurt 50.1N 8.7E → ~346,89 -->
+        <circle class="city-dot" cx="346" cy="89" r="5"/>
+        <circle class="pulse-ring" cx="346" cy="89" r="5" fill="none" stroke="#C8973A" stroke-width="1.5" style="animation-delay:1.2s"/>
+        <text class="city-label" x="354" y="86">Frankfurt</text>
+
+        <!-- London 51.5N -0.1E → ~296,82 -->
+        <circle class="city-dot" cx="296" cy="82" r="5"/>
+        <circle class="pulse-ring" cx="296" cy="82" r="5" fill="none" stroke="#C8973A" stroke-width="1.5" style="animation-delay:1.5s"/>
+        <text class="city-label" x="278" y="79">London</text>
+
+        <!-- Dubai 25.2N 55.3E → ~636,183 -->
+        <circle class="city-dot" cx="636" cy="248" r="5"/>
+        <circle class="pulse-ring" cx="636" cy="248" r="5" fill="none" stroke="#C8973A" stroke-width="1.5" style="animation-delay:1.8s"/>
+        <text class="city-label" x="644" y="245">Dubai</text>
+
+        <!-- Sydney ~840,305 -->
+        <circle class="city-dot" cx="848" cy="305" r="5"/>
+        <circle class="pulse-ring" cx="848" cy="305" r="5" fill="none" stroke="#C8973A" stroke-width="1.5" style="animation-delay:2.1s"/>
+        <text class="city-label" x="856" y="302">Sydney</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SECTION 6: PRICING ─── -->
+<section id="pricing">
+  <div class="katakana-field" id="katakana-pricing"></div>
+  <img src="K2emblemesommettransparent.png" class="mountain-watermark" alt="" aria-hidden="true" onerror="this.style.display='none'">
+  <div class="section-inner section-center">
+    <span class="eyebrow reveal" style="color:var(--gold);" data-key="pricing_eyebrow">INVESTMENT</span>
+    <h2 class="section-h2 h2-dark reveal" data-key="pricing_h2">Senior leadership. Transparent pricing.</h2>
+    <p class="section-body reveal" style="max-width:580px;margin:0 auto;" data-key="pricing_subline">Rate adapts to mission scope, duration, and engagement model. Always discussed in a first call.</p>
+    <div class="pricing-grid">
+      <!-- Card 1 -->
+      <div class="pricing-card reveal">
+        <div class="card-label" style="color:var(--gold);font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.3em;margin-bottom:16px;" data-key="p1_label">SPRINT / ON-DEMAND</div>
+        <div class="price-amount">750€</div>
+        <div class="price-unit" data-key="p1_unit">/day</div>
+        <div class="price-sublabel" data-key="p1_sub">Short missions · 7–30 days</div>
+        <div class="pricing-includes" data-key="p1_includes">ICP, GTM audit, CRM setup, playbook</div>
+        <a href="https://calendly.com/kevin-k2strategy/30min" target="_blank" rel="noopener" class="pricing-cta" data-key="p1_cta">Book a Call</a>
+      </div>
+      <!-- Card 2: Featured -->
+      <div class="pricing-card featured reveal">
+        <div class="featured-badge" data-key="p2_feat_badge">MOST COMMON ENGAGEMENT</div>
+        <div class="card-label" style="color:var(--gold);font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.3em;margin-bottom:16px;margin-top:20px;" data-key="p2_label">FRACTIONAL CSO</div>
+        <div class="price-amount" style="font-size:48px;">750–1 500€</div>
+        <div class="price-unit" data-key="p2_unit">/day</div>
+        <div class="price-sublabel" data-key="p2_sub">3–12 month mandate · Rate based on scope</div>
+        <div class="pricing-includes" data-key="p2_includes">Full commercial strategy, team building, board reporting</div>
+        <a href="https://calendly.com/kevin-k2strategy/30min" target="_blank" rel="noopener" class="pricing-cta" data-key="p2_cta">Discuss my project</a>
+      </div>
+      <!-- Card 3 -->
+      <div class="pricing-card reveal">
+        <div class="card-label" style="color:var(--gold);font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.3em;margin-bottom:16px;" data-key="p3_label">SUCCESS FEE</div>
+        <div class="price-amount" style="font-size:48px;">%</div>
+        <div class="price-unit" data-key="p3_unit">of revenue</div>
+        <div class="price-sublabel" data-key="p3_sub">For specific GTM missions</div>
+        <div class="pricing-note" data-key="p3_note">Structure defined case by case. Risk shared.</div>
+        <a href="https://calendly.com/kevin-k2strategy/30min" target="_blank" rel="noopener" class="pricing-cta" data-key="p3_cta">Let's talk</a>
+      </div>
+    </div>
+    <p class="pricing-disclaimer reveal" data-key="pricing_disclaimer">All rates excl. VAT. Final rate confirmed after discovery call. No commitment before alignment.</p>
+  </div>
+</section>
+
+<!-- ─── SECTION 7: CONTACT ─── -->
+<section id="contact">
+  <div class="contact-bg"></div>
+  <div class="contact-overlay"></div>
+  <div class="contact-glow"></div>
+  <div class="contact-inner">
+    <span class="eyebrow reveal" data-key="contact_eyebrow">LET'S WORK TOGETHER · TRAVAILLONS ENSEMBLE</span>
+    <h2 class="contact-h2 reveal">
+      <span data-key="contact_h2_line1">REACH</span>
+      <span class="gold-line" data-key="contact_h2_line2">THE SUMMIT</span>
+    </h2>
+    <p class="contact-subline reveal" data-key="contact_subline">Ready to accelerate your commercial strategy, structure your sales operations, or launch in new markets?</p>
+    <a href="https://calendly.com/kevin-k2strategy/30min" target="_blank" rel="noopener" class="cta-full reveal" data-key="contact_cta_primary">BOOK A DISCOVERY CALL →</a>
+
+    <form name="contact" method="POST" data-netlify="true" id="contact-form" class="contact-form reveal">
+      <input type="hidden" name="form-name" value="contact">
+      <input type="text" name="name" required placeholder="Your name" data-placeholder-key="form_name">
+      <input type="text" name="company" placeholder="Company" data-placeholder-key="form_company">
+      <input type="email" name="email" required placeholder="your@email.com">
+      <textarea name="message" rows="4" required placeholder="Tell me about your project..." data-placeholder-key="form_message"></textarea>
+      <button type="submit" class="form-submit" data-key="form_submit">LANCER LE DÉPLOIEMENT →</button>
+    </form>
+
+    <div id="form-success">
+      <span class="success-check">✓</span>
+      <div class="success-msg" data-key="form_success_msg">Message reçu.<br>Je m'engage à vous répondre sous 24 heures ouvrées.</div>
+      <div class="success-sig">— Kevin André Hughes</div>
+    </div>
+
+    <div class="contact-links reveal">
+      <a href="mailto:kevin@k2strategy.io" class="contact-link">📧 kevin@k2strategy.io</a>
+      <a href="https://wa.me/33745115954" target="_blank" rel="noopener" class="contact-link">📱 +33 7 45 11 59 54</a>
+      <a href="https://linkedin.com/in/kevin-hughes-b2bsalesexpert/" target="_blank" rel="noopener" class="contact-link">LinkedIn</a>
+      <a href="https://malt.fr/profile/kevinhughes" target="_blank" rel="noopener" class="contact-link">Malt</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-main">
+    <div class="footer-copy">© 2026 K2 Strategy · k2strategy.io</div>
+    <div class="footer-tagline">VISION · REVENUE · IMPACT</div>
+    <div class="footer-copy">Member of La French Tech Hamburg 🐓</div>
+  </div>
+  <div class="footer-tech">Consulting · GTM · Sales Ops · Fractional CSO · EMEA · APAC</div>
+  <div class="footer-bottom">
+    <a href="/links">Links</a> &nbsp;·&nbsp;
+    <a href="/book">Book</a> &nbsp;·&nbsp;
+    <a href="mailto:kevin@k2strategy.io">kevin@k2strategy.io</a>
+  </div>
+</footer>
+
+<script>
+// ─── TRANSLATIONS ───
+const T = {
+  en: {
+    hero_eyebrow: "FRACTIONAL CSO · VP SALES",
+    hero_h1_line1: "REACH",
+    hero_h1_line2: "THE SUMMIT",
+    hero_subline: "Senior commercial leadership deployed in under 90 days. From ICP to revenue.",
+    hero_cta_primary: "BOOK A CALL",
+    hero_cta_secondary: "VIEW DECK",
+    nav_about: "About",
+    nav_services: "Services",
+    nav_missions: "Missions",
+    nav_contact: "Contact",
+    about_eyebrow: "THE STRATEGIST",
+    about_h2: "12+ years building revenue engines in demanding environments.",
+    about_body: "Kevin André Hughes is a Fractional CSO and VP Sales operating across EMEA, APAC, and DOM-TOM. Expert in GTM strategy, Sales Operations transformation, and commercial team building from zero. Native French and English, fluent in Spanish.",
+    kpi1_label: "Years B2B Experience",
+    kpi2_label: "Revenue Generated",
+    kpi3_label: "SQL Generated",
+    kpi4_label: "Sectors Covered",
+    services_eyebrow: "WHAT I DO",
+    services_h2: "Three ways to work together.",
+    services_subline: "No retainer. No overhead. Senior leadership activated on your terms.",
+    s1_label: "ON-DEMAND SPRINT",
+    s1_title: "GTM · Sales Ops · CRM",
+    s1_desc: "Intensive mission from 7 to 90 days. ICP definition, pipeline architecture, CRM deployment, revenue modelling. Full commercial infrastructure delivered — ready to activate.",
+    s1_d1: "ICP & Persona Framework",
+    s1_d2: "Pipeline & Revenue Architecture",
+    s1_d3: "CRM Setup (HubSpot / Salesforce)",
+    s1_d4: "Playbook & Onboarding Kit",
+    s1_badge: "FROM 750€ / DAY",
+    s2_label: "FRACTIONAL CSO",
+    s2_title: "Strategic Leadership 3–12 months",
+    s2_desc: "Part-time Chief Sales Officer embedded in your organization. Revenue strategy, team building, investor-ready commercial ops. No full-time cost.",
+    s2_d1: "Revenue Strategy",
+    s2_d2: "Team Building",
+    s2_d3: "Board-Level Reporting",
+    s2_d4: "Sales Culture",
+    s3_label: "SENIOR PLACEMENT",
+    s3_title: "VP Sales / CSO Full-Time",
+    s3_desc: "Open to the right senior role. EMEA scope, SaaS or high-growth environment, minimum VP Sales level. Hamburg-based with full mobility.",
+    s3_d1: "EMEA Scope",
+    s3_d2: "SaaS / High-Growth",
+    s3_d3: "Full Mobility",
+    s3_badge: "OPEN TO OFFERS",
+    missions_eyebrow: "TRACK RECORD",
+    missions_h2: "Real missions. Verified results.",
+    missions_subline: "No stock photography. No made-up metrics. Every KPI below is from a real engagement.",
+    missions_cta: "VIEW FULL DECK →",
+    sectors_eyebrow: "SECTORS & MARKETS",
+    sectors_h2: "One toolkit. Seven industries.",
+    pricing_eyebrow: "INVESTMENT",
+    pricing_h2: "Senior leadership. Transparent pricing.",
+    pricing_subline: "Rate adapts to mission scope, duration, and engagement model. Always discussed in a first call.",
+    p1_label: "SPRINT / ON-DEMAND",
+    p1_unit: "/day",
+    p1_sub: "Short missions · 7–30 days",
+    p1_includes: "ICP, GTM audit, CRM setup, playbook",
+    p1_cta: "Book a Call",
+    p2_label: "FRACTIONAL CSO",
+    p2_feat_badge: "MOST COMMON ENGAGEMENT",
+    p2_unit: "/day",
+    p2_sub: "3–12 month mandate · Rate based on scope",
+    p2_includes: "Full commercial strategy, team building, board reporting",
+    p2_cta: "Discuss my project",
+    p3_label: "SUCCESS FEE",
+    p3_unit: "of revenue",
+    p3_sub: "For specific GTM missions",
+    p3_note: "Structure defined case by case. Risk shared.",
+    p3_cta: "Let's talk",
+    pricing_disclaimer: "All rates excl. VAT. Final rate confirmed after discovery call. No commitment before alignment.",
+    contact_eyebrow: "LET'S WORK TOGETHER · TRAVAILLONS ENSEMBLE",
+    contact_h2_line1: "REACH",
+    contact_h2_line2: "THE SUMMIT",
+    contact_subline: "Ready to accelerate your commercial strategy, structure your sales operations, or launch in new markets?",
+    contact_cta_primary: "BOOK A DISCOVERY CALL →",
+    form_submit: "LANCER LE DÉPLOIEMENT →",
+    form_success_msg: "Message received.\nI commit to responding within 24 business hours.",
+  },
+  fr: {
+    hero_eyebrow: "DIRECTEUR COMMERCIAL FRACTIONNÉ · VP SALES",
+    hero_h1_line1: "ATTEIGNEZ",
+    hero_h1_line2: "LE SOMMET",
+    hero_subline: "Direction commerciale senior déployée en moins de 90 jours. De l'ICP au chiffre d'affaires.",
+    hero_cta_primary: "PRENDRE RENDEZ-VOUS",
+    hero_cta_secondary: "VOIR LE DECK",
+    nav_about: "À Propos",
+    nav_services: "Services",
+    nav_missions: "Missions",
+    nav_contact: "Contact",
+    about_eyebrow: "LE STRATÈGE",
+    about_h2: "12+ ans à construire des moteurs de revenus dans des environnements exigeants.",
+    about_body: "Kevin André Hughes est Directeur Commercial Fractionné et VP Sales, opérant sur les marchés EMEA, APAC et DOM-TOM. Expert en stratégie GTM, transformation Sales Ops, déploiement CRM (HubSpot, Salesforce) et construction d'équipes commerciales de zéro. Bilingue français/anglais, courant en espagnol.",
+    kpi1_label: "Ans d'expérience B2B",
+    kpi2_label: "Revenus Générés",
+    kpi3_label: "SQL Générés",
+    kpi4_label: "Secteurs Couverts",
+    services_eyebrow: "CE QUE JE FAIS",
+    services_h2: "Trois façons de travailler ensemble.",
+    services_subline: "Pas de retainer. Pas d'overhead. Leadership senior activé selon vos conditions.",
+    s1_label: "SPRINT ON-DEMAND",
+    s1_title: "GTM · Sales Ops · CRM",
+    s1_desc: "Mission intensive de 7 à 90 jours. Définition ICP, architecture pipeline, déploiement CRM, modélisation revenue. Infrastructure commerciale complète livrée — prête à activer.",
+    s1_d1: "ICP & Framework Persona",
+    s1_d2: "Architecture Pipeline & Revenue",
+    s1_d3: "Setup CRM (HubSpot / Salesforce)",
+    s1_d4: "Playbook & Kit Onboarding",
+    s1_badge: "À PARTIR DE 750€ / JOUR",
+    s2_label: "DIRECTEUR COMMERCIAL FRACTIONNÉ",
+    s2_title: "Leadership Stratégique 3–12 mois",
+    s2_desc: "Directeur Commercial à temps partiel intégré à votre organisation. Stratégie revenue, construction équipe, reporting investisseur. Sans coût temps plein.",
+    s2_d1: "Stratégie Revenue",
+    s2_d2: "Construction Équipe",
+    s2_d3: "Reporting Conseil",
+    s2_d4: "Culture Commerciale",
+    s3_label: "PLACEMENT SENIOR",
+    s3_title: "VP Sales / CSO Temps Plein",
+    s3_desc: "Ouvert au bon rôle senior. Périmètre EMEA, environnement SaaS ou forte croissance, niveau VP Sales minimum. Basé à Hambourg, mobilité complète.",
+    s3_d1: "Périmètre EMEA",
+    s3_d2: "SaaS / Forte Croissance",
+    s3_d3: "Mobilité Complète",
+    s3_badge: "OUVERT AUX OFFRES",
+    missions_eyebrow: "RÉFÉRENCES",
+    missions_h2: "Missions réelles. Résultats vérifiables.",
+    missions_subline: "Pas de photos de stock. Pas de métriques inventées. Chaque KPI ci-dessous provient d'une mission réelle.",
+    missions_cta: "VOIR LE DECK COMPLET →",
+    sectors_eyebrow: "SECTEURS & MARCHÉS",
+    sectors_h2: "Un seul outil. Sept industries.",
+    pricing_eyebrow: "INVESTISSEMENT",
+    pricing_h2: "Leadership senior. Tarifs transparents.",
+    pricing_subline: "Le tarif s'adapte au périmètre, à la durée et au modèle d'engagement. Toujours discuté lors d'un premier appel.",
+    p1_label: "SPRINT / ON-DEMAND",
+    p1_unit: "/jour",
+    p1_sub: "Missions courtes · 7–30 jours",
+    p1_includes: "ICP, audit GTM, setup CRM, playbook",
+    p1_cta: "Prendre Rendez-vous",
+    p2_label: "DIRECTEUR COMMERCIAL FRACTIONNÉ",
+    p2_feat_badge: "ENGAGEMENT LE PLUS COURANT",
+    p2_unit: "/jour",
+    p2_sub: "Mandat 3–12 mois · Tarif selon périmètre",
+    p2_includes: "Stratégie commerciale complète, construction équipe, reporting conseil",
+    p2_cta: "Discuter mon projet",
+    p3_label: "HONORAIRES DE SUCCÈS",
+    p3_unit: "du chiffre d'affaires",
+    p3_sub: "Pour des missions GTM spécifiques",
+    p3_note: "Structure définie au cas par cas. Risque partagé.",
+    p3_cta: "Parlons-en",
+    pricing_disclaimer: "Tous tarifs HT. Tarif final confirmé après appel découverte. Aucun engagement avant alignement.",
+    contact_eyebrow: "TRAVAILLONS ENSEMBLE · LET'S WORK TOGETHER",
+    contact_h2_line1: "ATTEIGNEZ",
+    contact_h2_line2: "LE SOMMET",
+    contact_subline: "Prêt à accélérer votre stratégie commerciale, structurer vos Sales Ops ou vous lancer sur de nouveaux marchés ?",
+    contact_cta_primary: "RÉSERVER UN APPEL DÉCOUVERTE →",
+    form_submit: "LANCER LE DÉPLOIEMENT →",
+    form_success_msg: "Message reçu.\nJe m'engage à vous répondre sous 24 heures ouvrées.",
+  },
+  es: {
+    hero_eyebrow: "DIRECTOR COMERCIAL FRACCIONAL · VP VENTAS",
+    hero_h1_line1: "ALCANZA",
+    hero_h1_line2: "LA CIMA",
+    hero_subline: "Liderazgo comercial senior desplegado en menos de 90 días. Del ICP a los ingresos.",
+    hero_cta_primary: "RESERVAR UNA LLAMADA",
+    hero_cta_secondary: "VER PRESENTACIÓN",
+    nav_about: "Sobre mí",
+    nav_services: "Servicios",
+    nav_missions: "Misiones",
+    nav_contact: "Contacto",
+    about_eyebrow: "EL ESTRATEGA",
+    about_h2: "Más de 12 años construyendo motores de ingresos en entornos exigentes.",
+    about_body: "Kevin André Hughes es un Director Comercial Fraccional y VP de Ventas que opera en los mercados EMEA, APAC y DOM-TOM. Experto en estrategia GTM, transformación de Sales Ops, despliegue de CRM y construcción de equipos comerciales desde cero. Francés e inglés nativos, español fluido.",
+    kpi1_label: "Años Experiencia B2B",
+    kpi2_label: "Ingresos Generados",
+    kpi3_label: "SQL Generados",
+    kpi4_label: "Sectores Cubiertos",
+    services_eyebrow: "QUÉ HAGO",
+    services_h2: "Tres formas de trabajar juntos.",
+    services_subline: "Sin retención. Sin overhead. Liderazgo senior activado en sus términos.",
+    s1_label: "SPRINT ON-DEMAND",
+    s1_title: "GTM · Sales Ops · CRM",
+    s1_desc: "Misión intensiva de 7 a 90 días. Definición de ICP, arquitectura de pipeline, despliegue de CRM, modelización de ingresos. Infraestructura comercial completa entregada — lista para activar.",
+    s1_d1: "ICP & Marco de Personas",
+    s1_d2: "Arquitectura Pipeline & Revenue",
+    s1_d3: "Setup CRM (HubSpot / Salesforce)",
+    s1_d4: "Playbook & Kit de Onboarding",
+    s1_badge: "DESDE 750€ / DÍA",
+    s2_label: "DIRECTOR COMERCIAL FRACCIONAL",
+    s2_title: "Liderazgo Estratégico 3–12 meses",
+    s2_desc: "Director de Ventas a tiempo parcial integrado en su organización. Estrategia de ingresos, construcción de equipo, operaciones comerciales listas para inversores. Sin coste a tiempo completo.",
+    s2_d1: "Estrategia de Ingresos",
+    s2_d2: "Construcción de Equipo",
+    s2_d3: "Reporting al Consejo",
+    s2_d4: "Cultura de Ventas",
+    s3_label: "COLOCACIÓN SENIOR",
+    s3_title: "VP Ventas / CSO Tiempo Completo",
+    s3_desc: "Abierto al rol senior adecuado. Alcance EMEA, entorno SaaS o alto crecimiento, nivel mínimo VP Ventas. Con sede en Hamburgo, movilidad completa.",
+    s3_d1: "Alcance EMEA",
+    s3_d2: "SaaS / Alto Crecimiento",
+    s3_d3: "Movilidad Completa",
+    s3_badge: "ABIERTO A OFERTAS",
+    missions_eyebrow: "HISTORIAL",
+    missions_h2: "Misiones reales. Resultados verificables.",
+    missions_subline: "Sin fotografías de stock. Sin métricas inventadas. Cada KPI a continuación proviene de un compromiso real.",
+    missions_cta: "VER PRESENTACIÓN COMPLETA →",
+    sectors_eyebrow: "SECTORES Y MERCADOS",
+    sectors_h2: "Una sola metodología. Siete industrias.",
+    pricing_eyebrow: "INVERSIÓN",
+    pricing_h2: "Liderazgo senior. Precios transparentes.",
+    pricing_subline: "La tarifa se adapta al alcance, la duración y el modelo de compromiso. Siempre discutida en una primera llamada.",
+    p1_label: "SPRINT / ON-DEMAND",
+    p1_unit: "/día",
+    p1_sub: "Misiones cortas · 7–30 días",
+    p1_includes: "ICP, auditoría GTM, configuración CRM, playbook",
+    p1_cta: "Reservar Llamada",
+    p2_label: "DIRECTOR COMERCIAL FRACCIONAL",
+    p2_feat_badge: "COMPROMISO MÁS COMÚN",
+    p2_unit: "/día",
+    p2_sub: "Mandato 3–12 meses · Tarifa según alcance",
+    p2_includes: "Estrategia comercial completa, construcción de equipo, reporting al consejo",
+    p2_cta: "Discutir mi proyecto",
+    p3_label: "HONORARIO DE ÉXITO",
+    p3_unit: "de los ingresos",
+    p3_sub: "Para misiones GTM específicas",
+    p3_note: "Estructura definida caso por caso. Riesgo compartido.",
+    p3_cta: "Hablemos",
+    pricing_disclaimer: "Todas las tarifas excl. IVA. Tarifa final confirmada tras llamada de descubrimiento. Sin compromiso antes del alineamiento.",
+    contact_eyebrow: "TRABAJEMOS JUNTOS · TRAVAILLONS ENSEMBLE",
+    contact_h2_line1: "ALCANZA",
+    contact_h2_line2: "LA CIMA",
+    contact_subline: "¿Listo para acelerar su estrategia comercial, estructurar sus operaciones de ventas o entrar en nuevos mercados?",
+    contact_cta_primary: "RESERVAR LLAMADA DE DESCUBRIMIENTO →",
+    form_submit: "LANCER LE DÉPLOIEMENT →",
+    form_success_msg: "Mensaje recibido.\nMe comprometo a responderle en 24 horas hábiles.",
+  }
+};
+
+// ─── LANGUAGE SYSTEM ───
+let currentLang = 'en';
+function setLanguage(lang) {
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  const translations = T[lang];
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const key = el.getAttribute('data-key');
+    if (translations[key] !== undefined) {
+      el.textContent = translations[key];
+    }
+  });
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.textContent.toLowerCase() === lang) btn.classList.add('active');
+  });
+}
+
+// Auto-detect language
+(function() {
+  const lang = navigator.language || navigator.userLanguage || 'en';
+  if (lang.startsWith('fr')) setLanguage('fr');
+  else if (lang.startsWith('es') || lang.includes('419')) setLanguage('es');
+  else setLanguage('en');
+})();
+
+// ─── NAVBAR SCROLL ───
+window.addEventListener('scroll', function() {
+  const nav = document.getElementById('navbar');
+  if (window.scrollY > 60) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+}, { passive: true });
+
+// ─── MOBILE MENU ───
+function toggleMenu() {
+  document.getElementById('mobile-menu').classList.toggle('open');
+}
+
+// ─── KATAKANA TEXTURE ───
+const katakanaChars = ['ア','イ','ウ','エ','オ','カ','キ','テ','ス','コ','ニ','ソ','K','2','¥','$','%','>','='];
+function generateKatakana(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const count = 150;
+  const fragment = document.createDocumentFragment();
+  for (let i = 0; i < count; i++) {
+    const span = document.createElement('span');
+    span.textContent = katakanaChars[Math.floor(Math.random() * katakanaChars.length)];
+    span.style.left = (Math.random() * 100) + '%';
+    span.style.top = (Math.random() * 100) + '%';
+    span.style.fontSize = (10 + Math.random() * 2) + 'px';
+    span.style.transform = 'rotate(' + (Math.random() * 30 - 15) + 'deg)';
+    fragment.appendChild(span);
+  }
+  container.appendChild(fragment);
+}
+generateKatakana('katakana-about');
+generateKatakana('katakana-missions');
+generateKatakana('katakana-pricing');
+
+// ─── SCROLL REVEAL ───
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ─── KPI COUNTER ANIMATION ───
+let countersAnimated = false;
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !countersAnimated) {
+      countersAnimated = true;
+      document.querySelectorAll('[data-counter]').forEach(el => {
+        const target = parseInt(el.getAttribute('data-counter'));
+        const suffix = el.getAttribute('data-suffix') || '';
+        const duration = 1500;
+        const step = target / (duration / 16);
+        let current = 0;
+        const timer = setInterval(() => {
+          current = Math.min(current + step, target);
+          el.textContent = Math.round(current) + suffix;
+          if (current >= target) clearInterval(timer);
+        }, 16);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+
+const aboutSection = document.getElementById('about');
+if (aboutSection) counterObserver.observe(aboutSection);
+
+// ─── CONTACT FORM ───
+document.getElementById('contact-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  try {
+    const data = new FormData(this);
+    await fetch('/', { method: 'POST', body: data });
+  } catch(err) {}
+  this.style.display = 'none';
+  document.getElementById('form-success').style.display = 'block';
+});
+</script>
+</body>
+</html>
