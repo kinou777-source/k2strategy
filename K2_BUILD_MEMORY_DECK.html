@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K2 Strategy — Build Memory Deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Barlow+Condensed:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C8973A;
+    --dark: #080808;
+    --light: #F5F0E8;
+    --text-light: #F4EFE8;
+    --text-dark: #0D0D0D;
+    --muted: rgba(244,239,232,0.55);
+    --border: rgba(200,151,58,0.25);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--dark);
+    color: var(--text-light);
+    font-family: 'Barlow Condensed', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .deck-wrapper {
+    width: 100%;
+    max-width: 900px;
+  }
+
+  .slide {
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+  .slide.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* HEADER */
+  .slide-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .slide-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.3em;
+  }
+  .slide-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--text-light);
+  }
+
+  /* SLIDE 1 — ÉTAPES */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .kpi-box {
+    background: rgba(200,151,58,0.08);
+    border: 1px solid var(--border);
+    padding: 14px;
+    text-align: center;
+  }
+  .kpi-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    color: var(--gold);
+    font-weight: 400;
+  }
+  .kpi-lab {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    margin-top: 4px;
+  }
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .step {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.03);
+    border-left: 2px solid rgba(200,151,58,0.3);
+    transition: border-color 0.2s;
+  }
+  .step:hover { border-left-color: var(--gold); }
+  .step-n {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    min-width: 28px;
+    padding-top: 2px;
+  }
+  .step-content {}
+  .step-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-light);
+    letter-spacing: 0.05em;
+  }
+  .step-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+
+  /* SLIDE 2 — OUTILS */
+  .tools-section {
+    margin-bottom: 1.5rem;
+  }
+  .section-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--gold);
+    letter-spacing: 0.3em;
+    margin-bottom: 10px;
+  }
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .tool-card {
+    padding: 12px 14px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(200,151,58,0.15);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .tool-card:hover {
+    border-color: rgba(200,151,58,0.4);
+    background: rgba(200,151,58,0.05);
+  }
+  .tool-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-light);
+    letter-spacing: 0.08em;
+  }
+  .tool-role {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+  .tool-cred {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    margin-top: 6px;
+    background: rgba(200,151,58,0.1);
+    padding: 3px 7px;
+    display: inline-block;
+  }
+
+  /* SLIDE 3 — PIPELINE */
+  .pipeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 1.5rem;
+  }
+  .pipe-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+  .pipe-node {
+    flex: 1;
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(200,151,58,0.15);
+    text-align: center;
+  }
+  .pipe-node.highlight {
+    border-color: var(--gold);
+    background: rgba(200,151,58,0.08);
+  }
+  .pipe-node-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-light);
+    letter-spacing: 0.1em;
+  }
+  .pipe-node-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .pipe-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    color: var(--gold);
+    font-size: 18px;
+  }
+  .pipe-vert {
+    display: flex;
+    justify-content: center;
+    padding: 6px 0;
+  }
+  .pipe-vert-line {
+    width: 1px;
+    height: 24px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    opacity: 0.5;
+  }
+  .roles {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .role-row {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.03);
+    border-left: 2px solid rgba(200,151,58,0.3);
+  }
+  .role-actor {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    min-width: 90px;
+    padding-top: 2px;
+  }
+  .role-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* NAV */
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .nav-btn {
+    background: none;
+    border: 1px solid rgba(200,151,58,0.3);
+    color: var(--text-light);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    padding: 8px 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .nav-btn:disabled {
+    opacity: 0.2;
+    cursor: default;
+  }
+  .dots {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .dot {
+    width: 6px;
+    height: 6px;
+    background: rgba(200,151,58,0.3);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .dot.active {
+    background: var(--gold);
+    transform: scale(1.4);
+  }
+
+  /* WATERMARK */
+  .watermark {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    color: rgba(200,151,58,0.25);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<div class="deck-wrapper">
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 1 — ÉTAPES
+  ══════════════════════════════════════════ -->
+  <div class="slide active" id="s0">
+    <div class="slide-header">
+      <span class="slide-num">01 · 03</span>
+      <span class="slide-title">Les étapes — de zéro au site live</span>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-box">
+        <div class="kpi-val">1j</div>
+        <div class="kpi-lab">DURÉE TOTALE</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-val">20 Go</div>
+        <div class="kpi-lab">LIBÉRÉS SUR MAC</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-val">8+</div>
+        <div class="kpi-lab">OUTILS INSTALLÉS</div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <span class="step-n">01</span>
+        <div class="step-content">
+          <div class="step-title">Diagnostic & nettoyage Mac</div>
+          <div class="step-sub">Terminal → df -h / → 405 Mo libres détectés → suppression caches Spotify/Ledger/Chrome, apps inutilisées (iMovie, GarageBand sons, Zoom, Evernote) → 20 Go libérés</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-n">02</span>
+        <div class="step-content">
+          <div class="step-title">Installation Claude Desktop App</div>
+          <div class="step-sub">claude.ai/download → .dmg → Applications. Nécessite Node.js pour Claude Code.</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-n">03</span>
+        <div class="step-content">
+          <div class="step-title">Installation Node.js v24.16.0</div>
+          <div class="step-sub">nodejs.org → macOS Installer (.pkg) → vérification : node --version</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-n">04</span>
+        <div class="step-content">
+          <div class="step-title">Installation Xcode Developer Tools</div>
+          <div class="step-sub">xcode-select --install → active git sur Mac (git version 2.39.3)</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-n">05</span>
+        <div class="step-content">
+          <div class="step-title">Création repo GitHub + token</div>
+          <div class="step-sub">github.com/kinou777-source → nouveau repo "k2strategy" (public) → token PAT (repo scope, no expiry) → git clone vers ~/Desktop/k2strategy</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-n">06</span>
+        <div class="step-content">
+          <div class="step-title">Installation Skills Claude Code</div>
+          <div class="step-sub">UI/UX Pro Max + Emil Kowalski (animations) + Impeccable (/polish /audit) · MCP 21st.dev configuré dans ~/.claude/claude.json</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-n">07</span>
+        <div class="step-content">
+          <div class="step-title">Build du site via Claude Code</div>
+          <div class="step-sub">Prompt béton collé dans Claude Code (Sonnet 4.6, effort Max) → 45 min, 32k tokens → index.html + book.html générés</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-n">08</span>
+        <div class="step-content">
+          <div class="step-title">Connexion Netlify + deploy CLI</div>
+          <div class="step-sub">Netlify lié à GitHub (continuous deployment) → problème accès repo → solution : npx netlify-cli deploy --prod --dir=. → k2strategy.io live</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 2 — OUTILS & CREDENTIALS
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="s1">
+    <div class="slide-header">
+      <span class="slide-num">02 · 03</span>
+      <span class="slide-title">Tous les outils & credentials</span>
+    </div>
+
+    <div class="tools-section">
+      <div class="section-eyebrow">INFRASTRUCTURE WEB</div>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <div class="tool-name">GITHUB</div>
+          <div class="tool-role">Versioning & stockage code source</div>
+          <div class="tool-cred">kinou777-source/k2strategy</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">NETLIFY</div>
+          <div class="tool-role">Hébergement + déploiement production</div>
+          <div class="tool-cred">fastidious-tarsier-df115b</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">NAMECHEAP</div>
+          <div class="tool-role">Registrar DNS — A record + CNAME</div>
+          <div class="tool-cred">k2strategy.io · k2strategy.eu</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">GOOGLE WORKSPACE</div>
+          <div class="tool-role">Email professionnel — SPF/DKIM OK</div>
+          <div class="tool-cred">kevin@k2strategy.io</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tools-section">
+      <div class="section-eyebrow">CLAUDE CODE — SKILLS INSTALLÉS</div>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <div class="tool-name">UI/UX PRO MAX</div>
+          <div class="tool-role">Design system adaptatif, composants premium</div>
+          <div class="tool-cred">nextlevelbuilder/ui-ux-pro-max-skill</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">EMIL KOWALSKI</div>
+          <div class="tool-role">Animations premium, micro-interactions</div>
+          <div class="tool-cred">emilkowalski/skill · 71 agents</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">IMPECCABLE</div>
+          <div class="tool-role">/polish /audit /animate /bolder /quieter</div>
+          <div class="tool-cred">pbakaus/impeccable · 71 agents</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">MCP 21ST.DEV</div>
+          <div class="tool-role">Bibliothèque composants UI live</div>
+          <div class="tool-cred">~/.claude/claude.json · API key sk-21st</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tools-section">
+      <div class="section-eyebrow">OUTILS LOCAUX MAC</div>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <div class="tool-name">NODE.JS v24.16.0</div>
+          <div class="tool-role">Moteur JS local — requis par Claude Code</div>
+          <div class="tool-cred">node --version</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">GIT v2.39.3</div>
+          <div class="tool-role">Versioning local → push vers GitHub</div>
+          <div class="tool-cred">git add . && git commit && git push</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">NETLIFY CLI</div>
+          <div class="tool-role">Deploy direct depuis Terminal</div>
+          <div class="tool-cred">npx netlify-cli deploy --prod --dir=.</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">CALENDLY</div>
+          <div class="tool-role">Prise de RDV — intégré dans les CTAs</div>
+          <div class="tool-cred">calendly.com/kevin-k2strategy/30min</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 3 — PIPELINE
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="s2">
+    <div class="slide-header">
+      <span class="slide-num">03 · 03</span>
+      <span class="slide-title">Pipeline complet — qui fait quoi</span>
+    </div>
+
+    <div class="pipeline">
+      <div class="pipe-row">
+        <div class="pipe-node highlight">
+          <div class="pipe-node-title">TOI</div>
+          <div class="pipe-node-sub">Donne les instructions</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-node highlight">
+          <div class="pipe-node-title">CLAUDE CODE</div>
+          <div class="pipe-node-sub">Génère index.html</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-node">
+          <div class="pipe-node-title">~/Desktop/k2strategy</div>
+          <div class="pipe-node-sub">Dossier local Mac</div>
+        </div>
+      </div>
+
+      <div class="pipe-vert"><div class="pipe-vert-line"></div></div>
+
+      <div class="pipe-row">
+        <div class="pipe-node" style="flex:0.5">
+          <div class="pipe-node-title">git add .</div>
+          <div class="pipe-node-sub">Prépare les fichiers</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-node" style="flex:0.5">
+          <div class="pipe-node-title">git commit</div>
+          <div class="pipe-node-sub">Sauvegarde versionnée</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-node" style="flex:0.5">
+          <div class="pipe-node-title">git push</div>
+          <div class="pipe-node-sub">Envoie sur GitHub</div>
+        </div>
+      </div>
+
+      <div class="pipe-vert"><div class="pipe-vert-line"></div></div>
+
+      <div class="pipe-row">
+        <div class="pipe-node">
+          <div class="pipe-node-title">GITHUB</div>
+          <div class="pipe-node-sub">kinou777-source/k2strategy</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-node">
+          <div class="pipe-node-title">NETLIFY CLI</div>
+          <div class="pipe-node-sub">npx netlify-cli deploy --prod</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-node highlight">
+          <div class="pipe-node-title">K2STRATEGY.IO</div>
+          <div class="pipe-node-sub">Live en 30 secondes</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-eyebrow" style="margin-bottom:10px">RÔLES DE CHAQUE ACTEUR</div>
+    <div class="roles">
+      <div class="role-row">
+        <span class="role-actor">TOI</span>
+        <span class="role-desc">Tu donnes les instructions en langage naturel. Tu valides, tu modifies, tu décides.</span>
+      </div>
+      <div class="role-row">
+        <span class="role-actor">CLAUDE CODE</span>
+        <span class="role-desc">Écrit et modifie les fichiers HTML/CSS/JS dans ~/Desktop/k2strategy. Utilise les Skills pour un rendu premium.</span>
+      </div>
+      <div class="role-row">
+        <span class="role-actor">GIT</span>
+        <span class="role-desc">Versionne chaque modification. Permet de revenir en arrière si besoin. Synchronise local → GitHub.</span>
+      </div>
+      <div class="role-row">
+        <span class="role-actor">GITHUB</span>
+        <span class="role-desc">Stocke le code en ligne. Archive de toutes les versions. Source de vérité du projet.</span>
+      </div>
+      <div class="role-row">
+        <span class="role-actor">NETLIFY CLI</span>
+        <span class="role-desc">Déploie directement depuis le Terminal sur k2strategy.io. Commande : npx netlify-cli deploy --prod --dir=.</span>
+      </div>
+      <div class="role-row">
+        <span class="role-actor">NAMECHEAP</span>
+        <span class="role-desc">Pointe k2strategy.io vers Netlify via les DNS. Ne plus toucher sauf urgence.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <div class="nav">
+    <button class="nav-btn" id="prev" onclick="go(-1)" disabled>← PRÉCÉDENT</button>
+    <div class="dots">
+      <div class="dot active" onclick="goTo(0)"></div>
+      <div class="dot" onclick="goTo(1)"></div>
+      <div class="dot" onclick="goTo(2)"></div>
+    </div>
+    <button class="nav-btn" id="next" onclick="go(1)">SUIVANT →</button>
+  </div>
+
+</div>
+
+<div class="watermark">K2 STRATEGY · BUILD DECK · 2026</div>
+
+<script>
+  let cur = 0;
+  const total = 3;
+
+  function goTo(n) {
+    document.getElementById('s' + cur).classList.remove('active');
+    document.querySelectorAll('.dot')[cur].classList.remove('active');
+    cur = n;
+    document.getElementById('s' + cur).classList.add('active');
+    document.querySelectorAll('.dot')[cur].classList.add('active');
+    document.getElementById('prev').disabled = cur === 0;
+    document.getElementById('next').disabled = cur === total - 1;
+  }
+
+  function go(dir) {
+    const next = cur + dir;
+    if (next >= 0 && next < total) goTo(next);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') go(1);
+    if (e.key === 'ArrowLeft') go(-1);
+  });
+</script>
+
+</body>
+</html>
