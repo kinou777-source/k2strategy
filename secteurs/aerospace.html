@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aerospace & MRO — K2 Strategy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Barlow+Condensed:wght@300;400;500;600;700&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --gold: #C8973A; --dark: #080808; --text: #F4EFE8; --muted: rgba(244,239,232,0.55); --border: rgba(200,151,58,0.20); }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Barlow Condensed', sans-serif; background: var(--dark); color: var(--text); overflow-x: hidden; }
+    .page-hero { position: relative; height: 340px; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; padding-top: 92px; }
+    .hero-bg { position: absolute; inset: 0; background-image: url('../assets/k2-montagne-nb.png'); background-size: cover; background-position: center top; opacity: 0.45; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,8,8,0.6) 0%, rgba(8,8,8,0.4) 50%, rgba(8,8,8,0.7) 100%); }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-eyebrow { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.4em; color: var(--gold); display: block; margin-bottom: 12px; }
+    .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(44px, 7vw, 80px); font-weight: 300; color: var(--text); line-height: 1; margin-bottom: 16px; }
+    .hero-sub { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; color: var(--muted); max-width: 520px; margin: 0 auto; }
+    .missions-section { background: #0C0B09; padding: 80px 48px; }
+    .section-eyebrow { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; display: block; text-align: center; margin-bottom: 8px; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 5vw, 52px); font-weight: 300; color: var(--text); text-align: center; margin-bottom: 48px; }
+    .mission-card-single { background: #101010; border: 1px solid rgba(200,151,58,0.4); background: rgba(200,151,58,0.04); padding: 48px; max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+    .mission-via { font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.15em; color: var(--gold); border: 1px solid rgba(200,151,58,0.4); background: rgba(200,151,58,0.08); padding: 3px 8px; display: inline-block; }
+    .mission-company { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 500; color: var(--text); line-height: 1.1; }
+    .mission-role { font-size: 16px; color: var(--gold); font-weight: 600; letter-spacing: 0.04em; }
+    .mission-date { font-family: 'Space Mono', monospace; font-size: 8px; color: var(--muted); letter-spacing: 0.06em; }
+    .kpis-row { display: flex; gap: 2px; }
+    .kpi-box { flex: 1; background: rgba(200,151,58,0.06); border: 1px solid rgba(200,151,58,0.2); padding: 16px 12px; text-align: center; }
+    .kpi-val { font-family: 'Cormorant Garamond', serif; font-size: 36px; color: var(--gold); line-height: 1; display: block; font-weight: 500; }
+    .kpi-lbl { font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.06em; color: var(--muted); display: block; margin-top: 4px; }
+    .context-block { border-left: 2px solid rgba(200,151,58,0.4); padding-left: 20px; font-size: 15px; color: var(--muted); line-height: 1.7; font-style: italic; }
+    .mission-grid-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .mission-bullets { display: flex; flex-direction: column; gap: 8px; }
+    .bullet { display: flex; gap: 10px; font-size: 14px; color: var(--muted); line-height: 1.6; }
+    .bullet span:first-child { color: var(--gold); flex-shrink: 0; }
+    .mission-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .tag { font-family: 'Space Mono', monospace; font-size: 7.5px; letter-spacing: 0.08em; padding: 3px 8px; border: 1px solid rgba(200,151,58,0.35); color: var(--gold); }
+    .bars-section { padding-top: 24px; border-top: 1px solid rgba(200,151,58,0.15); }
+    .bar-item { margin-bottom: 16px; }
+    .bar-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 6px; display: flex; justify-content: space-between; }
+    .bar-label span { color: var(--gold); }
+    .bar-track { height: 4px; background: rgba(200,151,58,0.1); position: relative; }
+    .bar-fill { height: 100%; background: var(--gold); position: relative; }
+    .bar-fill::after { content: ''; position: absolute; right: 0; top: -3px; width: 2px; height: 10px; background: var(--gold); }
+    .fractional-section { background: var(--dark); padding: 72px 48px; border-top: 1px solid rgba(200,151,58,0.12); }
+    .fractional-inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: auto 1fr; gap: 40px; align-items: start; }
+    .fractional-label { font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.2em; color: var(--gold); writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); white-space: nowrap; padding-top: 4px; }
+    .fractional-content {}
+    .fractional-eyebrow { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; display: block; margin-bottom: 16px; }
+    .fractional-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(26px, 3.5vw, 40px); font-weight: 300; color: var(--text); margin-bottom: 20px; line-height: 1.2; }
+    .fractional-body { font-size: 16px; color: var(--muted); line-height: 1.75; }
+    .fractional-body strong { color: var(--text); font-weight: 600; }
+    .cta-section { background: var(--dark); padding: 80px 48px; text-align: center; border-top: 1px solid rgba(200,151,58,0.15); }
+    .cta-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 4vw, 44px); font-weight: 300; color: var(--text); margin-bottom: 16px; }
+    .cta-sub { font-size: 16px; color: var(--muted); margin-bottom: 32px; }
+    .cta-btn { display: inline-block; background: var(--gold); color: #080808; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.2em; padding: 16px 40px; text-decoration: none; transition: filter 0.2s; }
+    .cta-btn:hover { filter: brightness(1.1); }
+    .back-link { display: block; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 0.15em; color: var(--muted); text-decoration: none; margin-top: 24px; transition: color 0.2s; }
+    .back-link:hover { color: var(--gold); }
+    footer { background: #080808; border-top: 1px solid rgba(200,151,58,0.15); padding: 24px 48px; text-align: center; }
+    footer p { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.1em; }
+    @media (max-width: 768px) {
+      .mission-card-single { padding: 28px; }
+      .mission-grid-inner { grid-template-columns: 1fr; gap: 20px; }
+      .kpis-row { flex-direction: column; gap: 2px; }
+      .fractional-inner { grid-template-columns: 1fr; }
+      .fractional-label { writing-mode: horizontal-tb; transform: none; margin-bottom: 8px; }
+      .missions-section { padding: 48px 24px; }
+      .fractional-section { padding: 48px 24px; }
+      .cta-section { padding: 48px 24px; }
+      footer { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav id="navbar" style="position:fixed;top:0;left:0;right:0;z-index:1000;padding:6px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,0.96);border-bottom:1px solid rgba(200,151,58,0.20);">
+    <a href="../index.html" style="text-decoration:none;display:flex;align-items:center;">
+      <img src="../assets/logo-noir.png" alt="K2 Strategy" height="60" style="mix-blend-mode:screen;" onerror="this.outerHTML='<span style=\'font-family:Cormorant Garamond,serif;font-size:18px;color:#F4EFE8;letter-spacing:0.15em;\'>K2 STRATEGY</span>'">
+    </a>
+    <div style="display:flex;align-items:center;gap:28px;">
+      <a href="../index.html#vision" style="font-family:Barlow Condensed,sans-serif;font-size:13px;letter-spacing:0.15em;color:rgba(244,239,232,0.7);text-decoration:none;">Vision</a>
+      <a href="../index.html#epr" style="font-family:Barlow Condensed,sans-serif;font-size:13px;letter-spacing:0.15em;color:rgba(244,239,232,0.7);text-decoration:none;">Method</a>
+      <a href="../index.html#services" style="font-family:Barlow Condensed,sans-serif;font-size:13px;letter-spacing:0.15em;color:rgba(244,239,232,0.7);text-decoration:none;">Services</a>
+      <a href="../index.html#missions" style="font-family:Barlow Condensed,sans-serif;font-size:13px;letter-spacing:0.15em;color:#C8973A;text-decoration:none;">Missions</a>
+      <a href="../index.html#about" style="font-family:Barlow Condensed,sans-serif;font-size:13px;letter-spacing:0.15em;color:rgba(244,239,232,0.7);text-decoration:none;">About</a>
+    </div>
+    <a href="../index.html#contact" style="font-family:Barlow Condensed,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.18em;background:#C8973A;color:#080808;padding:10px 22px;text-decoration:none;">Contact</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-eyebrow">SECTEUR · K2 STRATEGY</span>
+      <h1 class="hero-title">Aerospace &amp; MRO</h1>
+      <p class="hero-sub">105% of target. 21M€ in 8 months. From zero.</p>
+    </div>
+  </section>
+
+  <!-- MISSION -->
+  <section class="missions-section">
+    <span class="section-eyebrow">TRACK RECORD</span>
+    <h2 class="section-title">Mission phare</h2>
+
+    <div class="mission-card-single">
+
+      <div>
+        <div class="mission-via">VIA K2 STRATEGY</div>
+      </div>
+
+      <div>
+        <div class="mission-company">VSE Aviation</div>
+        <div class="mission-role" style="margin-top:8px;">Sales Supervisor &amp; GTM Lead — EMEA · Fractional Commercial Director</div>
+        <div class="mission-date" style="margin-top:6px;">JAN 2024 – SEPT 2024 · 8 MOIS · HAMBURG</div>
+      </div>
+
+      <!-- KPIs grands formats -->
+      <div class="kpis-row">
+        <div class="kpi-box">
+          <span class="kpi-val">21M€</span>
+          <span class="kpi-lbl">CA Generated</span>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-val">105%</span>
+          <span class="kpi-lbl">of Target</span>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-val">8</span>
+          <span class="kpi-lbl">Months</span>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-val">0→</span>
+          <span class="kpi-lbl">From Zero</span>
+        </div>
+      </div>
+
+      <!-- Contexte -->
+      <div class="context-block">
+        VSE Aviation required a fractional Commercial Director to drive EMEA expansion from zero — no existing sales framework, no inherited pipeline. Aggressive revenue target, 8-month mandate. One of the strongest individual commercial performances across the K2 portfolio.
+      </div>
+
+      <!-- Grid bullets + bars -->
+      <div class="mission-grid-inner">
+        <div class="mission-bullets">
+          <div class="bullet"><span>→</span><span>Sales organization design for full EMEA perimeter from scratch</span></div>
+          <div class="bullet"><span>→</span><span>ICP definition, sales process architecture, CRM structuring and pipeline design</span></div>
+          <div class="bullet"><span>→</span><span>Full commercial offer structuring and market positioning for MRO services</span></div>
+          <div class="bullet"><span>→</span><span>KAM — Groupe Dassault: flagship strategic account management across EMEA</span></div>
+          <div class="bullet"><span>→</span><span>Strategic partnerships activation and EMEA ecosystem development</span></div>
+          <div class="bullet"><span>→</span><span>Revenue forecasting and full P&amp;L accountability</span></div>
+        </div>
+
+        <!-- Bar charts décoratifs -->
+        <div class="bars-section">
+          <div class="bar-item">
+            <div class="bar-label">Revenue Achievement <span>105%</span></div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:100%;"></div>
+            </div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-label">CA Generated <span>21M€</span></div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:88%;"></div>
+            </div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-label">Time to Revenue <span>From 0 · 8 months</span></div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:75%;"></div>
+            </div>
+          </div>
+          <div style="margin-top:24px;padding-top:16px;border-top:1px solid rgba(200,151,58,0.12);">
+            <div class="mission-tags">
+              <span class="tag">Aerospace MRO</span>
+              <span class="tag">EMEA GTM</span>
+              <span class="tag">KAM Dassault</span>
+              <span class="tag">Fractional CSO</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FRACTIONAL SECTION -->
+  <section class="fractional-section">
+    <div class="fractional-inner">
+      <div class="fractional-label">FRACTIONAL VALUE</div>
+      <div class="fractional-content">
+        <span class="fractional-eyebrow">POURQUOI LE FRACTIONAL POUR L'AÉROSPATIALE</span>
+        <h2 class="fractional-title">Pas d'inertie. Pas de période d'onboarding.<br>Du leadership commercial senior, immédiat.</h2>
+        <p class="fractional-body">
+          <strong>No inertia of a full-time hire. No onboarding period.</strong> Immediate senior commercial leadership deployed — ICP to pipeline to closing in under 90 days. Dans un secteur où chaque trimestre compte et où les cycles de vente MRO exigent une expertise marché pointue, le modèle fractional élimine les délais et les coûts fixes d'un recrutement traditionnel. Vous bénéficiez d'un directeur commercial EMEA opérationnel dès le premier jour.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2 class="cta-title">Un développement commercial EMEA dans l'Aérospatiale ?</h2>
+    <p class="cta-sub">MRO, KAM, GTM EMEA — un mandat de 6 à 12 mois peut changer vos chiffres.</p>
+    <a href="../index.html#contact" class="cta-btn">Prendre contact</a>
+    <a href="../index.html" class="back-link">← K2 Strategy</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 K2 STRATEGY · KEVIN ANDRÉ HUGHES · FRACTIONAL CSO / VP SALES</p>
+  </footer>
+
+</body>
+</html>

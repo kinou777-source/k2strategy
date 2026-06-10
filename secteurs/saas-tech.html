@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SaaS & Tech — K2 Strategy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Barlow+Condensed:wght@300;400;500;600;700&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --gold: #C8973A; --dark: #080808; --text: #F4EFE8; --muted: rgba(244,239,232,0.55); --border: rgba(200,151,58,0.20); }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Barlow Condensed', sans-serif; background: var(--dark); color: var(--text); overflow-x: hidden; }
+    .page-hero { position: relative; height: 340px; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; padding-top: 92px; }
+    .hero-bg { position: absolute; inset: 0; background-image: url('../assets/k2-montagne-nb.png'); background-size: cover; background-position: center top; opacity: 0.45; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,8,8,0.6) 0%, rgba(8,8,8,0.4) 50%, rgba(8,8,8,0.7) 100%); }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-eyebrow { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.4em; color: var(--gold); display: block; margin-bottom: 12px; }
+    .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(44px, 7vw, 80px); font-weight: 300; color: var(--text); line-height: 1; margin-bottom: 16px; }
+    .hero-sub { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; color: var(--muted); max-width: 520px; margin: 0 auto; }
+    .missions-section { background: #0C0B09; padding: 80px 48px; }
+    .section-eyebrow { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; display: block; text-align: center; margin-bottom: 8px; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 5vw, 52px); font-weight: 300; color: var(--text); text-align: center; margin-bottom: 48px; }
+    .missions-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 1200px; margin: 0 auto; }
+    .mission-card { background: #101010; border: 1px solid rgba(200,151,58,0.15); padding: 28px; display: flex; flex-direction: column; gap: 16px; }
+    .mission-card.featured { border-color: rgba(200,151,58,0.4); background: rgba(200,151,58,0.04); }
+    .mission-via { font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.15em; color: var(--gold); border: 1px solid rgba(200,151,58,0.4); background: rgba(200,151,58,0.08); padding: 3px 8px; display: inline-block; margin-bottom: 4px; }
+    .mission-via.ft { color: var(--muted); border-color: rgba(200,151,58,0.2); background: transparent; }
+    .mission-via.intensive { color: #fff; border-color: rgba(200,151,58,0.6); background: rgba(200,151,58,0.16); }
+    .mission-company { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 500; color: var(--text); line-height: 1.1; }
+    .mission-role { font-size: 14px; color: var(--gold); font-weight: 600; }
+    .mission-date { font-family: 'Space Mono', monospace; font-size: 8px; color: var(--muted); letter-spacing: 0.06em; }
+    .mission-kpis { display: flex; gap: 2px; }
+    .kpi-box { flex: 1; background: rgba(200,151,58,0.06); border: 1px solid rgba(200,151,58,0.2); padding: 8px 6px; text-align: center; }
+    .kpi-val { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold); line-height: 1; display: block; font-weight: 500; }
+    .kpi-lbl { font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.06em; color: var(--muted); display: block; margin-top: 2px; }
+    .mission-bullets { display: flex; flex-direction: column; gap: 6px; }
+    .bullet { display: flex; gap: 8px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .bullet span:first-child { color: var(--gold); flex-shrink: 0; }
+    .mission-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .tag { font-family: 'Space Mono', monospace; font-size: 7.5px; letter-spacing: 0.08em; padding: 3px 8px; border: 1px solid rgba(200,151,58,0.35); color: var(--gold); }
+    .deliverables-section { background: var(--dark); padding: 64px 48px; border-top: 1px solid rgba(200,151,58,0.12); }
+    .deliverables-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; max-width: 1200px; margin: 0 auto; }
+    .deliverable-item { background: #101010; border: 1px solid rgba(200,151,58,0.12); padding: 24px 20px; display: flex; align-items: flex-start; gap: 14px; }
+    .deliverable-num { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: rgba(200,151,58,0.25); line-height: 1; flex-shrink: 0; }
+    .deliverable-name { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 600; color: var(--text); letter-spacing: 0.06em; line-height: 1.4; }
+    .cta-section { background: var(--dark); padding: 80px 48px; text-align: center; border-top: 1px solid rgba(200,151,58,0.15); }
+    .cta-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 4vw, 44px); font-weight: 300; color: var(--text); margin-bottom: 16px; }
+    .cta-sub { font-size: 16px; color: var(--muted); margin-bottom: 32px; }
+    .cta-btn { display: inline-block; background: var(--gold); color: #080808; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.2em; padding: 16px 40px; text-decoration: none; transition: filter 0.2s; }
+    .cta-btn:hover { filter: brightness(1.1); }
+    .back-link { display: block; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 0.15em; color: var(--muted); text-decoration: none; margin-top: 24px; transition: color 0.2s; }
+    .back-link:hover { color: var(--gold); }
+    footer { background: #080808; border-top: 1px solid rgba(200,151,58,0.15); padding: 24px 48px; text-align: center; }
+    footer p { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.1em; }
+    @media (max-width: 768px) {
+      .missions-grid { grid-template-columns: 1fr; }
+      .deliverables-grid { grid-template-columns: 1fr; }
+      .missions-section { padding: 48px 24px; }
+      .deliverables-section { padding: 48px 24px; }
+      .cta-section { padding: 48px 24px; }
+      footer { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav id="navbar" style="position:fixed;top:0;left:0;right:0;z-index:1000;padding:6px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,0.96);border-bottom:1px solid rgba(200,151,58,0.20);">
+    <a href="../index.html" style="text-decoration:none;display:flex;align-items:center;">
+      <img src="../assets/logo-noir.png" alt="K2 Strategy" height="60" style="mix-blend-mode:screen;" onerror="this.outerHTML='<span style=\'font-family:Cormorant Garamond,serif;font-size:18px;color:#F4EFE8;letter-spacing:0.15em;\'>K2 STRATEGY</span>'">
+    </a>
+    <div style="display:flex;align-items:center;gap:28px;">
+      <a href="../index.html#vision" style="font-family:Barlow Condensed,sans-serif;font-size:13px;letter-spacing:0.15em;color:rgba(244,239,232,0.7);text-decoration:none;">Vision</a>
+      <a href="../index.html#epr" style="font-family:Barlow Condensed,sans-serif;font-size:13px;letter-spacing:0.15em;color:rgba(244,239,232,0.7);text-decoration:none;">Method</a>
+      <a href="../index.html#services" style="font-family:Barlow Condensed,sans-serif;font-size:13px;letter-spacing:0.15em;color:rgba(244,239,232,0.7);text-decoration:none;">Services</a>
+      <a href="../index.html#missions" style="font-family:Barlow Condensed,sans-serif;font-size:13px;letter-spacing:0.15em;color:#C8973A;text-decoration:none;">Missions</a>
+      <a href="../index.html#about" style="font-family:Barlow Condensed,sans-serif;font-size:13px;letter-spacing:0.15em;color:rgba(244,239,232,0.7);text-decoration:none;">About</a>
+    </div>
+    <a href="../index.html#contact" style="font-family:Barlow Condensed,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.18em;background:#C8973A;color:#080808;padding:10px 22px;text-decoration:none;">Contact</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-eyebrow">SECTEUR · K2 STRATEGY</span>
+      <h1 class="hero-title">SaaS &amp; Tech</h1>
+      <p class="hero-sub">Sales infrastructure built to last. From ICP to recurring revenue.</p>
+    </div>
+  </section>
+
+  <!-- MISSIONS -->
+  <section class="missions-section">
+    <span class="section-eyebrow">TRACK RECORD</span>
+    <h2 class="section-title">Missions SaaS &amp; Tech</h2>
+
+    <div class="missions-grid">
+
+      <!-- Mission 1 — Opteinics / BASF -->
+      <div class="mission-card featured">
+        <div>
+          <div class="mission-via intensive">VIA K2 STRATEGY · 7-DAY INTENSIVE</div>
+        </div>
+        <div class="mission-company">Opteinics<br><span style="font-size:16px;color:var(--muted);font-weight:300;">BASF Group</span></div>
+        <div class="mission-role">Sales Ops &amp; GTM Architect — Sustainability SaaS</div>
+        <div class="mission-date">JAN 2025 · 7 JOURS · FRANKFURT</div>
+        <div class="mission-kpis">
+          <div class="kpi-box"><span class="kpi-val">7d</span><span class="kpi-lbl">Duration</span></div>
+          <div class="kpi-box"><span class="kpi-val">ICP</span><span class="kpi-lbl">Full Build</span></div>
+          <div class="kpi-box"><span class="kpi-val">OKRs</span><span class="kpi-lbl">Deployed</span></div>
+          <div class="kpi-box"><span class="kpi-val">MRR</span><span class="kpi-lbl">Models Built</span></div>
+        </div>
+        <div class="mission-bullets">
+          <div class="bullet"><span>→</span><span>Built full ICP and persona framework from scratch in 7 days</span></div>
+          <div class="bullet"><span>→</span><span>Designed MRR, ARR, cohort analysis and pipeline velocity revenue models</span></div>
+          <div class="bullet"><span>→</span><span>Structured OKRs aligned to growth stage and investor expectations</span></div>
+          <div class="bullet"><span>→</span><span>Built recruitment framework: profiles, assessment criteria, onboarding playbook, ramp-up timeline</span></div>
+          <div class="bullet"><span>→</span><span>Complete commercial infrastructure delivered — ready for immediate deployment</span></div>
+        </div>
+        <div class="mission-tags">
+          <span class="tag">Sustainability SaaS</span>
+          <span class="tag">Sales Ops</span>
+          <span class="tag">BASF Group</span>
+        </div>
+      </div>
+
+      <!-- Mission 2 — Wunder Mobility (SaaS angle) -->
+      <div class="mission-card">
+        <div>
+          <div class="mission-via ft">FULL-TIME</div>
+        </div>
+        <div class="mission-company">Wunder Mobility<br><span style="font-size:16px;color:var(--muted);font-weight:300;">ex goUrban</span></div>
+        <div class="mission-role">Head of Sales &amp; Partnerships</div>
+        <div class="mission-date">OCT 2021 – DEC 2023 · VIENNA</div>
+        <div class="mission-kpis">
+          <div class="kpi-box"><span class="kpi-val">8</span><span class="kpi-lbl">Closings</span></div>
+          <div class="kpi-box"><span class="kpi-val">1M€</span><span class="kpi-lbl">Anchor</span></div>
+          <div class="kpi-box"><span class="kpi-val">Series A</span><span class="kpi-lbl">Support</span></div>
+        </div>
+        <div class="mission-bullets">
+          <div class="bullet"><span>→</span><span>Full sales ops + CRM infrastructure from scratch for a SaaS platform</span></div>
+          <div class="bullet"><span>→</span><span>Commercial process design, forecasting, pipeline architecture</span></div>
+          <div class="bullet"><span>→</span><span>Series A fundraising support — investor reporting, KPI dashboards</span></div>
+        </div>
+        <div style="margin-top:auto;">
+          <a href="mobility.html" style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.12em;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,151,58,0.3);padding-bottom:2px;">Voir mission complète → Mobility</a>
+        </div>
+        <div class="mission-tags">
+          <span class="tag">Shared Mobility SaaS</span>
+          <span class="tag">Series A</span>
+          <span class="tag">Vienna</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DELIVERABLES SECTION -->
+  <section class="deliverables-section">
+    <span class="section-eyebrow">LIVRABLES TYPIQUES</span>
+    <h2 class="section-title" style="margin-bottom:32px;">Ce que vous recevez.</h2>
+    <div class="deliverables-grid">
+      <div class="deliverable-item">
+        <span class="deliverable-num">01</span>
+        <span class="deliverable-name">ICP &amp; Persona Framework</span>
+      </div>
+      <div class="deliverable-item">
+        <span class="deliverable-num">02</span>
+        <span class="deliverable-name">MRR / ARR Revenue Models</span>
+      </div>
+      <div class="deliverable-item">
+        <span class="deliverable-num">03</span>
+        <span class="deliverable-name">Pipeline Architecture &amp; CRM Setup</span>
+      </div>
+      <div class="deliverable-item">
+        <span class="deliverable-num">04</span>
+        <span class="deliverable-name">OKRs &amp; Forecasting Framework</span>
+      </div>
+      <div class="deliverable-item">
+        <span class="deliverable-num">05</span>
+        <span class="deliverable-name">Recruitment Framework</span>
+      </div>
+      <div class="deliverable-item">
+        <span class="deliverable-num">06</span>
+        <span class="deliverable-name">Investor-Ready Commercial Documentation</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2 class="cta-title">Une infrastructure commerciale SaaS à construire ?</h2>
+    <p class="cta-sub">ICP, revenue models, OKRs, CRM — en 7 jours ou en mission longue. Discutons.</p>
+    <a href="../index.html#contact" class="cta-btn">Prendre contact</a>
+    <a href="../index.html" class="back-link">← K2 Strategy</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 K2 STRATEGY · KEVIN ANDRÉ HUGHES · FRACTIONAL CSO / VP SALES</p>
+  </footer>
+
+</body>
+</html>

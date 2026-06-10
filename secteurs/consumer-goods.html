@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consumer Goods — K2 Strategy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Barlow+Condensed:wght@300;400;500;600&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --gold: #C8973A; --dark: #080808; --text: #F4EFE8; --muted: rgba(244,239,232,0.55); --border: rgba(200,151,58,0.20); }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Barlow Condensed', sans-serif; background: var(--dark); color: var(--text); overflow-x: hidden; }
+    .page-hero { position: relative; height: 340px; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; padding-top: 92px; }
+    .hero-bg { position: absolute; inset: 0; background-image: url('../assets/k2-montagne-nb.png'); background-size: cover; background-position: center top; opacity: 0.45; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,8,8,0.6) 0%, rgba(8,8,8,0.4) 50%, rgba(8,8,8,0.7) 100%); }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-eyebrow { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.4em; color: var(--gold); display: block; margin-bottom: 12px; }
+    .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(44px, 7vw, 80px); font-weight: 300; color: var(--text); line-height: 1; margin-bottom: 16px; }
+    .hero-sub { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; color: var(--muted); max-width: 520px; margin: 0 auto; }
+    .missions-section { background: #0C0B09; padding: 80px 48px; }
+    .section-eyebrow { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; display: block; text-align: center; margin-bottom: 8px; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 5vw, 52px); font-weight: 300; color: var(--text); text-align: center; margin-bottom: 48px; }
+    .missions-grid { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 700px; margin: 0 auto; }
+    .mission-card { background: #101010; border: 1px solid rgba(200,151,58,0.15); padding: 28px; display: flex; flex-direction: column; gap: 16px; }
+    .mission-card.featured { border-color: rgba(200,151,58,0.4); background: rgba(200,151,58,0.04); }
+    .mission-via { font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.15em; color: var(--gold); border: 1px solid rgba(200,151,58,0.4); background: rgba(200,151,58,0.08); padding: 3px 8px; display: inline-block; margin-bottom: 4px; }
+    .mission-via.ft { color: var(--muted); border-color: rgba(200,151,58,0.2); background: transparent; }
+    .mission-company { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 500; color: var(--text); line-height: 1.1; }
+    .mission-role { font-size: 14px; color: var(--gold); font-weight: 600; }
+    .mission-date { font-family: 'Space Mono', monospace; font-size: 8px; color: var(--muted); letter-spacing: 0.06em; }
+    .mission-kpis { display: flex; gap: 2px; }
+    .kpi-box { flex: 1; background: rgba(200,151,58,0.06); border: 1px solid rgba(200,151,58,0.2); padding: 8px 6px; text-align: center; }
+    .kpi-val { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold); line-height: 1; display: block; font-weight: 500; }
+    .kpi-lbl { font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.06em; color: var(--muted); display: block; margin-top: 2px; }
+    .mission-bullets { display: flex; flex-direction: column; gap: 6px; }
+    .bullet { display: flex; gap: 8px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .bullet span:first-child { color: var(--gold); flex-shrink: 0; }
+    .mission-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .tag { font-family: 'Space Mono', monospace; font-size: 7.5px; letter-spacing: 0.08em; padding: 3px 8px; border: 1px solid rgba(200,151,58,0.35); color: var(--gold); }
+    .deliverables-section { background: var(--dark); padding: 64px 48px; border-top: 1px solid rgba(200,151,58,0.12); }
+    .deliverables-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; max-width: 900px; margin: 40px auto 0; }
+    .deliverable-card { background: #0C0B09; border: 1px solid rgba(200,151,58,0.2); padding: 24px 16px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .deliverable-num { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: var(--gold); line-height: 1; }
+    .deliverable-title { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; color: var(--text); text-align: center; line-height: 1.3; }
+    .cta-section { background: var(--dark); padding: 80px 48px; text-align: center; border-top: 1px solid rgba(200,151,58,0.15); }
+    .cta-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 4vw, 44px); font-weight: 300; color: var(--text); margin-bottom: 16px; }
+    .cta-sub { font-size: 16px; color: var(--muted); margin-bottom: 32px; }
+    .cta-btn { display: inline-block; background: var(--gold); color: #080808; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.2em; padding: 16px 40px; text-decoration: none; transition: filter 0.2s; }
+    .cta-btn:hover { filter: brightness(1.1); }
+    .back-link { display: block; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 0.15em; color: var(--muted); text-decoration: none; margin-top: 24px; transition: color 0.2s; }
+    .back-link:hover { color: var(--gold); }
+    footer { background: #080808; border-top: 1px solid rgba(200,151,58,0.15); padding: 24px 48px; text-align: center; }
+    footer p { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.1em; }
+    @media (max-width: 768px) {
+      .missions-grid { grid-template-columns: 1fr; }
+      .missions-section { padding: 48px 24px; }
+      .deliverables-section { padding: 48px 24px; }
+      .deliverables-grid { grid-template-columns: repeat(2, 1fr); }
+      .cta-section { padding: 48px 24px; }
+      footer { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav id="navbar" style="position:fixed;top:0;left:0;right:0;z-index:1000;padding:6px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,0.96);border-bottom:1px solid rgba(200,151,58,0.20);">
+    <a href="../index.html" style="text-decoration:none;display:flex;align-items:center;">
+      <img src="../assets/logo-noir.png" alt="K2 Strategy" height="60" style="mix-blend-mode:screen;" onerror="this.outerHTML='<span style=\'font-family:Cormorant Garamond,serif;font-size:18px;color:#F4EFE8;letter-spacing:0.15em;\'>K2 STRATEGY</span>'">
+    </a>
+    <div style="display:flex;align-items:center;gap:28px;">
+      <a href="../index.html#vision" style="font-family:Barlow Condensed,sans-serif;font-size:13px;letter-spacing:0.15em;color:rgba(244,239,232,0.7);text-decoration:none;">Vision</a>
+      <a href="../index.html#epr" style="font-family:Barlow Condensed,sans-serif;font-size:13px;letter-spacing:0.15em;color:rgba(244,239,232,0.7);text-decoration:none;">Method</a>
+      <a href="../index.html#services" style="font-family:Barlow Condensed,sans-serif;font-size:13px;letter-spacing:0.15em;color:rgba(244,239,232,0.7);text-decoration:none;">Services</a>
+      <a href="../index.html#missions" style="font-family:Barlow Condensed,sans-serif;font-size:13px;letter-spacing:0.15em;color:rgba(244,239,232,0.7);text-decoration:none;">Missions</a>
+      <a href="../index.html#about" style="font-family:Barlow Condensed,sans-serif;font-size:13px;letter-spacing:0.15em;color:rgba(244,239,232,0.7);text-decoration:none;">About</a>
+    </div>
+    <a href="../index.html#contact" style="font-family:Barlow Condensed,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.18em;background:#C8973A;color:#080808;padding:10px 22px;text-decoration:none;">Contact</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-eyebrow">SECTEUR · CONSUMER GOODS</span>
+      <h1 class="hero-title">Consumer Goods</h1>
+      <p class="hero-sub">EMEA + APAC. Sales cycle halved. CRM deployed. Team built.</p>
+    </div>
+  </section>
+
+  <!-- MISSIONS -->
+  <section class="missions-section">
+    <span class="section-eyebrow">TRACK RECORD</span>
+    <h2 class="section-title">Mission Consumer Goods</h2>
+
+    <div class="missions-grid">
+      <div class="mission-card featured">
+        <div>
+          <span class="mission-via">VIA K2 STRATEGY</span>
+        </div>
+        <div class="mission-company">Ergobaby Europe</div>
+        <div style="font-size:12px;color:var(--muted);font-family:'Space Mono',monospace;letter-spacing:0.06em;">groupe US $100M</div>
+        <div class="mission-role">Inside Sales Lead · CS Team Management</div>
+        <div class="mission-date">FÉV–MAI 2026 · 3 MOIS · HAMBURG</div>
+
+        <div class="mission-kpis">
+          <div class="kpi-box">
+            <span class="kpi-val">5</span>
+            <span class="kpi-lbl">Team Members</span>
+          </div>
+          <div class="kpi-box">
+            <span class="kpi-val">7→3j</span>
+            <span class="kpi-lbl">Sales Cycle</span>
+          </div>
+          <div class="kpi-box">
+            <span class="kpi-val">HubSpot</span>
+            <span class="kpi-lbl">CRM</span>
+          </div>
+          <div class="kpi-box">
+            <span class="kpi-val" style="font-size:14px;">EMEA+APAC</span>
+            <span class="kpi-lbl">Coverage</span>
+          </div>
+        </div>
+
+        <div class="mission-bullets">
+          <div class="bullet"><span>→</span><span>CS team management EMEA + APAC (5 people) — full operational ownership</span></div>
+          <div class="bullet"><span>→</span><span>Hubspot CRM full implementation + Data BI (Zendesk, Claimlane integration)</span></div>
+          <div class="bullet"><span>→</span><span>Sales cycle reduced from 7 to 3 days through process redesign</span></div>
+          <div class="bullet"><span>→</span><span>SMB + KAM + distributor support framework deployed</span></div>
+          <div class="bullet"><span>→</span><span>Cross-functional alignment: CS, Sales Ops, and distributor network</span></div>
+        </div>
+
+        <div class="mission-tags">
+          <span class="tag">CONSUMER GOODS</span>
+          <span class="tag">$100M US GROUP</span>
+          <span class="tag">EMEA</span>
+          <span class="tag">APAC</span>
+          <span class="tag">HAMBURG</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DELIVERABLES -->
+  <section class="deliverables-section">
+    <span class="section-eyebrow">LIVRABLES</span>
+    <h2 class="section-title">Consumer Goods Deliverables</h2>
+    <div class="deliverables-grid">
+      <div class="deliverable-card">
+        <div class="deliverable-num">01</div>
+        <div class="deliverable-title">CS Team Architecture<br>(EMEA + APAC)</div>
+      </div>
+      <div class="deliverable-card">
+        <div class="deliverable-num">02</div>
+        <div class="deliverable-title">CRM Stack Deployment<br>(Hubspot)</div>
+      </div>
+      <div class="deliverable-card">
+        <div class="deliverable-num">03</div>
+        <div class="deliverable-title">Sales Cycle<br>Optimization</div>
+      </div>
+      <div class="deliverable-card">
+        <div class="deliverable-num">04</div>
+        <div class="deliverable-title">KAM Framework</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2 class="cta-title">Your CS team. Your CRM. Your growth.</h2>
+    <p class="cta-sub">From EMEA to APAC — operational ownership that cuts sales cycles in half and builds teams that scale.</p>
+    <a href="../index.html#contact" class="cta-btn">BOOK A CALL</a>
+    <a href="../index.html#missions" class="back-link">← Back to all missions</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 K2 STRATEGY · KEVIN ANDRÉ HUGHES · FRACTIONAL CSO / VP SALES</p>
+  </footer>
+
+</body>
+</html>
