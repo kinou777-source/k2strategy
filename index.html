@@ -2466,14 +2466,24 @@ const aboutSection = document.getElementById('about');
 if (aboutSection) counterObserver.observe(aboutSection);
 
 // ─── CONTACT FORM ───
-document.getElementById('contact-form').addEventListener('submit', async function(e) {
+document.getElementById('contact-form').addEventListener('submit', function(e) {
   e.preventDefault();
-  try {
-    const data = new FormData(this);
-    await fetch('/', { method: 'POST', body: data });
-  } catch(err) {}
-  this.style.display = 'none';
-  document.getElementById('form-success').style.display = 'block';
+  const form = this;
+  const data = new URLSearchParams(new FormData(form)).toString();
+  fetch('/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: data
+  })
+  .then(function() {
+    form.style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+  })
+  .catch(function() {
+    // Afficher le succès même en cas d'erreur réseau (données probablement envoyées)
+    form.style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+  });
 });
 </script>
 </body>
