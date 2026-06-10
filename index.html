@@ -2469,20 +2469,23 @@ if (aboutSection) counterObserver.observe(aboutSection);
 document.getElementById('contact-form').addEventListener('submit', function(e) {
   e.preventDefault();
   const form = this;
-  const data = new URLSearchParams(new FormData(form)).toString();
+  const fd = new FormData(form);
+  fd.append('form-name', 'contact'); // garantit la présence même si le hidden field était absent du FormData
   fetch('/', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: data
+    body: new URLSearchParams(fd).toString()
   })
-  .then(function() {
-    form.style.display = 'none';
-    document.getElementById('form-success').style.display = 'block';
+  .then(function(r) {
+    if (r.ok) {
+      form.style.display = 'none';
+      document.getElementById('form-success').style.display = 'block';
+    } else {
+      console.error('Netlify a refusé:', r.status);
+    }
   })
-  .catch(function() {
-    // Afficher le succès même en cas d'erreur réseau (données probablement envoyées)
-    form.style.display = 'none';
-    document.getElementById('form-success').style.display = 'block';
+  .catch(function(err) {
+    console.error('Envoi échoué:', err);
   });
 });
 </script>
