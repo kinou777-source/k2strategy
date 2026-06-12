@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>J'ai tout vendu — K2 Strategy</title>
-<meta name="description" content="J'ai tout vendu — La méthode EPR. Un livre sur la vente, la résilience et la méthode qui a tout changé. Par Kevin André Hughes.">
+<title>La Méthode E.P.R · J'ai tout vendu — K2 Strategy</title>
+<meta name="description" content="La Méthode E.P.R — Énergie, Produit, Rigueur. Par Kevin André Hughes, K2 Strategy. Et le livre : J'ai tout vendu.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Barlow+Condensed:wght@300;400;500&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Barlow+Condensed:wght@300;400;500;600;700&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -16,92 +16,327 @@
   --text-light: #F4EFE8;
   --muted-dark: rgba(244,239,232,0.55);
   --border: rgba(200,151,58,0.20);
+  --light-bg: #F5F0E8;
+  --text-dark: #0D0D0D;
+  --muted-light: rgba(13,13,13,0.50);
 }
-html, body {
-  min-height: 100vh; background: var(--dark-bg); color: var(--text-light);
-  font-family: 'Barlow Condensed', sans-serif; overflow-x: hidden;
+html { scroll-behavior: smooth; }
+body { font-family: 'Barlow Condensed', sans-serif; overflow-x: hidden; background: var(--dark-bg); color: var(--text-light); }
+
+/* ─── NAVBAR ─── */
+#navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 8px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background 0.3s ease, border-bottom 0.3s ease;
 }
-body {
-  display: flex; flex-direction: column; align-items: center;
-  justify-content: center; min-height: 100vh; padding: 80px 24px;
-  position: relative;
+#navbar.scrolled { background: rgba(8,8,8,0.96); border-bottom: 1px solid rgba(200,151,58,0.30); backdrop-filter: blur(8px); }
+.nav-logo { text-decoration: none; display: flex; align-items: center; }
+.nav-logo img { height: 48px; width: auto; display: block; }
+.nav-right { display: flex; align-items: center; gap: 24px; }
+.back-nav-link {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 0.15em;
+  color: var(--muted-dark); text-decoration: none; transition: color 0.2s;
 }
-.bg-mountain {
-  position: fixed; inset: 0; z-index: 0;
+.back-nav-link:hover { color: var(--gold); }
+.lang-switcher { display: flex; gap: 10px; align-items: center; }
+.lang-btn {
+  font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.2em;
+  color: var(--muted-dark); background: none; border: none; cursor: pointer;
+  transition: color 0.2s; padding: 2px 0;
+}
+.lang-btn.active { color: var(--gold); text-decoration: underline; }
+.lang-btn:hover { color: var(--gold); }
+
+/* ─── SECTION MÉTHODE ─── */
+#methode {
+  position: relative; padding: 140px 48px 100px; min-height: 100vh;
+  display: flex; align-items: flex-start; justify-content: center;
+}
+.methode-bg {
+  position: absolute; inset: 0; z-index: 0;
   background-image: url("assets/k2-montagne-nb.png");
-  background-size: cover; background-position: center 30%;
-  opacity: 0.18; pointer-events: none;
+  background-size: cover; background-position: center top;
+  opacity: 0.12; pointer-events: none;
 }
-.bg-overlay {
-  position: fixed; inset: 0; z-index: 1; pointer-events: none;
-  background: linear-gradient(180deg, rgba(8,8,8,0.7) 0%, rgba(8,8,8,0.5) 50%, rgba(8,8,8,0.8) 100%);
+.methode-overlay {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(180deg, rgba(8,8,8,0.5) 0%, rgba(8,8,8,0.2) 40%, rgba(8,8,8,0.7) 100%);
 }
-.content {
-  position: relative; z-index: 2; text-align: center;
-  max-width: 600px; width: 100%;
+.methode-inner {
+  position: relative; z-index: 2; max-width: 1000px; width: 100%;
 }
-.logo {
-  font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400;
-  color: var(--text-light); letter-spacing: 0.15em; text-decoration: none;
-  display: inline-block; margin-bottom: 64px;
+.eyebrow {
+  font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.4em;
+  color: var(--gold); text-transform: uppercase; display: block; margin-bottom: 16px;
 }
-.logo sub { font-size: 11px; vertical-align: sub; }
-.gold-rule { width: 48px; height: 1px; background: var(--gold); margin: 0 auto 40px; border: none; }
-.book-title {
+.gold-rule { width: 48px; height: 1px; background: var(--gold); border: none; margin: 20px 0; }
+.methode-title {
+  font-family: 'Cormorant Garamond', serif; font-size: clamp(48px, 7vw, 80px);
+  font-weight: 300; color: var(--text-light); line-height: 1; margin-bottom: 32px;
+}
+.methode-title span { color: var(--gold); }
+.methode-intro {
+  font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 300;
+  font-style: italic; color: var(--muted-dark); line-height: 1.8; max-width: 720px;
+  margin-bottom: 56px; border-left: 2px solid rgba(200,151,58,0.4); padding-left: 24px;
+}
+
+/* ─── 3 PILLARS ─── */
+.pillars-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+  border: 1px solid rgba(200,151,58,0.15); margin-bottom: 48px;
+}
+.pillar {
+  padding: 36px 32px; border-right: 1px solid rgba(200,151,58,0.10);
+  background: rgba(255,255,255,0.02); transition: background 0.3s;
+}
+.pillar:hover { background: rgba(200,151,58,0.03); }
+.pillar:last-child { border-right: none; }
+.pillar-letter {
   font-family: 'Cormorant Garamond', serif; font-size: 72px; font-weight: 300;
-  font-style: italic; color: var(--text-light); line-height: 1.0;
-  letter-spacing: -0.01em; margin-bottom: 20px;
+  color: var(--gold); line-height: 1; display: block; margin-bottom: 4px;
 }
-.book-subtitle {
-  font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 300;
-  color: var(--gold); letter-spacing: 0.2em; margin-bottom: 40px;
-  text-transform: uppercase;
+.pillar-name {
+  font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.35em;
+  color: var(--gold); text-transform: uppercase; display: block;
+  margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid rgba(200,151,58,0.15);
+}
+.pillar-body {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 15px;
+  color: var(--muted-dark); line-height: 1.8;
+}
+
+/* ─── TRANSITION QUOTE ─── */
+.methode-transition {
+  font-family: 'Cormorant Garamond', serif; font-size: 17px; font-style: italic;
+  font-weight: 300; color: var(--muted-dark); line-height: 1.8; max-width: 700px;
+  border-top: 1px solid rgba(200,151,58,0.12); padding-top: 32px;
+}
+
+/* ─── SECTION LIVRE ─── */
+#livre {
+  background: #050505; padding: 120px 48px;
+  border-top: 1px solid rgba(200,151,58,0.15);
+  position: relative; text-align: center;
+}
+.livre-inner { max-width: 600px; margin: 0 auto; position: relative; z-index: 2; }
+.gold-rule-center { width: 48px; height: 1px; background: var(--gold); border: none; margin: 0 auto 40px; }
+.livre-title {
+  font-family: 'Cormorant Garamond', serif; font-size: clamp(52px, 9vw, 80px);
+  font-weight: 300; font-style: italic; color: var(--text-light);
+  line-height: 1.0; letter-spacing: -0.01em; margin-bottom: 16px;
+}
+.livre-subtitle {
+  font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 300;
+  color: var(--gold); letter-spacing: 0.15em; margin-bottom: 32px;
+  text-transform: uppercase; line-height: 1.5;
 }
 .status-badge {
   display: inline-block; border: 1px solid var(--gold); color: var(--gold);
   font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.3em;
-  padding: 8px 20px; margin-bottom: 48px; text-transform: uppercase;
+  padding: 8px 20px; margin-bottom: 40px; text-transform: uppercase;
 }
-.book-desc {
+.livre-desc {
   font-family: 'Barlow Condensed', sans-serif; font-size: 17px;
-  color: var(--muted-dark); line-height: 1.8; margin-bottom: 56px;
-  max-width: 440px; margin-left: auto; margin-right: auto;
+  color: var(--muted-dark); line-height: 1.8; margin-bottom: 48px;
+  max-width: 480px; margin-left: auto; margin-right: auto;
 }
 .notify-btn {
   display: inline-block; background: var(--gold); color: #080808;
   font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700;
   letter-spacing: 0.2em; padding: 16px 40px; text-decoration: none;
-  transition: filter 0.2s; margin-bottom: 24px;
+  transition: filter 0.2s; margin-bottom: 20px;
 }
 .notify-btn:hover { filter: brightness(1.1); }
 .notify-note {
   font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted-dark);
-  letter-spacing: 0.1em; margin-bottom: 64px;
+  letter-spacing: 0.1em;
 }
-.back-link {
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--dark-bg); border-top: 1px solid rgba(200,151,58,0.15);
+  padding: 32px 48px; text-align: center;
+}
+.footer-back {
   font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 0.15em;
   color: var(--muted-dark); text-decoration: none; transition: color 0.2s;
 }
-.back-link:hover { color: var(--gold); }
+.footer-back:hover { color: var(--gold); }
 
+/* ─── RESPONSIVE ─── */
 @media (max-width: 768px) {
-  .book-title { font-size: 52px; }
+  #navbar { padding: 10px 24px; }
+  .nav-logo img { height: 36px; }
+  .nav-right { gap: 16px; }
+  #methode { padding: 120px 24px 80px; }
+  .pillars-grid { grid-template-columns: 1fr; }
+  .pillar { border-right: none; border-bottom: 1px solid rgba(200,151,58,0.10); }
+  .pillar:last-child { border-bottom: none; }
+  #livre { padding: 80px 24px; }
+  footer { padding: 24px; }
+}
+/* Très petites largeurs : le back-link disparaît (doublé en footer) — rien ne passe sur 2 lignes */
+@media (max-width: 520px) {
+  .back-nav-link { display: none; }
 }
 </style>
 </head>
 <body>
-<div class="bg-mountain"></div>
-<div class="bg-overlay"></div>
-<div class="content">
-  <a href="/" class="logo">K<sub>2</sub> STRATEGY</a>
-  <hr class="gold-rule">
-  <h1 class="book-title">J'ai tout vendu</h1>
-  <div class="book-subtitle">La méthode EPR — Énergie · Produit · Rigueur</div>
-  <div class="status-badge">EN COURS D'ÉCRITURE · COMING SOON</div>
-  <p class="book-desc">Un livre sur la vente, la résilience et la méthode qui a tout changé.</p>
-  <a href="mailto:kevin@k2strategy.io?subject=J'ai tout vendu — notification" class="notify-btn">ÊTRE NOTIFIÉ À LA SORTIE</a>
-  <div class="notify-note">kevin@k2strategy.io</div>
-  <a href="index.html" class="back-link">← k2strategy.io</a>
-</div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/k2-logo-horizontal.png" alt="K2 Strategy" onerror="this.outerHTML='<span style=\'font-family:Cormorant Garamond,serif;font-size:18px;color:#F4EFE8;letter-spacing:0.15em;\'>K<sub>2</sub> STRATEGY</span>'">
+  </a>
+  <div class="nav-right">
+    <a href="index.html" class="back-nav-link">← k2strategy.io</a>
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+      <span style="color:rgba(244,239,232,0.3);font-size:10px;">|</span>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+      <span style="color:rgba(244,239,232,0.3);font-size:10px;">|</span>
+      <button class="lang-btn" onclick="setLang('es')">ES</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── SECTION MÉTHODE ─── -->
+<section id="methode">
+  <div class="methode-bg"></div>
+  <div class="methode-overlay"></div>
+  <div class="methode-inner">
+    <span class="eyebrow" data-key="methode_eyebrow">ÉNERGIE · PRODUIT · RIGUEUR</span>
+    <hr class="gold-rule">
+    <h1 class="methode-title" data-key="methode_title">La Méthode <span>E.P.R</span></h1>
+    <p class="methode-intro" data-key="methode_intro">Qu'est-ce qu'un croissant, une solution SaaS, du muguet, un produit financier complexe ou une pièce de moteur d'avion ont en commun ? Ils se vendent tous de la même façon. Trois concepts universels suffisent — à maîtriser à toutes les étapes de votre carrière, quel que soit le produit, quel que soit le marché.</p>
+
+    <div class="pillars-grid">
+      <!-- E -->
+      <div class="pillar">
+        <span class="pillar-letter">E</span>
+        <span class="pillar-name" data-key="pillar_e_name">Énergie</span>
+        <p class="pillar-body" data-key="pillar_e_body">Le moteur. Celle qui fait démarrer la journée comme on monte sur un vélo la tête encore dans l'oreiller : les premiers coups de pédale piquent, puis on est à fond sans s'en rendre compte. L'énergie se canalise, elle ne s'improvise pas — elle découle du produit et de la rigueur.</p>
+      </div>
+      <!-- P -->
+      <div class="pillar">
+        <span class="pillar-letter">P</span>
+        <span class="pillar-name" data-key="pillar_p_name">Produit</span>
+        <p class="pillar-body" data-key="pillar_p_body">Le connaître, l'aimer, le vivre. Et la vérité que personne ne vous dit : le premier produit, c'est vous — et vos sales. Votre crédibilité, votre parcours, votre posture. Pour connaître un marché, il faut le vivre.</p>
+      </div>
+      <!-- R -->
+      <div class="pillar">
+        <span class="pillar-letter">R</span>
+        <span class="pillar-name" data-key="pillar_r_name">Rigueur</span>
+        <p class="pillar-body" data-key="pillar_r_body">Votre CRM, votre vie. Tout passe par lui : vos actions, vos tâches, vos mails, vos notes. Et la rigueur ne s'arrête pas au bureau — rigueur professionnelle, la préparation de chaque call ; rigueur personnelle, l'hygiène de vie qui tient la distance. C'est elle qui transforme l'effort en revenu prévisible.</p>
+      </div>
+    </div>
+
+    <p class="methode-transition" data-key="methode_transition">Une méthode anti-stress, anti-BS — à l'opposé des jeux de rôle ridicules et des scripts d'un autre âge qui mettent les équipes commerciales en échec.</p>
+  </div>
+</section>
+
+<!-- ─── SECTION LIVRE ─── -->
+<section id="livre">
+  <div class="livre-inner">
+    <span class="eyebrow" data-key="livre_eyebrow">LE LIVRE · THE BOOK</span>
+    <hr class="gold-rule-center">
+    <h2 class="livre-title">J'ai tout vendu</h2>
+    <div class="livre-subtitle" data-key="livre_subtitle">Énergie, Produit, Rigueur : le triptyque qui décomplexe les métiers Sales</div>
+    <div class="status-badge">EN COURS D'ÉCRITURE · COMING SOON</div>
+    <p class="livre-desc" data-key="livre_desc">Douze ans de vente — des marchés de Hambourg aux comités de direction, de la banque d'entreprise aux scale-ups SaaS — distillés en concepts, cas concrets vécus, et clés pratiques pour le Sales comme pour son Manager. Pour réussir n'importe quelle vente et atteindre vos objectifs, sur le plus beau métier du monde.</p>
+    <a href="index.html?interet=livre#contact" class="notify-btn" data-key="livre_cta">ÊTRE NOTIFIÉ À LA SORTIE</a>
+    <div class="notify-note">kevin@k2strategy.io</div>
+  </div>
+</section>
+
+<footer>
+  <a href="index.html" class="footer-back">← k2strategy.io</a>
+</footer>
+
+<script>
+const T = {
+  fr: {
+    methode_eyebrow: "ÉNERGIE · PRODUIT · RIGUEUR",
+    methode_title_html: 'La Méthode <span>E.P.R</span>',
+    methode_intro: "Qu'est-ce qu'un croissant, une solution SaaS, du muguet, un produit financier complexe ou une pièce de moteur d'avion ont en commun ? Ils se vendent tous de la même façon. Trois concepts universels suffisent — à maîtriser à toutes les étapes de votre carrière, quel que soit le produit, quel que soit le marché.",
+    pillar_e_name: "Énergie",
+    pillar_e_body: "Le moteur. Celle qui fait démarrer la journée comme on monte sur un vélo la tête encore dans l'oreiller : les premiers coups de pédale piquent, puis on est à fond sans s'en rendre compte. L'énergie se canalise, elle ne s'improvise pas — elle découle du produit et de la rigueur.",
+    pillar_p_name: "Produit",
+    pillar_p_body: "Le connaître, l'aimer, le vivre. Et la vérité que personne ne vous dit : le premier produit, c'est vous — et vos sales. Votre crédibilité, votre parcours, votre posture. Pour connaître un marché, il faut le vivre.",
+    pillar_r_name: "Rigueur",
+    pillar_r_body: "Votre CRM, votre vie. Tout passe par lui : vos actions, vos tâches, vos mails, vos notes. Et la rigueur ne s'arrête pas au bureau — rigueur professionnelle, la préparation de chaque call ; rigueur personnelle, l'hygiène de vie qui tient la distance. C'est elle qui transforme l'effort en revenu prévisible.",
+    methode_transition: "Une méthode anti-stress, anti-BS — à l'opposé des jeux de rôle ridicules et des scripts d'un autre âge qui mettent les équipes commerciales en échec.",
+    livre_eyebrow: "LE LIVRE",
+    livre_subtitle: "Énergie, Produit, Rigueur : le triptyque qui décomplexe les métiers Sales",
+    livre_desc: "Douze ans de vente — des marchés de Hambourg aux comités de direction, de la banque d'entreprise aux scale-ups SaaS — distillés en concepts, cas concrets vécus, et clés pratiques pour le Sales comme pour son Manager. Pour réussir n'importe quelle vente et atteindre vos objectifs, sur le plus beau métier du monde.",
+    livre_cta: "ÊTRE NOTIFIÉ À LA SORTIE",
+  },
+  en: {
+    methode_eyebrow: "ENERGY · PRODUCT · RIGOR",
+    methode_intro: "What do a croissant, a SaaS solution, a lily of the valley, a complex financial product, and an aircraft engine component have in common? They're all sold the same way. Three universal concepts — to master at every stage of your career, regardless of the product, regardless of the market.",
+    pillar_e_name: "Energy",
+    pillar_e_body: "The engine. It gets you started in the morning like mounting a bike with your head still on the pillow — the first pedal strokes sting, then you're at full speed without even noticing. Energy is channeled, not improvised — it flows from the product and from rigor.",
+    pillar_p_name: "Product",
+    pillar_p_body: "Know it, love it, live it. And the truth no one tells you: the first product is you — and your salespeople. Your credibility, your track record, your posture. To know a market, you have to live it.",
+    pillar_r_name: "Rigor",
+    pillar_r_body: "Your CRM, your life. Everything runs through it: your actions, your tasks, your emails, your notes. And rigor doesn't stop at the office — professional rigor, preparing every call; personal rigor, the lifestyle that goes the distance. That's what turns effort into predictable revenue.",
+    methode_transition: "An anti-stress, anti-BS method — the opposite of the ridiculous role-playing exercises and outdated scripts that set sales teams up for failure.",
+    livre_eyebrow: "THE BOOK",
+    livre_subtitle: "Energy, Product, Rigor: the triptych that demystifies Sales",
+    livre_desc: "Twelve years of selling — from Hamburg's markets to boardrooms, from corporate banking to SaaS scale-ups — distilled into concepts, real-world cases, and practical keys for the Salesperson and their Manager alike. To succeed in any sale and hit your targets, in the finest profession in the world.",
+    livre_cta: "BE NOTIFIED ON RELEASE",
+  },
+  es: {
+    methode_eyebrow: "ENERGÍA · PRODUCTO · RIGOR",
+    methode_intro: "¿Qué tienen en común un croissant, una solución SaaS, una flor de mayo, un producto financiero complejo y una pieza de motor de avión? Se venden todos de la misma manera. Tres conceptos universales — que dominar en cada etapa de su carrera, sea cual sea el producto, sea cual sea el mercado.",
+    pillar_e_name: "Energía",
+    pillar_e_body: "El motor. Esa que hace arrancar la mañana como quien sube a una bicicleta con la cabeza aún en la almohada: las primeras pedaladas duelen, luego se está al máximo sin darse cuenta. La energía se canaliza, no se improvisa — nace del producto y del rigor.",
+    pillar_p_name: "Producto",
+    pillar_p_body: "Conocerlo, amarlo, vivirlo. Y la verdad que nadie le dice: el primer producto es usted — y sus comerciales. Su credibilidad, su trayectoria, su postura. Para conocer un mercado, hay que vivirlo.",
+    pillar_r_name: "Rigor",
+    pillar_r_body: "Su CRM, su vida. Todo pasa por él: sus acciones, sus tareas, sus correos, sus notas. Y el rigor no se queda en la oficina — rigor profesional, la preparación de cada llamada; rigor personal, la higiene de vida que aguanta la distancia. Es lo que transforma el esfuerzo en ingresos predecibles.",
+    methode_transition: "Un método anti-estrés, anti-BS — todo lo contrario de los ridículos juegos de roles y los guiones de otra época que llevan a los equipos comerciales al fracaso.",
+    livre_eyebrow: "EL LIBRO",
+    livre_subtitle: "Energía, Producto, Rigor: el tríptico que desmitifica las ventas",
+    livre_desc: "Doce años de ventas — de los mercados de Hamburgo a los comités de dirección, de la banca corporativa a las scale-ups SaaS — destilados en conceptos, casos reales vividos, y claves prácticas para el Sales y su Manager. Para cerrar cualquier venta y alcanzar sus objetivos, en la profesión más bella del mundo.",
+    livre_cta: "NOTIFICARME AL LANZAMIENTO",
+  }
+};
+
+let currentLang = 'fr';
+
+function setLang(lang) {
+  currentLang = lang;
+  const data = T[lang] || T['fr'];
+  document.querySelectorAll('[data-key]').forEach(function(el) {
+    const key = el.getAttribute('data-key');
+    if (data[key] !== undefined) {
+      el.textContent = data[key];
+    }
+  });
+  // Special case: methode_title keeps the span
+  const titleEl = document.querySelector('.methode-title');
+  if (titleEl) {
+    if (lang === 'fr') {
+      titleEl.innerHTML = 'La Méthode <span>E.P.R</span>';
+    } else if (lang === 'en') {
+      titleEl.innerHTML = 'The <span>E.P.R</span> Method';
+    } else if (lang === 'es') {
+      titleEl.innerHTML = 'El Método <span>E.P.R</span>';
+    }
+  }
+  document.querySelectorAll('.lang-btn').forEach(function(btn) {
+    btn.classList.toggle('active', btn.textContent === lang.toUpperCase());
+  });
+  document.documentElement.lang = lang;
+}
+
+// Navbar scroll
+window.addEventListener('scroll', function() {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+});
+</script>
 </body>
 </html>

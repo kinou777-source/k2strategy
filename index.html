@@ -38,15 +38,16 @@ body { font-family: 'Barlow Condensed', sans-serif; overflow-x: hidden; backgrou
 }
 #navbar.scrolled { background: rgba(8,8,8,0.96); border-bottom: 1px solid rgba(200,151,58,0.30); backdrop-filter: blur(8px); }
 .nav-logo { justify-self: start; text-decoration: none; display: flex; align-items: center; }
-.nav-logo img { height: 80px; width: auto; display: block; mix-blend-mode: screen; }
+.nav-logo img { height: 48px; width: auto; display: block; }
 /* Right zone: book link + contact button + lang switcher */
 .nav-right { display: flex; align-items: center; gap: 20px; justify-self: end; }
 .nav-book-link {
   font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px;
   color: var(--gold); text-decoration: none; letter-spacing: 0.02em;
-  white-space: nowrap; transition: opacity 0.2s;
+  white-space: nowrap; transition: opacity 0.2s; display: flex; align-items: baseline; gap: 5px;
 }
 .nav-book-link:hover { opacity: 0.75; }
+.nav-book-epr { font-style: normal; font-size: 11px; font-family: 'Space Mono', monospace; letter-spacing: 0.08em; opacity: 0.75; }
 .nav-contact-btn {
   font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700;
   letter-spacing: 0.18em; background: var(--gold); color: #080808;
@@ -58,7 +59,7 @@ body { font-family: 'Barlow Condensed', sans-serif; overflow-x: hidden; backgrou
 .nav-links a {
   font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 400;
   letter-spacing: 0.15em; color: var(--text-light); text-decoration: none;
-  position: relative; transition: color 0.2s;
+  position: relative; transition: color 0.2s; white-space: nowrap;
 }
 .nav-links a::after {
   content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px;
@@ -135,13 +136,22 @@ noscript ~ * .reveal, .no-js .reveal { opacity: 1 !important; transform: none !i
 #hero {
   min-height: 100vh; display: flex; align-items: center; justify-content: center;
   background: #080808;
-  text-align: center; position: relative;
+  text-align: center; position: relative; overflow: hidden;
 }
 .hero-bg {
   position: absolute; inset: 0; z-index: 1;
   background-image: url("assets/k2-montagne-nb.png");
   background-size: cover; background-position: center top;
   opacity: 0.55; pointer-events: none;
+  transform-origin: center 30%; will-change: transform;
+  animation: heroKenBurns 25s ease-in-out infinite alternate;
+}
+@keyframes heroKenBurns {
+  from { transform: scale(1); }
+  to   { transform: scale(1.08); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg { animation: none; }
 }
 .hero-glow {
   position: absolute; inset: 0; z-index: 2; pointer-events: none;
@@ -270,9 +280,34 @@ noscript ~ * .reveal, .no-js .reveal { opacity: 1 !important; transform: none !i
 }
 .kpi-number { font-family: 'Cormorant Garamond', serif; font-size: 52px; color: var(--gold); font-weight: 400; line-height: 1; }
 .kpi-label { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted-dark); margin-top: 8px; letter-spacing: 0.08em; line-height: 1.5; }
+/* Vision quote */
+.vision-quote {
+  font-family: 'Cormorant Garamond', serif; font-size: 20px; font-style: italic;
+  font-weight: 300; color: var(--muted-light); text-align: center;
+  max-width: 600px; margin: 40px auto 0; letter-spacing: 0.03em; line-height: 1.6;
+}
+
 /* Clickable method word in sectors h2 */
 .method-link { color: inherit; text-decoration: none; border-bottom: 1px solid rgba(200,151,58,0.35); padding-bottom: 1px; transition: color 0.2s, border-color 0.2s; }
 .method-link:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ─── EPR METHOD ─── */
+#epr { background: #0a0907; padding: 80px 48px; border-top: 1px solid rgba(200,151,58,0.10); border-bottom: 1px solid rgba(200,151,58,0.10); }
+.epr-inner { max-width: 1000px; margin: 0 auto; text-align: center; }
+.epr-pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin: 40px 0; border: 1px solid rgba(200,151,58,0.12); }
+.epr-pillar { padding: 32px 28px; text-align: left; border-right: 1px solid rgba(200,151,58,0.10); }
+.epr-pillar:last-child { border-right: none; }
+.epr-letter { font-family: 'Cormorant Garamond', serif; font-size: 56px; font-weight: 300; color: var(--gold); line-height: 1; display: block; margin-bottom: 8px; }
+.epr-pillar-name { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; margin-bottom: 14px; display: block; }
+.epr-pillar-body { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; color: var(--muted-dark); line-height: 1.75; }
+.epr-more { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 0.15em; color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(200,151,58,0.35); padding-bottom: 2px; transition: border-color 0.2s, opacity 0.2s; }
+.epr-more:hover { opacity: 0.75; border-color: var(--gold); }
+@media (max-width: 768px) {
+  #epr { padding: 60px 24px; }
+  .epr-pillars { grid-template-columns: 1fr; }
+  .epr-pillar { border-right: none; border-bottom: 1px solid rgba(200,151,58,0.10); }
+  .epr-pillar:last-child { border-bottom: none; }
+}
 
 /* ─── SERVICES ─── */
 #services {
@@ -295,6 +330,23 @@ noscript ~ * .reveal, .no-js .reveal { opacity: 1 !important; transform: none !i
 .card-deliverables li { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; color: var(--muted-dark); padding: 4px 0; }
 .card-deliverables li::before { content: '→ '; color: var(--gold); }
 .card-badge { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: var(--gold); border: 1px solid var(--border); padding: 6px 12px; display: inline-block; }
+
+/* ─── B2G ─── */
+#b2g { background: var(--dark-bg); padding: 100px 48px; border-top: 1px solid rgba(200,151,58,0.10); }
+.b2g-inner { max-width: 1100px; margin: 0 auto; }
+.b2g-header { text-align: center; max-width: 760px; margin: 0 auto 56px; }
+.b2g-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid rgba(200,151,58,0.15); }
+.b2g-exp { padding: 40px 44px; border-right: 1px solid rgba(200,151,58,0.10); background: rgba(200,151,58,0.03); }
+.b2g-exp-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; display: block; margin-bottom: 18px; }
+.b2g-exp-body { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 300; font-style: italic; color: var(--text-light); line-height: 1.8; }
+.b2g-list { list-style: none; padding: 40px 44px; display: flex; flex-direction: column; justify-content: center; gap: 18px; }
+.b2g-list li { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; color: var(--muted-dark); line-height: 1.6; padding-left: 24px; position: relative; }
+.b2g-list li::before { content: '→'; color: var(--gold); position: absolute; left: 0; }
+.b2g-cta-wrap { text-align: center; margin-top: 48px; }
+@media (max-width: 1024px) {
+  .b2g-grid { grid-template-columns: 1fr; }
+  .b2g-exp { border-right: none; border-bottom: 1px solid rgba(200,151,58,0.10); }
+}
 
 /* ─── MISSIONS ─── */
 #missions { background: var(--light-bg); padding: 120px 48px; color: var(--text-dark); }
@@ -345,7 +397,7 @@ noscript ~ * .reveal, .no-js .reveal { opacity: 1 !important; transform: none !i
   font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.3em;
   padding: 8px 20px; border: 1px solid var(--gold); color: var(--gold);
 }
-.map-container { margin-top: 60px; max-height: 300px; width: 100%; }
+.map-container { margin-top: 60px; width: 100%; }
 .map-container svg { width: 100%; height: auto; display: block; }
 
 /* Map pulse animation */
@@ -539,17 +591,28 @@ footer {
   .vision-col:last-child { border-bottom: none; }
 }
 
-@media (max-width: 768px) {
-  #navbar { padding: 16px 24px; grid-template-columns: 1fr auto; }
+/* Desktop intermédiaire : la navbar complète tient juste — suffixe EPR masqué, gaps resserrés */
+@media (max-width: 1550px) and (min-width: 1281px) {
+  .nav-book-epr { display: none; }
+  .nav-right { gap: 14px; }
+  .nav-links { gap: 24px; }
+}
+
+/* Tablette & petits laptops : burger étendu — la navbar complète déborde sous 1280px */
+@media (max-width: 1280px) {
+  #navbar { grid-template-columns: 1fr auto; }
   .nav-links, .nav-right { display: none !important; }
-  .nav-hamburger { grid-column: 2; }
+  .nav-hamburger { display: flex; grid-column: 2; }
+}
+
+@media (max-width: 768px) {
+  #navbar { padding: 16px 24px; }
   .ref-card, .ref-card:nth-child(even) { flex-direction: column; }
   .ref-media { width: 100%; height: 200px; padding: 24px; flex-direction: row; }
   .ref-media-img { max-height: 120px; }
   .ref-content { padding: 28px 24px; border-left: none !important; border-right: none !important; border-top: 1px solid rgba(200,151,58,0.10); }
   #references { padding: 64px 24px; }
-  .nav-logo img { height: 52px; }
-  .nav-hamburger { display: flex; }
+  .nav-logo img { height: 36px; }
   .hero-h1 { font-size: 56px; }
   .h2-dark, .h2-light { font-size: 36px; }
   .contact-h2 { font-size: 48px; }
@@ -563,6 +626,8 @@ footer {
   .about-kpi-item { border-right: none; border-bottom: 1px solid rgba(200,151,58,0.10); }
   .about-kpi-item:nth-child(odd) { border-right: 1px solid rgba(200,151,58,0.10); }
   #services, #missions, #sectors, #pricing, #contact { padding: 80px 24px; }
+  #b2g { padding: 64px 24px; }
+  .b2g-exp, .b2g-list { padding: 28px 24px; }
   .missions-grid { grid-template-columns: 1fr; }
   footer { padding: 24px; }
   .footer-main { flex-direction: column; text-align: center; }
@@ -573,17 +638,16 @@ footer {
 
 <!-- NAVBAR -->
 <nav id="navbar">
-  <a href="#hero" class="nav-logo"><img src="assets/logo-noir.png" alt="K2 Strategy" onerror="this.outerHTML='K<sub>2</sub> STRATEGY'"></a>
+  <a href="#hero" class="nav-logo"><img src="assets/k2-logo-horizontal.png" alt="K2 Strategy" onerror="this.outerHTML='K<sub>2</sub> STRATEGY'"></a>
   <ul class="nav-links">
     <li><a href="#vision" data-key="nav_vision">Vision</a></li>
-    <li><a href="#epr" data-key="nav_method">Method</a></li>
     <li><a href="#services" data-key="nav_services">Services</a></li>
     <li><a href="#missions" data-key="nav_missions">Missions</a></li>
     <li><a href="#references" data-key="nav_references">References</a></li>
     <li><a href="#about" data-key="nav_about">About</a></li>
   </ul>
   <div class="nav-right">
-    <a href="book.html" class="nav-book-link">«&nbsp;J'ai tout vendu&nbsp;»</a>
+    <a href="book.html" class="nav-book-link">«&nbsp;J'ai tout vendu&nbsp;» <span class="nav-book-epr">(la Méthode E.P.R)</span></a>
     <a href="#contact" class="nav-contact-btn" data-key="nav_contact">Contact</a>
     <div class="lang-switcher">
       <button class="lang-btn active" onclick="setLanguage('en')">EN</button>
@@ -602,12 +666,11 @@ footer {
 <div id="mobile-menu">
   <button id="mobile-close" onclick="toggleMenu()">×</button>
   <a href="#vision" onclick="toggleMenu()" data-key="nav_vision">Vision</a>
-  <a href="#epr" onclick="toggleMenu()" data-key="nav_method">Method</a>
   <a href="#services" onclick="toggleMenu()" data-key="nav_services">Services</a>
   <a href="#missions" onclick="toggleMenu()" data-key="nav_missions">Missions</a>
   <a href="#references" onclick="toggleMenu()" data-key="nav_references">References</a>
   <a href="#about" onclick="toggleMenu()" data-key="nav_about">About</a>
-  <a href="book.html" onclick="toggleMenu()" class="nav-book-link" style="font-size:22px;">«&nbsp;J'ai tout vendu&nbsp;»</a>
+  <a href="book.html" onclick="toggleMenu()" class="nav-book-link" style="font-size:20px;flex-direction:column;align-items:center;gap:3px;">«&nbsp;J'ai tout vendu&nbsp;» <span class="nav-book-epr" style="font-size:10px;">(la Méthode E.P.R)</span></a>
   <a href="#contact" onclick="toggleMenu()" class="nav-contact-btn" data-key="nav_contact" style="text-align:center;padding:14px 40px;">Contact</a>
   <div class="mobile-lang">
     <button class="lang-btn" onclick="setLanguage('en');toggleMenu()">EN</button>
@@ -687,10 +750,37 @@ footer {
         </ul>
       </div>
     </div>
+    <p class="vision-quote reveal" data-key="vision_quote">« To know a market, you have to live it »</p>
     <div class="vision-banner reveal">
       <span class="vision-banner-label" data-key="vision_banner_label">PROJECT MANAGEMENT IN</span>
       <div class="vision-banner-sectors">AUTOMOTIVE &amp; MOBILITY · LOGISTICS · AEROSPACE · SaaS · HOSPITALITY · FINTECH · CONSUMER GOODS</div>
     </div>
+  </div>
+</section>
+
+<!-- ─── SECTION EPR: LA MÉTHODE ─── -->
+<section id="epr">
+  <div class="epr-inner">
+    <span class="eyebrow reveal" style="color:var(--gold);">EPR METHOD — HOW I WORK</span>
+    <h2 class="section-h2 h2-light reveal" style="font-size:40px;margin-top:10px;">Énergie · Produit · Rigueur</h2>
+    <div class="epr-pillars reveal">
+      <div class="epr-pillar">
+        <span class="epr-letter">E</span>
+        <span class="epr-pillar-name">Énergie</span>
+        <p class="epr-pillar-body">Le moteur. Celle qui se canalise, ne s'improvise pas — elle découle du produit et de la rigueur.</p>
+      </div>
+      <div class="epr-pillar">
+        <span class="epr-letter">P</span>
+        <span class="epr-pillar-name">Produit</span>
+        <p class="epr-pillar-body">Le connaître, l'aimer, le vivre. Le premier produit, c'est vous — et vos sales. Votre crédibilité, votre parcours, votre posture.</p>
+      </div>
+      <div class="epr-pillar">
+        <span class="epr-letter">R</span>
+        <span class="epr-pillar-name">Rigueur</span>
+        <p class="epr-pillar-body">Votre CRM, votre vie. La rigueur transforme l'effort en revenu prévisible.</p>
+      </div>
+    </div>
+    <a href="book.html#methode" class="epr-more reveal">En savoir plus →</a>
   </div>
 </section>
 
@@ -739,6 +829,32 @@ footer {
         </ul>
         <span class="card-badge" data-key="s3_badge">OPEN TO OFFERS</span>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SECTION 3.5: B2G ─── -->
+<section id="b2g">
+  <div class="section-inner b2g-inner">
+    <div class="b2g-header">
+      <span class="eyebrow reveal" data-key="b2g_eyebrow">B2G · MARCHÉS PUBLICS · APPELS D'OFFRES</span>
+      <h2 class="section-h2 h2-light reveal" style="margin-top:10px;" data-key="b2g_h2">Quand votre client est un État</h2>
+      <p class="section-subline reveal" data-key="b2g_intro">Une verticale appels d'offres ne s'improvise pas — elle se structure. Veille, qualification, réponse, soutenance : K2 Strategy prend en charge votre pipeline institutionnel en mission temporaire, plutôt qu'un recrutement à plein temps.</p>
+    </div>
+    <div class="b2g-grid reveal">
+      <div class="b2g-exp">
+        <span class="b2g-exp-label" data-key="b2g_exp_label">EXPÉRIENCE TERRAIN</span>
+        <p class="b2g-exp-body" data-key="b2g_exp_body">Pilotage des verticales appels d'offres chez Vulog et Wunder Mobility — France, Émirats, Europe de l'Est, Allemagne : monitoring des plateformes de marchés publics, qualification GO/NO-GO, réponses RFI · RFQ · RFP, coordination des parties prenantes. Aujourd'hui : négociation active au niveau Commission d'État pour le lancement d'un service de mobilité partagée en Principauté de Monaco (PPP).</p>
+      </div>
+      <ul class="b2g-list">
+        <li data-key="b2g_b1">Veille &amp; monitoring des plateformes d'appels d'offres (nationales &amp; européennes)</li>
+        <li data-key="b2g_b2">Qualification GO/NO-GO et pilotage RFI · RFQ · RFP</li>
+        <li data-key="b2g_b3">Réponses structurées &amp; coordination multi-parties prenantes</li>
+        <li data-key="b2g_b4">Lobbying institutionnel, PPP &amp; environnements à zéro tolérance d'erreur</li>
+      </ul>
+    </div>
+    <div class="b2g-cta-wrap reveal">
+      <a href="#contact" class="btn-secondary" data-key="b2g_cta">DISCUTONS DE VOTRE PIPELINE INSTITUTIONNEL</a>
     </div>
   </div>
 </section>
@@ -831,7 +947,6 @@ footer {
 
 <!-- ─── SECTION 5.5: REFERENCES ─── -->
 <section id="references">
-  <img src="assets/K2emblemesommettransparent.png" class="mountain-watermark" alt="" aria-hidden="true" onerror="this.style.display='none'">
   <div class="section-inner" style="max-width:1200px;margin:0 auto;">
     <span class="eyebrow reveal" style="color:var(--gold);">RÉFÉRENCES · VERIFIED ON MALT</span>
     <h2 class="section-h2 h2-light reveal" style="margin-top:8px;margin-bottom:56px;" data-key="references_h2">They talk about K2 Strategy.</h2>
@@ -964,7 +1079,6 @@ footer {
 
 <!-- ─── SECTION 7: SECTORS + MAP ─── -->
 <section id="sectors">
-  <img src="assets/K2emblemesommettransparent.png" class="mountain-watermark" alt="" aria-hidden="true" style="opacity:0.04;" onerror="this.style.display='none'">
   <div class="section-inner sectors-inner section-center">
     <span class="eyebrow reveal" data-key="sectors_eyebrow">SECTORS &amp; MARKETS</span>
     <h2 class="section-h2 h2-light reveal" data-key="sectors_h2">One toolkit. Seven industries.</h2>
@@ -2124,6 +2238,7 @@ const T = {
     nav_missions: "Missions",
     nav_references: "References",
     nav_contact: "Contact",
+    vision_quote: "« To know a market, you have to live it »",
     references_h2: "They talk about K2 Strategy.",
     references_malt_link: "See all recommendations on Malt →",
     about_eyebrow: "THE STRATEGIST",
@@ -2158,12 +2273,22 @@ const T = {
     s3_d2: "SaaS / High-Growth",
     s3_d3: "Full Mobility",
     s3_badge: "OPEN TO OFFERS",
+    b2g_eyebrow: "B2G · PUBLIC PROCUREMENT · TENDERS",
+    b2g_h2: "When your client is a State",
+    b2g_intro: "A tender vertical isn't improvised — it's structured. Monitoring, qualification, response, defense: K2 Strategy takes over your institutional pipeline on a temporary mission, instead of a full-time hire.",
+    b2g_exp_label: "FIELD EXPERIENCE",
+    b2g_exp_body: "Led the tender verticals at Vulog and Wunder Mobility — France, the Emirates, Eastern Europe, Germany: public procurement platform monitoring, GO/NO-GO qualification, RFI · RFQ · RFP responses, stakeholder coordination. Today: active negotiation at State Commission level to launch a shared mobility service in the Principality of Monaco (PPP).",
+    b2g_b1: "Tender platform watch &amp; monitoring (national &amp; European)",
+    b2g_b2: "GO/NO-GO qualification and RFI · RFQ · RFP management",
+    b2g_b3: "Structured responses &amp; multi-stakeholder coordination",
+    b2g_b4: "Institutional lobbying, PPP &amp; zero-error-tolerance environments",
+    b2g_cta: "LET'S DISCUSS YOUR INSTITUTIONAL PIPELINE",
     missions_eyebrow: "TRACK RECORD",
     missions_h2: "Real missions. Verified results.",
     missions_subline: "No stock photography. No made-up metrics. Every KPI below is from a real engagement.",
     missions_cta: "VIEW FULL DECK →",
     sectors_eyebrow: "SECTORS & MARKETS",
-    sectors_h2: 'One <a href="#epr" class="method-link">method</a>. Seven industries.',
+    sectors_h2: 'One <a href="book.html#methode" class="method-link">method</a>. Seven industries.',
     pricing_eyebrow: "INVESTMENT",
     pricing_h2: "Senior leadership. Transparent pricing.",
     pricing_subline: "Rate adapts to mission scope, duration, and engagement model. Always discussed in a first call.",
@@ -2211,6 +2336,7 @@ const T = {
     nav_missions: "Missions",
     nav_references: "Références",
     nav_contact: "Contact",
+    vision_quote: "« Pour connaître un marché, il faut le vivre »",
     references_h2: "They talk about K2 Strategy.",
     references_malt_link: "Voir toutes les recommandations sur Malt →",
     about_eyebrow: "LE STRATÈGE",
@@ -2245,12 +2371,22 @@ const T = {
     s3_d2: "SaaS / Forte Croissance",
     s3_d3: "Mobilité Complète",
     s3_badge: "OUVERT AUX OFFRES",
+    b2g_eyebrow: "B2G · MARCHÉS PUBLICS · APPELS D'OFFRES",
+    b2g_h2: "Quand votre client est un État",
+    b2g_intro: "Une verticale appels d'offres ne s'improvise pas — elle se structure. Veille, qualification, réponse, soutenance : K2 Strategy prend en charge votre pipeline institutionnel en mission temporaire, plutôt qu'un recrutement à plein temps.",
+    b2g_exp_label: "EXPÉRIENCE TERRAIN",
+    b2g_exp_body: "Pilotage des verticales appels d'offres chez Vulog et Wunder Mobility — France, Émirats, Europe de l'Est, Allemagne : monitoring des plateformes de marchés publics, qualification GO/NO-GO, réponses RFI · RFQ · RFP, coordination des parties prenantes. Aujourd'hui : négociation active au niveau Commission d'État pour le lancement d'un service de mobilité partagée en Principauté de Monaco (PPP).",
+    b2g_b1: "Veille &amp; monitoring des plateformes d'appels d'offres (nationales &amp; européennes)",
+    b2g_b2: "Qualification GO/NO-GO et pilotage RFI · RFQ · RFP",
+    b2g_b3: "Réponses structurées &amp; coordination multi-parties prenantes",
+    b2g_b4: "Lobbying institutionnel, PPP &amp; environnements à zéro tolérance d'erreur",
+    b2g_cta: "DISCUTONS DE VOTRE PIPELINE INSTITUTIONNEL",
     missions_eyebrow: "RÉFÉRENCES",
     missions_h2: "Missions réelles. Résultats vérifiables.",
     missions_subline: "Pas de photos de stock. Pas de métriques inventées. Chaque KPI ci-dessous provient d'une mission réelle.",
     missions_cta: "VOIR LE DECK COMPLET →",
     sectors_eyebrow: "SECTEURS & MARCHÉS",
-    sectors_h2: 'Une seule <a href="#epr" class="method-link">méthode</a>. Sept industries.',
+    sectors_h2: 'Une seule <a href="book.html#methode" class="method-link">méthode</a>. Sept industries.',
     pricing_eyebrow: "INVESTISSEMENT",
     pricing_h2: "Leadership senior. Tarifs transparents.",
     pricing_subline: "Le tarif s'adapte au périmètre, à la durée et au modèle d'engagement. Toujours discuté lors d'un premier appel.",
@@ -2298,6 +2434,7 @@ const T = {
     nav_missions: "Misiones",
     nav_references: "Referencias",
     nav_contact: "Contacto",
+    vision_quote: "« Para conocer un mercado, hay que vivirlo »",
     references_h2: "They talk about K2 Strategy.",
     references_malt_link: "Ver todas las recomendaciones en Malt →",
     about_eyebrow: "EL ESTRATEGA",
@@ -2332,12 +2469,22 @@ const T = {
     s3_d2: "SaaS / Alto Crecimiento",
     s3_d3: "Movilidad Completa",
     s3_badge: "ABIERTO A OFERTAS",
+    b2g_eyebrow: "B2G · CONTRATACIÓN PÚBLICA · LICITACIONES",
+    b2g_h2: "Cuando su cliente es un Estado",
+    b2g_intro: "Una vertical de licitaciones no se improvisa — se estructura. Vigilancia, calificación, respuesta, defensa: K2 Strategy se hace cargo de su pipeline institucional en misión temporal, en lugar de una contratación a tiempo completo.",
+    b2g_exp_label: "EXPERIENCIA DE CAMPO",
+    b2g_exp_body: "Pilotaje de las verticales de licitaciones en Vulog y Wunder Mobility — Francia, Emiratos, Europa del Este, Alemania: monitoreo de plataformas de contratación pública, calificación GO/NO-GO, respuestas RFI · RFQ · RFP, coordinación de las partes interesadas. Hoy: negociación activa a nivel de Comisión de Estado para el lanzamiento de un servicio de movilidad compartida en el Principado de Mónaco (PPP).",
+    b2g_b1: "Vigilancia y monitoreo de plataformas de licitaciones (nacionales y europeas)",
+    b2g_b2: "Calificación GO/NO-GO y gestión RFI · RFQ · RFP",
+    b2g_b3: "Respuestas estructuradas y coordinación multi-stakeholder",
+    b2g_b4: "Lobbying institucional, PPP y entornos de tolerancia cero al error",
+    b2g_cta: "HABLEMOS DE SU PIPELINE INSTITUCIONAL",
     missions_eyebrow: "HISTORIAL",
     missions_h2: "Misiones reales. Resultados verificables.",
     missions_subline: "Sin fotografías de stock. Sin métricas inventadas. Cada KPI a continuación proviene de un compromiso real.",
     missions_cta: "VER PRESENTACIÓN COMPLETA →",
     sectors_eyebrow: "SECTORES Y MERCADOS",
-    sectors_h2: 'Un solo <a href="#epr" class="method-link">método</a>. Siete industrias.',
+    sectors_h2: 'Un solo <a href="book.html#methode" class="method-link">método</a>. Siete industrias.',
     pricing_eyebrow: "INVERSIÓN",
     pricing_h2: "Liderazgo senior. Precios transparentes.",
     pricing_subline: "La tarifa se adapta al alcance, la duración y el modelo de compromiso. Siempre discutida en una primera llamada.",
@@ -2392,6 +2539,18 @@ function setLanguage(lang) {
   if (lang.startsWith('fr')) setLanguage('fr');
   else if (lang.startsWith('es') || lang.includes('419')) setLanguage('es');
   else setLanguage('en');
+})();
+
+// Pré-remplissage du message contact si arrivée depuis book.html (?interet=livre)
+(function() {
+  if (new URLSearchParams(window.location.search).get('interet') !== 'livre') return;
+  const prefill = {
+    fr: "Je suis intéressé par votre livre « J'ai tout vendu » — merci de m'aviser de sa sortie.",
+    en: "I'm interested in your book — please notify me when it's released.",
+    es: "Me interesa su libro — por favor avíseme cuando salga."
+  };
+  const ta = document.querySelector('#contact-form textarea[name="message"]');
+  if (ta) ta.value = prefill[currentLang] || prefill.fr;
 })();
 
 // ─── NAVBAR SCROLL ───
